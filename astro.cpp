@@ -94,7 +94,7 @@ double hour2azm (double dec, double h, double phi, double t)
 int main()
 	{
 
-	double d, t, phi, h, A, GMT, UT, GST, LST, l, a ;
+	double d, t, phi, h, A, GMST, UT, GST, LST, l, a ;
 
 	cout << "\nInput declination in °: " ;
 	cin >> d ;	
@@ -103,7 +103,7 @@ int main()
 	cin >> a ;
 
         cout << "Input GMT in h: " ;
-        cin >> GMT ;
+        cin >> GMST ;			// I could use GST BUT it will be usefull later
 
 	cout << "Input time of observation UT in h: " ;
 	cin >> UT ; 
@@ -115,7 +115,7 @@ int main()
 	cin >> phi ;
 
 	l = l / 15 ;
-	LST = GMT + UT * k + l ;
+	LST = GMST + UT * k + l ;
 	t = LST - a ;
 
 	h = dec2height(d, t, phi) ;
