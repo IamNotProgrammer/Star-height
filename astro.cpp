@@ -99,11 +99,11 @@ int main()
 	cout << "\nInput declination in °: " ;
 	cin >> d ;	
 
-	cout << "Input rectastence in h: "
+	cout << "Input rectastence in h: " ;
 	cin >> a ;
 
-        cout << "Input GMT in h: " ;
-        cin >> GMST ;			// I could use GST BUT it will be usefull later
+        cout << "Input GMST in h: " ;
+        cin >> GMST ;
 
 	cout << "Input time of observation UT in h: " ;
 	cin >> UT ; 
@@ -121,8 +121,28 @@ int main()
 	h = dec2height(d, t, phi) ;
 	A = hour2azm (d, h, phi, t) ;
 
-	cout << "\nHeight: " << h << "°\n" ;
-	cout << "SMART's Azimuth: " << A << "°\n\n" ;
+	cout <<	"\nSMART's Azimuth\n" ;
+	cout <<	"                 N\n\n" ;                 
+                 
+	cout <<	"              #######\n" ;
+	cout <<	"           #\\    |     #\n" ;
+	cout <<	"        #    \\   |        #\n" ;
+	cout << "       #      \\ A|         #\n" ;
+	cout << "      #        \\ |          #\n" ;
+	cout << " W   #          \\|           #  E\n" ;
+	cout << "      #                     #\n" ;
+	cout << "       #                   #\n" ;
+	cout << "         #               #\n" ;
+	cout << "           #          #\n" ;
+	cout << "              #######\n\n" ;
+		
+	cout << "                 S\n" ;
+	cout << "A - Azimuth\n" ;
+	cout << "N - North\n" ;
+	cout << "E - East etc.\n" ;
+
+        cout << "\nHeight: " << h << "°\n" ;
+        cout << "SMART's Azimuth: " << A << "°\n\n" ;
 
 	return 0 ;
 
