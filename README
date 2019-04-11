@@ -1,4 +1,5 @@
 Just simply run program
 
-So far it changes equatorial coordinates to horizontal
-Simply download it and run ./astro.out
+By putting your coordinates, object coordinates and time (UT) program will calculate height, (SMART's) azimuth and local siderial time.
+In near future it will be able possibility to show how height is changing in time.
+In future future I will add some littke database and maybe some day we will see normal GUI
