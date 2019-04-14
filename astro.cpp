@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <stdlib.h>
 
 #define PI 3.1415926536  
 #define k 1.002737909
@@ -7,44 +8,107 @@
 /*////////////////////////////////////////////////////////////////////////
 //									//
 //      d       - declination						//
-//      a       - rectascence                   			//
-//      t       - star's hour angle					//
+//	a	- rectascence						//
+//	l	- longitude						//
 //      phi     - latitiude						//
-//      l       - longitude               				//
 //      h       - horizontal height					//
 //      A       - Azumuth						//
-//      UT      - Universal time                			//
-//      LST 	- Local siderial time					//
-//      k       - kappa                         			//
+//      UT      - Universal time					//
+//	LST	- Local siderial time					//
 //									//
 */////////////////////////////////////////////////////////////////////////
 
 using namespace std ;
 
-float date2LST(float l) ;
+
+
 double dec2height (double dec, double t, double phi) ;
 double hour2azm (double dec, double h, double phi, double t) ;
+float date2LST(float l, int year, int mon2, int day2, float hour) ;
 
 int main()
 	{
 
-	double d, t, phi, h, A, UT, LST, l, a ;
+	double d, phi, h, A, UT, LST, l, a, t, CT, ch ;
+	int year, mon2, day2 ;
+	int H, M, L_H, L_M ;
+	string height ;
 
-	cout << "\nInput declination in °: " ;
+	system("> ./Data/Height.txt") ;
+
+	cout << "\nInput declination δ in °: " ;
 	cin >> d ;	
 
-	cout << "Input rectastence in h: " ;
+	cout << "Input rectastence α in h: " ;
 	cin >> a ;
-	
-	cout << "Input latitude in °: " ;
-	cin >> phi ;
-	
-	cout << "longitude in °:" ;
+
+	cout << "longitude λ in °: " ;
 	cin >> l ;
 
+	cout << "Input latitude φ in °: " ;
+	cin >> phi ;
+
+        cout << "input year: " ;
+        cin >> year ;
+
+        cout << "Input month: " ;
+        cin >> mon2 ;
+
+        cout << "Input day: " ;
+        cin >> day2 ;
+
+        cout << "Input hour in UT: " ;
+        cin >> UT ;
+
 	l /= 15 ;
-	LST = date2LST(l) ;
+
+	LST = date2LST(l, year, mon2, day2, UT) ;
+
 	t = LST - a ;
+	L_H = int(LST) ;
+	L_M = int( (LST - L_H) * 60 ) ;
+
+	for (double i = t - 5; i < (t + 5); i += 0.16666)
+		{
+
+		CT = UT + i - t ;
+		ch = dec2height (d, i, phi);
+		height = "echo '" ;
+
+		if (CT > 0 and CT < 24)
+			{
+
+			H = int(CT) ;
+			M = int( (CT - H) * 60 ) ;
+			height += to_string(day2) + "/" + to_string(mon2) + " " + to_string(H) + ":" + to_string(M) ;
+
+			}
+		else if (CT > 24)
+			{
+
+                        H = fmod(int(CT), 24)  ;
+                        M = int( ( fmod(CT, 24) - H ) * 60 ) ; 
+                        height += to_string(day2 + 1) + "/" + to_string(mon2) + " " + to_string(H) + ":" + to_string(M) ;
+
+
+			}
+
+		else
+			{
+
+			CT += 24 ;
+                        H = int(CT) ;
+                        M = int( (CT - H) * 60 ) ; 
+                        height += to_string(day2 - 1) + "/" + to_string(mon2) + " " + to_string(H) + ":" + to_string(M) ;
+
+			}
+
+		height += ", " + to_string(ch) + "' >> ./Data/Height.txt";
+		system( height.c_str() ) ;
+
+		}
+
+	system("./Data/Plot_height.plt") ;
 
 	h = dec2height(d, t, phi) ;
 	A = hour2azm (d, h, phi, t) ;
@@ -63,7 +127,7 @@ int main()
 	cout << "         #               #\n" ;
 	cout << "           #          #\n" ;
 	cout << "              #######\n\n" ;
-		
+	
 	cout << "                 S\n" ;
 	cout << "A - Azimuth\n" ;
 	cout << "N - North\n" ;
@@ -71,7 +135,8 @@ int main()
 
         cout << "\nHeight: " << h << "°\n" ;
         cout << "SMART's Azimuth: " << A << "°\n\n" ;
-
+	cout << "LST: " << L_H << "h " << L_M << "m\n\n" ;
+	
 	return 0 ;
 
 	}
@@ -96,7 +161,7 @@ double dec2height (double dec, double t, double phi)
 	return h ;
 
 	}
-
+	
 
 
 
@@ -126,12 +191,12 @@ double hour2azm (double dec, double h, double phi, double t)
 
 
 
-float date2LST(float l)
+float date2LST(float l, int year, int mon2, int day2, float hour)
 	{
 	
 	int month[12] ;
-	int mon1, day1, mon2, day2, dd, year ;
-	float hour_S, hour, a_a, LST ;	// hour_S equinox time, a_a is average alpha
+	int mon1, day1, dd ;
+	float hour_S, a_a, LST ;	// hour_S equinox time, a_a is average alpha
 	float dm = 0 ;
 
 	float year_tab[15] = 
@@ -154,9 +219,6 @@ float date2LST(float l)
 	3.1166666666,
 
 	} ;	
-
-	cout << "input year: " ;
-	cin >> year ;
 
 	hour_S = year_tab[year - 2010] ; 
 
@@ -181,15 +243,6 @@ float date2LST(float l)
 
 	mon1 = 3 ; 
 	day1 = 20 ;
-
-        cout << "Input month: " ;
-        cin >> mon2 ;
-
-        cout << "Input day: " ;
-        cin >> day2 ;
-
-	cout << "Input hour in UT: " ;
-	cin >> hour ;
 
 	if (mon2 > mon1)
 		{
