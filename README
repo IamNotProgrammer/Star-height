@@ -1,5 +1,13 @@
-Just simply run program
+Star-height is program that calculates horiontal height of object.
+By putting in data program plots graph that shows what will be and what was horizontal height of object.
 
-By putting your coordinates, object coordinates and time (UT) program will calculate height, (SMART's) azimuth and local siderial time.
-In near future it will be able possibility to show how height is changing in time.
-In future future I will add some littke database and maybe some day we will see normal GUI
+To run program after download go to Star-height directory 
+
+cd ./Download/Star-height/
+
+then run astro.out file
+
+./astro.out
+
+After inputting data you will recieve Local siderial time (LST), azimuth, height and graph
+to see if object will be higher in the sky.
