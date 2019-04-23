@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#define PI 3.1415926536 // it will be usefull to change into radians
+
 #include <QMainWindow>
 
 namespace Ui {
@@ -15,19 +17,39 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_dec_deg_textChanged(const QString &arg1);
+
+    void on_dec_min_textChanged(const QString &arg1);
+
+    void on_dec_sec_textChanged(const QString &arg1);
+
+    void on_lon_textChanged(const QString &arg1);
+
+    void on_lat_textChanged(const QString &arg1);
+
+    void on_LT_timeChanged(const QTime &time);
+
+    void on_time_zone_valueChanged(int arg1);
+
+    void on_comboBox_currentIndexChanged(int index);
+
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
-    #define PI 3.1415926536 // it will be usefull to change into radians
+
 // every comment to variable is in order i.e. int a, b ; // explained a, explained b
     int year = 2019 ; // current year
     int mon2 = 5 ; // current month
     int day2 = 1 ; // current day
 
-    int H, M, L_H, L_M ; // hour and minute to clock: local hour, local minute, LST hour, LST minute
-
-    float d, a, l, phi ; // coordinates: declination, rectastence, longitude, latitude
-    float UT, LST, LMST, t, CT ; // time: Greenwich time, local siderial time, local time, hour angle, changing time (in function)
-
+    int H = 0, M = 0, L_H = 0, L_M = 0 ; // hour and minute to clock: local hour, local minute, LST hour, LST minute
+                                        // dec - declination
+    float d_d = 0, d_m = 0, d_s = 0 ; // dec degree, dec minute, dec second
+    float d = 0, a = 0, l = 0, phi = 0 ; // coordinates: dec, rectastence, longitude, latitude
+    float UT = 0, LST = 0, LMST = 0, t = 0, CT = 0 ; // time: Greenwich time, local siderial time, local time, hour angle, changing time (in function)
+    float max_height = 0 ;
 
 };
 

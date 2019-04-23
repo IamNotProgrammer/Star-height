@@ -58,7 +58,7 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QDateEdit" name="dateEdit">
+      <widget class="QDateEdit" name="Date">
        <property name="showGroupSeparator" stdset="0">
         <bool>false</bool>
        </property>
@@ -89,10 +89,10 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QTimeEdit" name="timeEdit"/>
+      <widget class="QTimeEdit" name="LT"/>
      </item>
      <item row="4" column="1">
-      <widget class="QSpinBox" name="spinBox">
+      <widget class="QSpinBox" name="time_zone">
        <property name="minimum">
         <number>-24</number>
        </property>
@@ -135,11 +135,15 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="lineEdit_2"/>
-     </item>
      <item row="1" column="1">
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="lat"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Latitude φ</string>
+       </property>
+      </widget>
      </item>
      <item row="0" column="2">
       <widget class="QComboBox" name="comboBox">
@@ -161,12 +165,8 @@
        </item>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Latitude φ</string>
-       </property>
-      </widget>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="lon"/>
      </item>
     </layout>
    </widget>
@@ -175,8 +175,8 @@
      <rect>
       <x>30</x>
       <y>390</y>
-      <width>160</width>
-      <height>51</height>
+      <width>141</width>
+      <height>53</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -204,7 +204,7 @@
         </font>
        </property>
        <property name="text">
-        <string>0</string>
+        <string>12</string>
        </property>
       </widget>
      </item>
@@ -232,7 +232,7 @@
         </font>
        </property>
        <property name="text">
-        <string>0</string>
+        <string>69</string>
        </property>
       </widget>
      </item>
@@ -274,8 +274,49 @@
      <property name="bottomMargin">
       <number>4</number>
      </property>
-     <item row="0" column="3">
-      <widget class="QLineEdit" name="lineEdit_4">
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_15">
+       <property name="text">
+        <string>Rectastence α</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="5">
+      <widget class="QLineEdit" name="ra_s"/>
+     </item>
+     <item row="0" column="5">
+      <widget class="QLineEdit" name="dec_sec"/>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="dec_deg">
+       <property name="maxLength">
+        <number>2</number>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="4">
+      <widget class="QLabel" name="label_17">
+       <property name="text">
+        <string>m</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_11">
+       <property name="text">
+        <string>Declination δ</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="6">
+      <widget class="QLabel" name="label_18">
+       <property name="text">
+        <string>s</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QLineEdit" name="ra_m">
        <property name="maxLength">
         <number>2</number>
        </property>
@@ -288,9 +329,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="5">
-      <widget class="QLineEdit" name="lineEdit_5"/>
-     </item>
      <item row="0" column="6">
       <widget class="QLabel" name="label_14">
        <property name="text">
@@ -298,31 +336,10 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="4">
-      <widget class="QLabel" name="label_13">
-       <property name="text">
-        <string>'</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="lineEdit_3">
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="ra_h">
        <property name="maxLength">
         <number>2</number>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_11">
-       <property name="text">
-        <string>Declination δ</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_15">
-       <property name="text">
-        <string>Rectastence α</string>
        </property>
       </widget>
      </item>
@@ -333,36 +350,19 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="4">
-      <widget class="QLabel" name="label_17">
+     <item row="0" column="4">
+      <widget class="QLabel" name="label_13">
        <property name="text">
-        <string>m</string>
+        <string>'</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="6">
-      <widget class="QLabel" name="label_18">
-       <property name="text">
-        <string>s</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="lineEdit_6">
+     <item row="0" column="3">
+      <widget class="QLineEdit" name="dec_min">
        <property name="maxLength">
         <number>2</number>
        </property>
       </widget>
-     </item>
-     <item row="1" column="3">
-      <widget class="QLineEdit" name="lineEdit_7">
-       <property name="maxLength">
-        <number>2</number>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="5">
-      <widget class="QLineEdit" name="lineEdit_8"/>
      </item>
     </layout>
    </widget>
@@ -546,10 +546,10 @@
    <widget class="QWidget" name="horizontalLayoutWidget_4">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>290</y>
-      <width>201</width>
-      <height>51</height>
+      <x>310</x>
+      <y>300</y>
+      <width>211</width>
+      <height>31</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -568,7 +568,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label_30">
+      <widget class="QLabel" name="max_h_deg">
        <property name="font">
         <font>
          <pointsize>12</pointsize>
@@ -596,7 +596,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label_32">
+      <widget class="QLabel" name="max_h_m">
        <property name="font">
         <font>
          <pointsize>12</pointsize>
@@ -628,15 +628,15 @@
    <widget class="QLabel" name="label_34">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>220</y>
-      <width>541</width>
-      <height>121</height>
+      <x>320</x>
+      <y>370</y>
+      <width>261</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>28</pointsize>
+      <pointsize>11</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
