@@ -36,6 +36,14 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_Date_dateChanged(const QDate &date);
+
+    void on_ra_h_textChanged(const QString &arg1);
+
+    void on_ra_m_textChanged(const QString &arg1);
+
+    void on_ra_s_textChanged(const QString &arg1);
+
 private:
     Ui::MainWindow *ui;
 
@@ -45,11 +53,13 @@ private:
     int day2 = 1 ; // current day
 
     int H = 0, M = 0, L_H = 0, L_M = 0 ; // hour and minute to clock: local hour, local minute, LST hour, LST minute
-                                        // dec - declination
+                                        // dec - declination, re - rectastence
     float d_d = 0, d_m = 0, d_s = 0 ; // dec degree, dec minute, dec second
+    float re_h = 0, re_m = 0, re_s = 0 ; // ra hour, ra minute, ra second
     float d = 0, a = 0, l = 0, phi = 0 ; // coordinates: dec, rectastence, longitude, latitude
     float UT = 0, LST = 0, LMST = 0, t = 0, CT = 0 ; // time: Greenwich time, local siderial time, local time, hour angle, changing time (in function)
     float max_height = 0 ;
+    float h, A ; // coordinates: hegight, Azimuth ;
 
 };
 
