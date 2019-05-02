@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include <iostream>
 #include <cmath>
+#include <stdlib.h>
+#include <string>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -15,26 +17,11 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+////    CHANGE DECLINATION  ////
+
 void MainWindow::on_dec_deg_textChanged(const QString &arg1)
 {
-    d_d = arg1.toFloat() ;
-    d = d_d ;
-}
-
-void MainWindow::on_dec_min_textChanged(const QString &arg1)
-{
-    d_m = arg1.toFloat() / 60 ;
-
-    if (d_d < 0)
-        d = d_d - d_m ;
-
-    else
-        d = d_d + d_m ;
-}
-
-void MainWindow::on_dec_sec_textChanged(const QString &arg1)
-{
-    d_s = arg1.toFloat() / 3600 ;
+    d_d = arg1.toDouble() ;
 
     if (d_d < 0)
         d = d_d - d_m - d_s ;
@@ -43,9 +30,53 @@ void MainWindow::on_dec_sec_textChanged(const QString &arg1)
         d = d_d + d_m + d_s ;
 }
 
+void MainWindow::on_dec_min_textChanged(const QString &arg1)
+{
+    d_m = arg1.toDouble() / 60 ;
+
+    if (d_d < 0)
+        d = d_d - d_m - d_s ;
+
+    else
+        d = d_d + d_m + d_s ;
+}
+
+void MainWindow::on_dec_sec_textChanged(const QString &arg1)
+{
+    d_s = arg1.toDouble() / 3600 ;
+
+    if (d_d < 0)
+        d = d_d - d_m - d_s ;
+
+    else
+        d = d_d + d_m + d_s ;
+}
+
+////    CHANGE RECTASTENCE  ////
+
+void MainWindow::on_ra_h_textChanged(const QString &arg1)
+{
+    re_h = arg1.toInt() ;
+    a = re_h + re_m + re_s ;
+}
+
+void MainWindow::on_ra_m_textChanged(const QString &arg1)
+{
+    re_m = arg1.toDouble() / 60 ;
+    a = re_h + re_m + re_s ;
+}
+
+void MainWindow::on_ra_s_textChanged(const QString &arg1)
+{
+    re_s = arg1.toDouble() / 3600 ;
+    a = re_h + re_m + re_s ;
+}
+
+////    CHANGE LONGITUDE    ////
+
 void MainWindow::on_lon_textChanged(const QString &arg1)
 {
-    l = arg1.toFloat() ;
+    l = arg1.toDouble() ;
     l /= 15 ;
     if ( ui -> comboBox -> currentIndex() == 1 )
         l = -l ;
@@ -60,16 +91,20 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
         l = abs(l) ;
 }
 
+////    CHANGE LATITUDE     ////
+
 void MainWindow::on_lat_textChanged(const QString &arg1)
 {
-    phi = arg1.toFloat() ;
+    phi = arg1.toDouble() ;
 }
+
+////    LOCAL AND UNIVERSAL TIME    ////
 
 void MainWindow::on_LT_timeChanged(const QTime &time)
 {
     H = time.hour() ;
     M = time.minute() ;
-    LMST = H + float( M ) / 60 ;
+    LMST = H + double( M ) / 60 ;
 
     UT = LMST - ui -> time_zone -> value() ;
     if (UT < 0)
@@ -90,16 +125,17 @@ void MainWindow::on_Date_dateChanged(const QDate &date)
     day2 = date.day() ;
 }
 
+////    CHANGE DATE TO LST      ////
 
-float date2LST(float l, int year, int mon2, int day2, float hour)
+double date2LST(double l, int year, int mon2, int day2, double hour)
     {
 
     int month[12] ;
     int mon1, day1, dd ;
-    float hour_S, a_a, LST ;	// hour_S equinox time, a_a is average alpha
-    float dm = 0 ;
+    double hour_S, a_a, LST ;	// hour_S equinox time, a_a is average alpha
+    double dm = 0 ;
 
-    float year_tab[15] =
+    double year_tab[15] =
     {
 
     17.5333333333,
@@ -171,12 +207,13 @@ float date2LST(float l, int year, int mon2, int day2, float hour)
 
     }
 
+////    CALCULATE OBJECT HEIGHT     ////
 
-float dec2height (float dec, float t, float phi)
+double dec2height (double dec, double t, double phi)
         {
 
-        float h ;      // height
-        float S_h ;    // sin h
+        double h ;      // height
+        double S_h ;    // sin h
 
         t = t * PI / 12 ;
         dec = dec * PI / 180 ;
@@ -190,12 +227,13 @@ float dec2height (float dec, float t, float phi)
 
         }
 
+////    CALCULATE AZIMUTH   ////
 
-float hour2azm (float dec, float h, float phi, float t)
+double hour2azm (double dec, double h, double phi, double t)
         {
 
-        float A ;      // azimuth
-        float C_A ;    // cos A
+        double A ;      // azimuth
+        double C_A ;    // cos A
 
         h = h * PI / 180 ;
         dec = dec * PI / 180 ;
@@ -214,7 +252,7 @@ float hour2azm (float dec, float h, float phi, float t)
 
         }
 
-
+////    CLICK BUTTON    ////
 
 void MainWindow::on_pushButton_clicked()
 {
@@ -245,11 +283,32 @@ void MainWindow::on_pushButton_clicked()
     ui -> label_25 -> setText( QString::number( int(A) ) ) ;
     ui -> label_27 -> setText( QString::number( int( ( A - int(A) ) * 60 ) ) ) ;
 
+
+    ////    TIME TO/FROM MAX HEIGHT     ////
+
     if (t < 0 or t > 12 )
         {
 
         ui -> in_was -> setText("In") ;
         ui -> ago -> setText("") ;
+
+        if (t < 0)
+            {
+
+            t_r = abs(t) ;
+            ui -> t_h -> setText( QString::number(int(t_r)) ) ;
+            ui -> t_m -> setText( QString::number( int( ( t_r - int(t_r) ) * 60 ) ) ) ;
+
+            }
+
+        else
+            {
+
+            t_r = 24 - t ;
+            ui -> t_h -> setText( QString::number(int(t_r)) ) ;
+            ui -> t_m -> setText( QString::number( int( ( t - int(t_r) ) * 60 ) ) ) ;
+
+            }
 
         }
 
@@ -259,29 +318,63 @@ void MainWindow::on_pushButton_clicked()
         ui -> in_was -> setText("Was") ;
         ui -> ago -> setText("ago") ;
         ui -> t_h -> setText( QString::number(int(t)) ) ;
+        ui -> t_m -> setText( QString::number( int( ( t - int(t) ) * 60 ) ) ) ;
 
         }
 
-    // NIY MO REKTASCENJII!!!!!!!!!!
+    //// MAKE DATA FOR PLOT     ////
+
+    system("> /usr/local/Data/Height.txt") ;
+
+    for (double i = t - 5; i < (t + 5); i += 0.1666666)
+        {
+
+        CT = LMST + i - t ;
+        ch = dec2height (d, i, phi);
+        height = "echo '" ;
+
+        if (CT > 0 and CT < 24)
+            {
+
+            H = int(CT) ;
+            M = int( (CT - H) * 60 ) ;
+            height += std::to_string(day2) + "/" + std::to_string(mon2) + " " + std::to_string(H) + ":" + std::to_string(M) ;
+
+            }
+        else if (CT > 24)
+            {
+
+                        H = fmod(int(CT), 24)  ;
+                        M = int( ( fmod(CT, 24) - H ) * 60 ) ;
+                        height += std::to_string(day2 + 1) + "/" + std::to_string(mon2) + " " + std::to_string(H) + ":" + std::to_string(M) ;
+
+
+            }
+
+        else
+            {
+
+            CT += 24 ;
+                        H = int(CT) ;
+                        M = int( (CT - H) * 60 ) ;
+                        height += std::to_string(day2 - 1) + "/" + std::to_string(mon2) + " " + std::to_string(H) + ":" + std::to_string(M) ;
+
+            }
+
+        std::string str = std::to_string(ch) ;
+        std::replace( str.begin(), str.end(), ',', '.');
+        height += ", " + str + "' >> /usr/local/Data/Height.txt";
+
+        system( height.c_str() ) ;
+
+        }
+
+
+    ////    CALL GRAPH      ////
+
+    system("/usr/local/Data/Plot_height.plt") ;
 
 }
 
 
-
-void MainWindow::on_ra_h_textChanged(const QString &arg1)
-{
-    re_h = arg1.toInt() ;
-    a += re_h ;
-}
-
-void MainWindow::on_ra_m_textChanged(const QString &arg1)
-{
-    re_m = arg1.toFloat() / 60 ;
-    a += re_h + re_m ;
-}
-
-void MainWindow::on_ra_s_textChanged(const QString &arg1)
-{
-    re_s = arg1.toFloat() / 3600 ;
-    a += re_h + re_m + re_s ;
-}
+////    THAT'S ALL FOR NOW      ////
