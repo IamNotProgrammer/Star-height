@@ -55,10 +55,20 @@ private:
     int day2 = 1 ; // current day
 
     int H = 0, M = 0, L_H = 0, L_M = 0 ; // hour and minute to clock: local hour, local minute, LST hour, LST minute
+
                                         // dec - declination, re - rectastence
     double d_d = 0, d_m = 0, d_s = 0 ; // dec degree, dec minute, dec second
     double re_h = 0, re_m = 0, re_s = 0 ; // ra hour, ra minute, ra second
     double d = 0, a = 0, l = 0, phi = 0 ; // coordinates: dec, rectastence, longitude, latitude
+
+	// Galactic coordinates //
+
+	double aG = 3.366033414 ; // Galactic constants (radians)
+	double dG = 0.473479222 ;
+	double theta = 2.145568156 ;
+
+	double L, B ; // Galactic coordinates
+
     double UT = 0, LST = 0, LMST = 0, t = 0, t_r ; // time: Greenwich time, local siderial time, local time, hour angle
     double max_height = 0 ;
     double h, A ; // coordinates: hegight, Azimuth ;

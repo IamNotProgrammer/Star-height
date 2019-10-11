@@ -257,12 +257,27 @@ double hour2azm (double dec, double h, double phi, double t)
 
         }
 
+////	GALACTIC COORDINATES	////
+
+double p2gal (double d, double a, double dG, double aG, double theta)
+	{
+
+	double c = d + a ;
+
+	return c ;
+
+	}
+
+
+
+/*
 void graph()
     {
 
      system("/usr/local/Data/Plot_height.plt") ;
 
     }
+*/
 
 ////    CLICK BUTTON    ////
 
@@ -318,7 +333,7 @@ void MainWindow::on_pushButton_clicked()
 
             t_r = 24 - t ;
             ui -> t_h -> setText( QString::number(int(t_r)) ) ;
-            ui -> t_m -> setText( QString::number( int( ( t - int(t_r) ) * 60 ) ) ) ;
+			ui -> t_m -> setText( QString::number( int( ( t_r - int(t_r) ) * 60 ) ) ) ;
 
             }
 
@@ -334,8 +349,12 @@ void MainWindow::on_pushButton_clicked()
 
         }
 
-    //// MAKE DATA FOR PLOT     ////
 
+	std::cout << p2gal(d, a, dG, aG, theta) << "\n" ;
+
+
+    //// MAKE DATA FOR PLOT     ////
+/*
     system("> /usr/local/Data/Height.txt") ;
 
     for (double i = t - 5; i < (t + 5); i += 0.1666666)
@@ -385,7 +404,7 @@ void MainWindow::on_pushButton_clicked()
     ////    CALL GRAPH      ////
 
     graph() ;
-
+*/
 }
 
 
