@@ -259,17 +259,27 @@ double hour2azm (double dec, double h, double phi, double t)
 
 ////	GALACTIC COORDINATES	////
 
-double p2gal (double d, double a, double dG, double aG, double theta)
+
+double p2B (double d, double a, double dG, double aG)
 	{
 
-	double B, L, sTL, cTL, x, y;
+	double B ;
 
 	d = d * PI / 180 ;
 	a = a * PI / 6 ;
 
-//	std::cout << d << "\t" << a << "\n" ;
-
 	B = asin( sin(d) * sin(dG) + cos(d) * cos(dG) * cos(a - aG) ) ;
+
+	return B ;
+	}
+
+double p2L (double d, double a, double dG, double aG, double theta, double B)
+	{
+
+	double L, sTL, cTL;
+
+	d = d * PI / 180 ;
+	a = a * PI / 6 ;
 
 	sTL = - cos(d) * sin(a - aG) / cos(B) ;
 	cTL = sin(d) / ( cos(B) * cos(dG) ) - tan(B) * tan(dG) ;
@@ -277,29 +287,28 @@ double p2gal (double d, double a, double dG, double aG, double theta)
 	if ( (sTL >= 0) and (cTL > 0) )
 		{
 		L = asin(sTL) ;
-		std::cout << "1\t" ;
+//		std::cout << "1\t" ;
 		}
 
 	else if ( (sTL > 0) and (cTL <= 0) )
 		{
 		L = acos(cTL) ;
-		std::cout << "2\t" ;
+//		std::cout << "2\t" ;
 		}
 
 	else if ( (sTL <= 0) and (cTL < 0) )
 		{
 		L = PI - asin(sTL) ;
-		std::cout << "3\t" ;
+//		std::cout << "3\t" ;
 		}
 
 	else if ( (sTL < 0)  and (cTL >= 0) )
 		{
 		L = 2 * PI - acos(cTL) ;
-		std::cout << "4\t" ;
+//		std::cout << "4\t" ;
 		}
-	std::cout << L * 180 / PI << "\n" ;
 
-	return B ;
+	return L ;
 
 	}
 
@@ -385,10 +394,16 @@ void MainWindow::on_pushButton_clicked()
         }
 
 
-//	std::cout << p2gal(d, a, dG, aG, theta) << "\n" ;
-	p2gal(d, a, dG, aG, theta) ;
+	//// GALACTIC COORDINATES ////
 
-    //// MAKE DATA FOR PLOT     ////
+	B = p2B(d, a, dG, aG) ;
+	L = p2L(d, a, dG, aG, theta, B) ;
+
+	ui -> galactic_b -> setText( QString::number(B * 180 / PI) ) ;
+	ui -> galactic_l -> setText( QString::number(L * 180 / PI) ) ;
+
+
+	//// MAKE DATA FOR PLOT ////
 /*
     system("> /usr/local/Data/Height.txt") ;
 
