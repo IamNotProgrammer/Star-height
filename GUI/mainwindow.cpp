@@ -262,9 +262,44 @@ double hour2azm (double dec, double h, double phi, double t)
 double p2gal (double d, double a, double dG, double aG, double theta)
 	{
 
-	double c = d + a ;
+	double B, L, sTL, cTL, x, y;
 
-	return c ;
+	d = d * PI / 180 ;
+	a = a * PI / 6 ;
+
+//	std::cout << d << "\t" << a << "\n" ;
+
+	B = asin( sin(d) * sin(dG) + cos(d) * cos(dG) * cos(a - aG) ) ;
+
+	sTL = - cos(d) * sin(a - aG) / cos(B) ;
+	cTL = sin(d) / ( cos(B) * cos(dG) ) - tan(B) * tan(dG) ;
+
+	if ( (sTL >= 0) and (cTL > 0) )
+		{
+		L = asin(sTL) ;
+		std::cout << "1\t" ;
+		}
+
+	else if ( (sTL > 0) and (cTL <= 0) )
+		{
+		L = acos(cTL) ;
+		std::cout << "2\t" ;
+		}
+
+	else if ( (sTL <= 0) and (cTL < 0) )
+		{
+		L = PI - asin(sTL) ;
+		std::cout << "3\t" ;
+		}
+
+	else if ( (sTL < 0)  and (cTL >= 0) )
+		{
+		L = 2 * PI - acos(cTL) ;
+		std::cout << "4\t" ;
+		}
+	std::cout << L * 180 / PI << "\n" ;
+
+	return B ;
 
 	}
 
@@ -350,8 +385,8 @@ void MainWindow::on_pushButton_clicked()
         }
 
 
-	std::cout << p2gal(d, a, dG, aG, theta) << "\n" ;
-
+//	std::cout << p2gal(d, a, dG, aG, theta) << "\n" ;
+	p2gal(d, a, dG, aG, theta) ;
 
     //// MAKE DATA FOR PLOT     ////
 /*
