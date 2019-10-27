@@ -14,7 +14,7 @@
    <string>Star Height</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QGroupBox" name="gridGroupBox_2">
+   <widget class="QGroupBox" name="Date_and_Time">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -128,7 +128,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QGroupBox" name="gridGroupBox">
+   <widget class="QGroupBox" name="Observer_Position">
     <property name="geometry">
      <rect>
       <x>250</x>
@@ -209,7 +209,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QGroupBox" name="gridGroupBox_3">
+   <widget class="QGroupBox" name="Star_Position">
     <property name="geometry">
      <rect>
       <x>250</x>
@@ -352,7 +352,7 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>222</x>
+      <x>300</x>
       <y>200</y>
       <width>151</width>
       <height>51</height>
@@ -362,13 +362,13 @@
      <string>Calculate</string>
     </property>
    </widget>
-   <widget class="QGroupBox" name="verticalGroupBox">
+   <widget class="QGroupBox" name="Data">
     <property name="geometry">
      <rect>
       <x>20</x>
       <y>460</y>
       <width>241</width>
-      <height>101</height>
+      <height>91</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -536,13 +536,13 @@
      </item>
     </layout>
    </widget>
-   <widget class="QGroupBox" name="Horizontal">
+   <widget class="QGroupBox" name="Horiz_Coordinates">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>260</y>
+      <y>280</y>
       <width>241</width>
-      <height>181</height>
+      <height>171</height>
      </rect>
     </property>
     <property name="title">
@@ -773,13 +773,13 @@
      </item>
     </layout>
    </widget>
-   <widget class="QGroupBox" name="groupBox">
+   <widget class="QGroupBox" name="Gal_coordinates">
     <property name="geometry">
      <rect>
       <x>290</x>
-      <y>260</y>
+      <y>280</y>
       <width>231</width>
-      <height>131</height>
+      <height>121</height>
      </rect>
     </property>
     <property name="title">
@@ -901,15 +901,14 @@
    <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
-      <x>30</x>
+      <x>110</x>
       <y>200</y>
       <width>161</width>
       <height>51</height>
      </rect>
     </property>
     <property name="text">
-     <string>Set current time
-(In progress)</string>
+     <string>Set current time</string>
     </property>
    </widget>
   </widget>
@@ -934,6 +933,22 @@
   <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>LT</tabstop>
+  <tabstop>Date</tabstop>
+  <tabstop>time_zone</tabstop>
+  <tabstop>lon</tabstop>
+  <tabstop>comboBox</tabstop>
+  <tabstop>lat</tabstop>
+  <tabstop>dec_deg</tabstop>
+  <tabstop>dec_min</tabstop>
+  <tabstop>dec_sec</tabstop>
+  <tabstop>ra_h</tabstop>
+  <tabstop>ra_m</tabstop>
+  <tabstop>ra_s</tabstop>
+  <tabstop>pushButton_2</tabstop>
+  <tabstop>pushButton</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

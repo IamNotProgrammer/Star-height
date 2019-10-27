@@ -4,6 +4,7 @@
 #include <cmath>
 #include <stdlib.h>
 #include <string>
+#include <ctime>
 
 double k = 1.0027379093382884 ;
 
@@ -460,3 +461,24 @@ void MainWindow::on_pushButton_clicked()
 
 ////    THAT'S ALL FOR NOW      ////
 
+
+void MainWindow::on_pushButton_2_clicked()
+{
+
+	std::time_t now = time(0) ;
+	tm *ltm = localtime(&now) ;
+
+	year = 1900 + ltm -> tm_year ;
+	mon2 = 1 + ltm -> tm_mon ;
+	day2 = ltm -> tm_mday ;
+
+	H = ltm -> tm_hour ;
+	M = ltm -> tm_min ;
+	S = ltm -> tm_sec ;
+
+	ui -> time_zone -> setValue(H - int(now * 0.0002777777777) % 24) ; // sets current time zone
+
+	ui -> LT -> setTime( QTime(H, M, S) ) ; // sets current local time
+	ui -> Date -> setDate( QDate(year, mon2, day2) ) ; // sets current date
+
+}
