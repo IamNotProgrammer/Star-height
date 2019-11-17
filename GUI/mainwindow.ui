@@ -635,7 +635,7 @@
           </font>
          </property>
          <property name="text">
-          <string>SMART's Azimuth:</string>
+          <string>Azimuth:</string>
          </property>
         </widget>
        </item>
@@ -766,6 +766,34 @@
          </property>
          <property name="text">
           <string>m</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_35">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>80</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_37">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>s</string>
          </property>
         </widget>
        </item>

@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string>
 #include <ctime>
+#include "astm.h"
 
 double k = 1.0027379093382884 ;
 
@@ -83,6 +84,9 @@ void MainWindow::on_lon_textChanged(const QString &arg1)
     l /= 15 ;
     if ( ui -> comboBox -> currentIndex() == 1 )
         l = -l ;
+
+	std::cout << l << "\n" ;
+
 }
 
 void MainWindow::on_comboBox_currentIndexChanged(int index)
@@ -107,18 +111,39 @@ void MainWindow::on_LT_timeChanged(const QTime &time)
 {
     H = time.hour() ;
     M = time.minute() ;
-    LMST = H + double( M ) / 60 ;
+	S = time.second() ;
+	LMST = H + double( M ) * 0.0166666666666 + double( S ) * 0.0002777777777777777 ;
 
     UT = LMST - ui -> time_zone -> value() ;
-    if (UT < 0)
-        UT += 24 ;
+
+	if (UT < 0) // sets UT time and day to day before
+		{
+
+		UT += 24.0 ;
+		year = system("date -d 'yesterday' +%Y") ;
+		mon2 = system("date -d 'yesterday' +%m") ;
+		day2 = system("date -d 'yesterday' +%d") ;
+
+		}
+
 }
 
 void MainWindow::on_time_zone_valueChanged(int arg1)
 {
     UT = LMST - arg1 ;
-    if (UT < 0)
-        UT += 24 ;
+
+	if (UT < 0) // sets UT time and day to day before
+		{
+
+		UT += 24.0 ;
+		year = system("date -d 'yesterday' +%Y") ;
+		mon2 = system("date -d 'yesterday' +%m") ;
+		day2 = system("date -d 'yesterday' +%d") ;
+
+		}
+
+	std::cout << UT << "\n" ;
+
 }
 
 void MainWindow::on_Date_dateChanged(const QDate &date)
@@ -126,6 +151,19 @@ void MainWindow::on_Date_dateChanged(const QDate &date)
     year = date.year() ;
     mon2 = date.month() ;
     day2 = date.day() ;
+
+	UT = LMST - ui -> time_zone -> value() ;
+
+	if (UT < 0) // sets UT time and day to day before
+		{
+
+		UT += 24.0 ;
+		year = system("date -d 'yesterday' +%Y") ;
+		mon2 = system("date -d 'yesterday' +%m") ;
+		day2 = system("date -d 'yesterday' +%d") ;
+
+		}
+
 }
 
 ////    CHANGE DATE TO LST      ////
@@ -133,83 +171,18 @@ void MainWindow::on_Date_dateChanged(const QDate &date)
 double date2LST(double l, int year, int mon2, int day2, double hour)
     {
 
-    int month[12] ;
-	int mon1, day1 ;
-	double dd, hour_S, a_a, LST ;	// hour_S equinox time, a_a is average alpha
-    double dm = 0 ;
+	double gmst, lst ;
+	int h, m, s ;
 
-    double year_tab[15] =
-    {
+	h = int(hour) ;
+	m = int( (hour - h ) * 60 ) ;
+	s = int( ( (hour - h) * 60 - m ) * 60 ) ;
 
-    17.5333333333,
-    23.3500000000,
-    5.2333333333,
-    11.0333333333,
-    16.9500000000,
-    22.7500000000,
-    4.5000000000,
-    10.4833333333,
-    16.2500000000,
-    21.9666666666,
-    3.8333333333,
-    9.6166666666,
-    15.5500000000,
-    21.4000000000,
-    3.1166666666,
+	gmst = GMST(year, mon2, day2, h, m, s) ;
 
-    } ;
+	lst = gmst + l ;
 
-    hour_S = year_tab[year - 2010] ;
-
-    month[0] = 31 ;
-
-	if ((year % 4 == 0 and year % 100 != 0) or year % 400 == 0)
-        month[1] = 29 ;
-
-    else
-        month[1] = 28 ;
-
-        month[2] = 31 ;
-        month[3] = 30 ;
-        month[4] = 31 ;
-        month[5] = 30 ;
-        month[6] = 31 ;
-        month[7] = 31 ;
-        month[8] = 30 ;
-        month[9] = 31 ;
-        month[10] = 30 ;
-        month[11] = 31 ;
-
-    mon1 = 3 ;
-    day1 = 20 ;
-
-    if (mon2 > mon1)
-        {
-
-        for (int i = mon1 + 1; i < mon2; i++)
-            {
-
-            dm = dm + month[i - 1] ;
-
-            }
-
-        a_a = ( ( dm + month[mon1 - 1] -  day1 + day2 ) * 24 + (hour - hour_S) ) / 365.242189 ;
-
-		LST = hour + l + a_a + 12 ;
-		LST = fmod(LST, 24) ;
-
-        }
-	else if (mon2 == mon1)
-        {
-
-		dd = (day2 - day1) * 24 + hour - hour_S ;
-		std::cout << hour_S << "\t" << dd << "\t" << k *	dd << "\n" ;
-		LST = fmod(hour_S + dd , 24) ;
-
-        }
-
-
-    return LST ;
+	return gmst ;
 
     }
 
@@ -324,6 +297,30 @@ void graph()
     }
 */
 
+
+//// SET CURRENT TIME ////
+
+void MainWindow::on_pushButton_2_clicked()
+{
+
+	std::time_t now = time(0) ;
+	tm *ltm = localtime(&now) ;
+
+	year = 1900 + ltm -> tm_year ;
+	mon2 = 1 + ltm -> tm_mon ;
+	day2 = ltm -> tm_mday ;
+
+	H = ltm -> tm_hour ;
+	M = ltm -> tm_min ;
+	S = ltm -> tm_sec ;
+
+	UT = H + double( M ) * 0.0166666666666 + double( S ) * 0.0002777777777777777 - ui -> time_zone -> value() ;
+
+	ui -> LT -> setTime( QTime(H, M, S) ) ; // sets current local time
+	ui -> Date -> setDate( QDate(year, mon2, day2) ) ; // sets current date
+
+}
+
 ////    CLICK BUTTON    ////
 
 void MainWindow::on_pushButton_clicked()
@@ -341,9 +338,11 @@ void MainWindow::on_pushButton_clicked()
 
     L_H = int(LST) ;
     L_M = int( ( LST - L_H ) * 60 ) ;
+	L_S = int( ( (LST - L_H) * 3600 - L_M * 60) ) ;
 
     ui -> label_7 -> setText( QString::number(L_H) ) ;
     ui -> label_9 -> setText( QString::number(L_M) ) ;
+	ui -> label_35 -> setText( QString::number(L_S) ) ;
 
     t = LST - a ;
     h = dec2height(d, t, phi) ;
@@ -462,23 +461,4 @@ void MainWindow::on_pushButton_clicked()
 ////    THAT'S ALL FOR NOW      ////
 
 
-void MainWindow::on_pushButton_2_clicked()
-{
 
-	std::time_t now = time(0) ;
-	tm *ltm = localtime(&now) ;
-
-	year = 1900 + ltm -> tm_year ;
-	mon2 = 1 + ltm -> tm_mon ;
-	day2 = ltm -> tm_mday ;
-
-	H = ltm -> tm_hour ;
-	M = ltm -> tm_min ;
-	S = ltm -> tm_sec ;
-
-	ui -> time_zone -> setValue(H - int(now * 0.0002777777777) % 24) ; // sets current time zone
-
-	ui -> LT -> setTime( QTime(H, M, S) ) ; // sets current local time
-	ui -> Date -> setDate( QDate(year, mon2, day2) ) ; // sets current date
-
-}
