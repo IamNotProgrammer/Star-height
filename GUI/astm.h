@@ -1,6 +1,8 @@
 #ifndef ASTM_H
 #define ASTM_H
 
+double JDg(int, int, int, int, int, int) ; // Julian day for gregorian callendar. Fuck people who don't use it
+
 double d_d(int, int, int, int, int, int, int, int, int, int, int, int) ; // difference between 2 dates (initial: year, month,
 									// day, hour, minute, second
 									// final: year, month etc.)
