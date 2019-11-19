@@ -40,13 +40,16 @@ double d_d(int y0, int m0, int d0, int h0, int mi0, int s0, int y, int m, int d,
 double GMST(int y, int m, int d, int h, int mi, int s)
 	{
 
-	double d, T, gmst ;
+	double D, T, gmst ;
 
-	d = JDg(y, m, d, h, mi, s) - 2451545.0 ;
-	T = d / 36525 ;
+	D = JDg(y, m, d, h, mi, s) - 2451545.0 ;
+	T = D / 36525 ;
 
 	gmst = 24110.54841 + 8640184.812866 * T + 0.093104 * T * T
 		- 0.0000063 * T * T * T ;
+
+	gmst *= 0.0002777777777777778 ;
+	gmst = fmod(gmst, 24.0) ;
 
 	return gmst ;
 

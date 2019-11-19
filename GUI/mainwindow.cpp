@@ -6,6 +6,7 @@
 #include <string>
 #include <ctime>
 #include "astm.h"
+#include <iomanip>
 
 double k = 1.0027379093382884 ;
 
@@ -85,8 +86,6 @@ void MainWindow::on_lon_textChanged(const QString &arg1)
     if ( ui -> comboBox -> currentIndex() == 1 )
         l = -l ;
 
-	std::cout << l << "\n" ;
-
 }
 
 void MainWindow::on_comboBox_currentIndexChanged(int index)
@@ -125,6 +124,8 @@ void MainWindow::on_LT_timeChanged(const QTime &time)
 		day2 = system("date -d 'yesterday' +%d") ;
 
 		}
+
+	std::cout << UT << "\n" ;
 
 }
 
@@ -171,7 +172,7 @@ void MainWindow::on_Date_dateChanged(const QDate &date)
 double date2LST(double l, int year, int mon2, int day2, double hour)
     {
 
-	double gmst, lst ;
+	double gmst, lst, jd ;
 	int h, m, s ;
 
 	h = int(hour) ;
@@ -181,8 +182,11 @@ double date2LST(double l, int year, int mon2, int day2, double hour)
 	gmst = GMST(year, mon2, day2, h, m, s) ;
 
 	lst = gmst + l ;
+	jd = JDg(year, mon2, day2, h, m, s) ;
+	std::cout << std::setprecision(15);
+	std::cout << jd << "\n" ;
 
-	return gmst ;
+	return lst ;
 
     }
 
@@ -261,25 +265,21 @@ double p2L (double d, double a, double dG, double aG, double theta, double B)
 	if ( (sTL >= 0) and (cTL > 0) )
 		{
 		L = asin(sTL) ;
-//		std::cout << "1\t" ;
 		}
 
 	else if ( (sTL > 0) and (cTL <= 0) )
 		{
 		L = acos(cTL) ;
-//		std::cout << "2\t" ;
 		}
 
 	else if ( (sTL <= 0) and (cTL < 0) )
 		{
 		L = PI - asin(sTL) ;
-//		std::cout << "3\t" ;
 		}
 
 	else if ( (sTL < 0)  and (cTL >= 0) )
 		{
 		L = 2 * PI - acos(cTL) ;
-//		std::cout << "4\t" ;
 		}
 
 	return L ;
