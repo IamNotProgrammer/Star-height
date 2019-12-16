@@ -62,6 +62,16 @@
        <property name="showGroupSeparator" stdset="0">
         <bool>false</bool>
        </property>
+       <property name="minimumDateTime">
+        <datetime>
+         <hour>0</hour>
+         <minute>0</minute>
+         <second>0</second>
+         <year>1753</year>
+         <month>1</month>
+         <day>1</day>
+        </datetime>
+       </property>
        <property name="maximumDate">
         <date>
          <year>2024</year>
@@ -71,7 +81,7 @@
        </property>
        <property name="minimumDate">
         <date>
-         <year>2010</year>
+         <year>1753</year>
          <month>1</month>
          <day>1</day>
         </date>
@@ -234,7 +244,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_15">
        <property name="text">
-        <string>Rectastence α</string>
+        <string>Ra α</string>
        </property>
       </widget>
      </item>

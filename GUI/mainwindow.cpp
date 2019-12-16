@@ -81,8 +81,7 @@ void MainWindow::on_ra_s_textChanged(const QString &arg1)
 
 void MainWindow::on_lon_textChanged(const QString &arg1)
 {
-    l = arg1.toDouble() ;
-    l /= 15 ;
+	l = arg1.toDouble() / 15 ;
     if ( ui -> comboBox -> currentIndex() == 1 )
         l = -l ;
 
@@ -124,8 +123,6 @@ void MainWindow::on_LT_timeChanged(const QTime &time)
 		day2 = system("date -d 'yesterday' +%d") ;
 
 		}
-
-	std::cout << UT << "\n" ;
 
 }
 
@@ -172,19 +169,15 @@ void MainWindow::on_Date_dateChanged(const QDate &date)
 double date2LST(double l, int year, int mon2, int day2, double hour)
     {
 
-	double gmst, lst, jd ;
+	double gmst, lst ;
 	int h, m, s ;
 
 	h = int(hour) ;
 	m = int( (hour - h ) * 60 ) ;
-	s = int( ( (hour - h) * 60 - m ) * 60 ) ;
+	s = int( (hour - h) * 3600 - m * 60 ) ;
 
 	gmst = GMST(year, mon2, day2, h, m, s) ;
-
 	lst = gmst + l ;
-	jd = JDg(year, mon2, day2, h, m, s) ;
-	std::cout << std::setprecision(15);
-	std::cout << jd << "\n" ;
 
 	return lst ;
 
@@ -243,10 +236,10 @@ double p2B (double d, double a, double dG, double aG)
 
 	double B ;
 
-	d = d * PI / 180 ;
-	a = a * PI / 6 ;
+	d *= PI / 180 ;
+	a *= PI / 12 ;
 
-	B = asin( sin(d) * sin(dG) + cos(d) * cos(dG) * cos(a - aG) ) ;
+	B = asin( sin(d) * sin(dG) + cos(d) * cos(dG) * cos(2 * PI + a - aG) ) ;
 
 	return B ;
 	}
@@ -254,32 +247,40 @@ double p2B (double d, double a, double dG, double aG)
 double p2L (double d, double a, double dG, double aG, double theta, double B)
 	{
 
-	double L, sTL, cTL;
+	double L, sTh, cTh;
 
-	d = d * PI / 180 ;
-	a = a * PI / 6 ;
+	d *= PI / 180 ;
+	a *= PI / 12 ;
 
-	sTL = - cos(d) * sin(a - aG) / cos(B) ;
-	cTL = sin(d) / ( cos(B) * cos(dG) ) - tan(B) * tan(dG) ;
+	sTh = cos(d) * sin(2 * PI - aG + a) / cos(B) ;
+	cTh = sin(d) / ( cos(B) * cos(dG) ) - tan(B) * tan(dG) ;
 
-	if ( (sTL >= 0) and (cTL > 0) )
+	if ( (sTh >= 0) and (cTh > 0) )
 		{
-		L = asin(sTL) ;
+		L = theta - asin(sTh) ;
+		if (L < 0)
+			L += 2 * PI ;
 		}
 
-	else if ( (sTL > 0) and (cTL <= 0) )
+	else if ( (sTh > 0) and (cTh <= 0) )
 		{
-		L = acos(cTL) ;
+		L = theta - acos(cTh) ;
+		if (L < 0)
+			L += 2 * PI ;
 		}
 
-	else if ( (sTL <= 0) and (cTL < 0) )
+	else if ( (sTh <= 0) and (cTh < 0) )
 		{
-		L = PI - asin(sTL) ;
+		L = theta - asin(sTh) ;
+		if (L < 0)
+			L += 2 * PI ;
 		}
 
-	else if ( (sTL < 0)  and (cTL >= 0) )
+	else if ( (sTh < 0)  and (cTh >= 0) )
 		{
-		L = 2 * PI - acos(cTL) ;
+		L = theta - acos(cTh) ;
+		if (L < 0)
+			L += 2 * PI ;
 		}
 
 	return L ;
@@ -399,7 +400,7 @@ void MainWindow::on_pushButton_clicked()
 	B = p2B(d, a, dG, aG) ;
 	L = p2L(d, a, dG, aG, theta, B) ;
 
-	ui -> galactic_b -> setText( QString::number(B * 180 / PI) ) ;
+	ui -> galactic_b -> setText( QString::number(B * 180 / PI, 'f', 2) ) ;
 	ui -> galactic_l -> setText( QString::number(L * 180 / PI) ) ;
 
 

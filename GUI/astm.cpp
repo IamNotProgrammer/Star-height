@@ -36,7 +36,6 @@ double GMST(int y, int m, int d, int h, int mi, float s)
 	{
 
 	double D, T, gmst ;
-
 	D = JD(y, m, d, 0, 0, 0) - 2451545 ;
 	T = D / 36525 ;
 
@@ -44,8 +43,7 @@ double GMST(int y, int m, int d, int h, int mi, float s)
 		- 0.00000632 * T * T * T ;
 
 	gmst *= 0.0002777777777777778 ;
-	gmst = fmod(gmst, 24.0) ;
-        gmst += ( h + mi * 0.0166666666666 + s * 0.0002777777777777 ) * 1.0027379093382884 ;
+	gmst += ( h + mi * 0.0166666666666 + s * 0.0002777777777777 ) * 1.0027379093382884 ;
 	gmst = fmod(gmst, 24.0) ;
 
 	return gmst ;
