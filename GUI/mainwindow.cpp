@@ -118,9 +118,15 @@ void MainWindow::on_LT_timeChanged(const QTime &time)
 		{
 
 		UT += 24.0 ;
-		year = system("date -d 'yesterday' +%Y") ;
-		mon2 = system("date -d 'yesterday' +%m") ;
-		day2 = system("date -d 'yesterday' +%d") ;
+
+		int sec ;
+		sec = int( D_D(1970, 1, 1, 0, 0, 0, year, mon2, day2, 0, 0, 0) * 86400 - 86400 ) ;
+		time_t now = (time_t)sec ;
+		struct tm *t = localtime(&now);
+
+		year = t -> tm_year + 1900 ;
+		mon2 = t -> tm_mon + 1 ;
+		day2 = t -> tm_mday ;
 
 		}
 
@@ -134,13 +140,19 @@ void MainWindow::on_time_zone_valueChanged(int arg1)
 		{
 
 		UT += 24.0 ;
-		year = system("date -d 'yesterday' +%Y") ;
-		mon2 = system("date -d 'yesterday' +%m") ;
-		day2 = system("date -d 'yesterday' +%d") ;
+
+		int sec ;
+		sec = int( D_D(1970, 1, 1, 0, 0, 0, year, mon2, day2, 0, 0, 0) * 86400 - 86400 ) ;
+		time_t now = (time_t)sec ;
+		struct tm *t = localtime(&now);
+
+		year = t -> tm_year + 1900 ;
+		mon2 = t -> tm_mon + 1 ;
+		day2 = t -> tm_mday ;
+
+		std::cout << "year = " << t -> tm_year + 1900 << "\n" ;
 
 		}
-
-	std::cout << UT << "\n" ;
 
 }
 
@@ -156,9 +168,15 @@ void MainWindow::on_Date_dateChanged(const QDate &date)
 		{
 
 		UT += 24.0 ;
-		year = system("date -d 'yesterday' +%Y") ;
-		mon2 = system("date -d 'yesterday' +%m") ;
-		day2 = system("date -d 'yesterday' +%d") ;
+
+		int sec ;
+		sec = int( D_D(1970, 1, 1, 0, 0, 0, year, mon2, day2, 0, 0, 0) * 86400 - 86400 ) ;
+		time_t now = (time_t)sec ;
+		struct tm *t = localtime(&now);
+
+		year = t -> tm_year + 1900 ;
+		mon2 = t -> tm_mon + 1 ;
+		day2 = t -> tm_mday ;
 
 		}
 

@@ -7,7 +7,7 @@ double JD(int y, int m, int d, int h, int mi, float s)
 
 	double jd, dd ;
 
-	dd = d_d(2000, 1, 1, 12, 0, 0, y, m, d, h, mi, s) ;
+	dd = D_D(2000, 1, 1, 12, 0, 0, y, m, d, h, mi, s) ;
 
 	jd = 2451545.0 + dd ;
 
@@ -15,7 +15,7 @@ double JD(int y, int m, int d, int h, int mi, float s)
 
 	}
 
-double d_d(int y0, int m0, int d0, int h0, int mi0, float s0, int y, int m, int d, int h, int mi, float s)
+double D_D(int y0, int m0, int d0, int h0, int mi0, float s0, int y, int m, int d, int h, int mi, float s)
 	{
 
 	struct std::tm a = { s0, mi0, h0, d0, m0 - 1, y0 - 1900 } ;
