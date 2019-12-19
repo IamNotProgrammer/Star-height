@@ -112,7 +112,7 @@ void MainWindow::on_LT_timeChanged(const QTime &time)
 	S = time.second() ;
 	LMST = H + double( M ) * 0.0166666666666 + double( S ) * 0.0002777777777777777 ;
 
-    UT = LMST - ui -> time_zone -> value() ;
+	UT = fmod(LMST - ui -> time_zone -> value(), 24.0) ;
 
 	if (UT < 0) // sets UT time and day to day before
 		{
@@ -120,7 +120,7 @@ void MainWindow::on_LT_timeChanged(const QTime &time)
 		UT += 24.0 ;
 
 		int sec ;
-		sec = int( D_D(1970, 1, 1, 0, 0, 0, year, mon2, day2, 0, 0, 0) * 86400 - 86400 ) ;
+		sec = int( D_D(1970, 1, 1, 0, 0, 0, date_year, date_mon, date_day, 0, 0, 0) * 86400 - 86400 ) ;
 		time_t now = (time_t)sec ;
 		struct tm *t = localtime(&now);
 
@@ -134,7 +134,8 @@ void MainWindow::on_LT_timeChanged(const QTime &time)
 
 void MainWindow::on_time_zone_valueChanged(int arg1)
 {
-    UT = LMST - arg1 ;
+
+	UT = fmod(LMST - arg1, 24.0) ;
 
 	if (UT < 0) // sets UT time and day to day before
 		{
@@ -142,15 +143,13 @@ void MainWindow::on_time_zone_valueChanged(int arg1)
 		UT += 24.0 ;
 
 		int sec ;
-		sec = int( D_D(1970, 1, 1, 0, 0, 0, year, mon2, day2, 0, 0, 0) * 86400 - 86400 ) ;
+		sec = int( D_D(1970, 1, 1, 0, 0, 0, date_year, date_mon, date_day, 0, 0, 0) * 86400 - 86400 ) ;
 		time_t now = (time_t)sec ;
 		struct tm *t = localtime(&now);
 
 		year = t -> tm_year + 1900 ;
 		mon2 = t -> tm_mon + 1 ;
 		day2 = t -> tm_mday ;
-
-		std::cout << "year = " << t -> tm_year + 1900 << "\n" ;
 
 		}
 
@@ -162,7 +161,11 @@ void MainWindow::on_Date_dateChanged(const QDate &date)
     mon2 = date.month() ;
     day2 = date.day() ;
 
-	UT = LMST - ui -> time_zone -> value() ;
+	date_year = date.year() ;
+	date_mon = date.month() ;
+	date_day = date.day() ;
+
+	UT = fmod(LMST - ui -> time_zone -> value(), 24) ;
 
 	if (UT < 0) // sets UT time and day to day before
 		{
@@ -170,7 +173,7 @@ void MainWindow::on_Date_dateChanged(const QDate &date)
 		UT += 24.0 ;
 
 		int sec ;
-		sec = int( D_D(1970, 1, 1, 0, 0, 0, year, mon2, day2, 0, 0, 0) * 86400 - 86400 ) ;
+		sec = int( D_D(1970, 1, 1, 0, 0, 0, date_year, date_mon, date_day, 0, 0, 0) * 86400 - 86400 ) ;
 		time_t now = (time_t)sec ;
 		struct tm *t = localtime(&now);
 
@@ -195,7 +198,11 @@ double date2LST(double l, int year, int mon2, int day2, double hour)
 	s = int( (hour - h) * 3600 - m * 60 ) ;
 
 	gmst = GMST(year, mon2, day2, h, m, s) ;
-	lst = gmst + l ;
+
+	lst = fmod(gmst + l, 24) ;
+
+	if (lst < 0)
+		lst += 24.0 ;
 
 	return lst ;
 
@@ -418,8 +425,8 @@ void MainWindow::on_pushButton_clicked()
 	B = p2B(d, a, dG, aG) ;
 	L = p2L(d, a, dG, aG, theta, B) ;
 
-	ui -> galactic_b -> setText( QString::number(B * 180 / PI, 'f', 2) ) ;
-	ui -> galactic_l -> setText( QString::number(L * 180 / PI) ) ;
+	ui -> galactic_b -> setText( QString::number(B * 180 / PI, 'f', 1) ) ;
+	ui -> galactic_l -> setText( QString::number(L * 180 / PI, 'f', 1) ) ;
 
 
 	//// MAKE DATA FOR PLOT ////

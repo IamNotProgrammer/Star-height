@@ -56,6 +56,10 @@ private:
     int mon2 = 5 ; // current month
     int day2 = 1 ; // current day
 
+	int date_year ;
+	int date_mon ;
+	int date_day ;
+
 	int H = 0, M = 0, S = 0, L_H = 0, L_M = 0, L_S = 0 ; // Time: local hour, local minute, local second, LST hour, LST minute
 
                                         // dec - declination, re - rectastence
