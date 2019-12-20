@@ -1,14 +1,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <iostream>
+#include <iostream> // debugging tool
 #include <cmath>
 #include <stdlib.h>
 #include <string>
 #include <ctime>
 #include "astm.h"
 #include <iomanip>
-
-double k = 1.0027379093382884 ;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -130,6 +128,15 @@ void MainWindow::on_LT_timeChanged(const QTime &time)
 
 		}
 
+	else
+		{
+
+		year = ui -> Date -> date().year() ;
+		mon2 = ui -> Date -> date().month() ;
+		day2 = ui -> Date -> date().day() ;
+
+		}
+
 }
 
 void MainWindow::on_time_zone_valueChanged(int arg1)
@@ -150,6 +157,15 @@ void MainWindow::on_time_zone_valueChanged(int arg1)
 		year = t -> tm_year + 1900 ;
 		mon2 = t -> tm_mon + 1 ;
 		day2 = t -> tm_mday ;
+
+		}
+
+	else
+		{
+
+		year = ui -> Date -> date().year() ;
+		mon2 = ui -> Date -> date().month() ;
+		day2 = ui -> Date -> date().day() ;
 
 		}
 
@@ -191,13 +207,17 @@ double date2LST(double l, int year, int mon2, int day2, double hour)
     {
 
 	double gmst, lst ;
-	int h, m, s ;
+	int h, m, s, gh, gm, gs ;
 
 	h = int(hour) ;
 	m = int( (hour - h ) * 60 ) ;
 	s = int( (hour - h) * 3600 - m * 60 ) ;
 
 	gmst = GMST(year, mon2, day2, h, m, s) ;
+
+	gh = int(gmst) ;
+	gm = int( (gmst - gh ) * 60 ) ;
+	gs = int( (gmst - gh) * 3600 - gm * 60 ) ;
 
 	lst = fmod(gmst + l, 24) ;
 
@@ -264,7 +284,7 @@ double p2B (double d, double a, double dG, double aG)
 	d *= PI / 180 ;
 	a *= PI / 12 ;
 
-	B = asin( sin(d) * sin(dG) + cos(d) * cos(dG) * cos(2 * PI + a - aG) ) ;
+	B = asin( sin(d) * sin(dG) + cos(d) * cos(dG) * cos(a - aG) ) ;
 
 	return B ;
 	}
@@ -277,7 +297,7 @@ double p2L (double d, double a, double dG, double aG, double theta, double B)
 	d *= PI / 180 ;
 	a *= PI / 12 ;
 
-	sTh = cos(d) * sin(2 * PI - aG + a) / cos(B) ;
+	sTh = cos(d) * sin(a - aG) / cos(B) ;
 	cTh = sin(d) / ( cos(B) * cos(dG) ) - tan(B) * tan(dG) ;
 
 	if ( (sTh >= 0) and (cTh > 0) )
@@ -336,14 +356,14 @@ void MainWindow::on_pushButton_2_clicked()
 	mon2 = 1 + ltm -> tm_mon ;
 	day2 = ltm -> tm_mday ;
 
+	ui -> Date -> setDate( QDate(year, mon2, day2) ) ; // sets current date
+
 	H = ltm -> tm_hour ;
 	M = ltm -> tm_min ;
 	S = ltm -> tm_sec ;
 
 	UT = H + double( M ) * 0.0166666666666 + double( S ) * 0.0002777777777777777 - ui -> time_zone -> value() ;
-
 	ui -> LT -> setTime( QTime(H, M, S) ) ; // sets current local time
-	ui -> Date -> setDate( QDate(year, mon2, day2) ) ; // sets current date
 
 }
 
