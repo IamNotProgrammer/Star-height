@@ -10,6 +10,8 @@ namespace Ui {
 class MainWindow;
 }
 
+
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -20,6 +22,8 @@ public:
     ~MainWindow();
 
 private slots:
+//	void test() ;
+
     void on_dec_deg_textChanged(const QString &arg1);
 
     void on_dec_min_textChanged(const QString &arg1);
@@ -48,10 +52,11 @@ private slots:
 
 	void on_pushButton_2_clicked();
 
-private:
-    Ui::MainWindow *ui;
+	void on_pushButton_3_clicked();
 
-// every comment to variable is in order i.e. int a, b ; // explained a, explained b
+private:
+	Ui::MainWindow *ui;
+
     int year = 2019 ; // current year
     int mon2 = 5 ; // current month
     int day2 = 1 ; // current day
@@ -80,7 +85,8 @@ private:
     double h, A ; // coordinates: hegight, Azimuth ;
     double ch, CT ; //changing height, changing time (in function)
 
-    std::string height ;
+	std::string height, url, command, line ;
+	QString object ;
 
 };
 

@@ -7,6 +7,8 @@
 #include <ctime>
 #include "astm.h"
 #include <iomanip>
+#include <stdio.h>
+#include <fstream>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -18,11 +20,18 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+
 }
+
+////	OBSERVATORIES	////
+
+// Work in progress but I have no fucking idea how to call function from mainwindow.cpp
+// when program starts. Basically I want list of observatiores in .txt file and that list
+// is downloaded each time program starts beacuse I'm lazy fuck
 
 ////    CHANGE DECLINATION  ////
 
-void MainWindow::on_dec_deg_textChanged(const QString &arg1)
+void MainWindow::on_dec_deg_textChanged(const QString &arg1)	// declination hours
 {
     d_d = arg1.toDouble() ;
 
@@ -33,7 +42,7 @@ void MainWindow::on_dec_deg_textChanged(const QString &arg1)
         d = d_d + d_m + d_s ;
 }
 
-void MainWindow::on_dec_min_textChanged(const QString &arg1)
+void MainWindow::on_dec_min_textChanged(const QString &arg1)	// minutes
 {
     d_m = arg1.toDouble() / 60 ;
 
@@ -44,7 +53,7 @@ void MainWindow::on_dec_min_textChanged(const QString &arg1)
         d = d_d + d_m + d_s ;
 }
 
-void MainWindow::on_dec_sec_textChanged(const QString &arg1)
+void MainWindow::on_dec_sec_textChanged(const QString &arg1)	// seconds
 {
     d_s = arg1.toDouble() / 3600 ;
 
@@ -55,21 +64,22 @@ void MainWindow::on_dec_sec_textChanged(const QString &arg1)
         d = d_d + d_m + d_s ;
 }
 
+
 ////    CHANGE RECTASTENCE  ////
 
-void MainWindow::on_ra_h_textChanged(const QString &arg1)
+void MainWindow::on_ra_h_textChanged(const QString &arg1)	// right ascention hours
 {
     re_h = arg1.toInt() ;
     a = re_h + re_m + re_s ;
 }
 
-void MainWindow::on_ra_m_textChanged(const QString &arg1)
+void MainWindow::on_ra_m_textChanged(const QString &arg1)	// minutes
 {
     re_m = arg1.toDouble() / 60 ;
     a = re_h + re_m + re_s ;
 }
 
-void MainWindow::on_ra_s_textChanged(const QString &arg1)
+void MainWindow::on_ra_s_textChanged(const QString &arg1)	// seconds
 {
     re_s = arg1.toDouble() / 3600 ;
     a = re_h + re_m + re_s ;
@@ -77,7 +87,7 @@ void MainWindow::on_ra_s_textChanged(const QString &arg1)
 
 ////    CHANGE LONGITUDE    ////
 
-void MainWindow::on_lon_textChanged(const QString &arg1)
+void MainWindow::on_lon_textChanged(const QString &arg1)	// longitude from gui
 {
 	l = arg1.toDouble() / 15 ;
     if ( ui -> comboBox -> currentIndex() == 1 )
@@ -85,7 +95,7 @@ void MainWindow::on_lon_textChanged(const QString &arg1)
 
 }
 
-void MainWindow::on_comboBox_currentIndexChanged(int index)
+void MainWindow::on_comboBox_currentIndexChanged(int index)	// east/west
 {
     if (index == 1)
         l = - abs(l) ;
@@ -103,7 +113,7 @@ void MainWindow::on_lat_textChanged(const QString &arg1)
 
 ////    LOCAL AND UNIVERSAL TIME    ////
 
-void MainWindow::on_LT_timeChanged(const QTime &time)
+void MainWindow::on_LT_timeChanged(const QTime &time)	// when time is changed
 {
     H = time.hour() ;
     M = time.minute() ;
@@ -139,7 +149,7 @@ void MainWindow::on_LT_timeChanged(const QTime &time)
 
 }
 
-void MainWindow::on_time_zone_valueChanged(int arg1)
+void MainWindow::on_time_zone_valueChanged(int arg1)	// when you change time zone
 {
 
 	UT = fmod(LMST - arg1, 24.0) ;
@@ -171,7 +181,7 @@ void MainWindow::on_time_zone_valueChanged(int arg1)
 
 }
 
-void MainWindow::on_Date_dateChanged(const QDate &date)
+void MainWindow::on_Date_dateChanged(const QDate &date)	// change date
 {
     year = date.year() ;
     mon2 = date.month() ;
@@ -203,8 +213,8 @@ void MainWindow::on_Date_dateChanged(const QDate &date)
 
 ////    CHANGE DATE TO LST      ////
 
-double date2LST(double l, int year, int mon2, int day2, double hour)
-    {
+double date2LST(double l, int year, int mon2, int day2, double hour)	// local sidereal time
+	{																	// but the truth is this is local mean sidereal time
 
 	double gmst, lst ;
 	int h, m, s, gh, gm, gs ;
@@ -256,7 +266,7 @@ double hour2azm (double dec, double h, double phi, double t)
         double A ;      // azimuth
         double C_A ;    // cos A
 
-        h = h * PI / 180 ;
+		h = h * PI / 180 ;	// radian masetrace
         dec = dec * PI / 180 ;
         phi = phi * PI / 180 ;
         t = t * PI / 12 ;
@@ -264,7 +274,7 @@ double hour2azm (double dec, double h, double phi, double t)
 
         C_A = (  sin(h) * cos(phi) - cos(dec) * cos(t) ) / ( cos(h) * sin(phi)  ) ;
         A = acos(C_A) * 180 / PI ;
-        A = int(A * 1e4) / 1e4 ;
+		A = int(A * 1e4) / 1e4 ;	// I forgot what it does but it does something
 
         if (t > PI)
                 A = fmod(360 - A, 360) ;
@@ -276,7 +286,7 @@ double hour2azm (double dec, double h, double phi, double t)
 ////	GALACTIC COORDINATES	////
 
 
-double p2B (double d, double a, double dG, double aG)
+double p2B (double d, double a, double dG, double aG)	// calculates latitude in galactic coordinates
 	{
 
 	double B ;
@@ -289,18 +299,18 @@ double p2B (double d, double a, double dG, double aG)
 	return B ;
 	}
 
-double p2L (double d, double a, double dG, double aG, double theta, double B)
+double p2L (double d, double a, double dG, double aG, double theta, double B)	// calculates longitude in galactic coordinates
 	{
 
 	double L, sTh, cTh;
 
-	d *= PI / 180 ;
+	d *= PI / 180 ;	// change to radians
 	a *= PI / 12 ;
 
 	sTh = cos(d) * sin(a - aG) / cos(B) ;
 	cTh = sin(d) / ( cos(B) * cos(dG) ) - tan(B) * tan(dG) ;
 
-	if ( (sTh >= 0) and (cTh > 0) )
+	if ( (sTh >= 0) and (cTh > 0) )	// shit tone of ifs because asin(x) doesn't work for 360 degrees
 		{
 		L = theta - asin(sTh) ;
 		if (L < 0)
@@ -349,7 +359,7 @@ void graph()
 void MainWindow::on_pushButton_2_clicked()
 {
 
-	std::time_t now = time(0) ;
+	std::time_t now = time(NULL) ;
 	tm *ltm = localtime(&now) ;
 
 	year = 1900 + ltm -> tm_year ;
@@ -386,7 +396,7 @@ void MainWindow::on_pushButton_clicked()
     L_M = int( ( LST - L_H ) * 60 ) ;
 	L_S = int( ( (LST - L_H) * 3600 - L_M * 60) ) ;
 
-    ui -> label_7 -> setText( QString::number(L_H) ) ;
+	ui -> label_7 -> setText( QString::number(L_H) ) ;	// I'm just too lazy to change label numbers to some names
     ui -> label_9 -> setText( QString::number(L_M) ) ;
 	ui -> label_35 -> setText( QString::number(L_S) ) ;
 
@@ -439,7 +449,7 @@ void MainWindow::on_pushButton_clicked()
 
         }
 
-
+//	test() ;
 	//// GALACTIC COORDINATES ////
 
 	B = p2B(d, a, dG, aG) ;
@@ -447,7 +457,6 @@ void MainWindow::on_pushButton_clicked()
 
 	ui -> galactic_b -> setText( QString::number(B * 180 / PI, 'f', 1) ) ;
 	ui -> galactic_l -> setText( QString::number(L * 180 / PI, 'f', 1) ) ;
-
 
 	//// MAKE DATA FOR PLOT ////
 /*
@@ -504,7 +513,77 @@ void MainWindow::on_pushButton_clicked()
 }
 
 
+
+
+
+
+
+void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check coordinates and steal them
+{
+
+	object = ui -> Object_name -> text() ;	// object name from gui
+	url = object.toStdString() ;
+	url.erase( remove_if( url.begin(), url.end(), isspace ), url.end() ) ;  // I'm not that good, I just googled it
+																			// I don't even understand it
+
+	command.append("wget -O /usr/local/Data/object.txt http://simbad.u-strasbg.fr/simbad/sim-basic?Ident=") ;	// make command
+	command.append(url) ;
+	command.append("\\&submit=SIMBAD+search") ;
+
+	system(command.c_str()) ;
+
+	command = "" ;	// clear command because it was just adding more and more url's
+
+	std::ifstream myfile ("example.txt");
+
+	if ( myfile.is_open() )
+		{
+
+		while ( getline (myfile, line) )
+			{
+			std::cout << line << '\n';
+			}
+
+		myfile.close();
+
+		}
+
+  else std::cout << "Unable to open file";
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ////    THAT'S ALL FOR NOW      ////
-
-
-
