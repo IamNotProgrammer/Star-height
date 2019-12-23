@@ -1,13 +1,16 @@
-Star-height is program that calculates horiontal height of object.
-By putting in data program plots graph that shows what will be and what was horizontal height of object.
+# Star-hegiht
 
-To run program after download go to Star-height directory 
 
-`cd ./Download/Star-height/`
+# Instalation
 
-then run astro.out file
+To download Star-hegiht you can simply download latest version from this site
+https://github.com/IamNotProgrammer/Star-height/releases
 
-`./astro.out`
+It's working really good and doesn't need to be compiled. After downloading file find directory where it was downloaded,
+then use command
 
-After inputting data you will recieve Local siderial time (LST), azimuth, height and graph
-to see if object will be higher in the sky.
+$sudo mv /path/to/directory /usr/local/bin/
+
+And it's done. You can enjoy program by simply opening it with terminal
+
+$Star-heit
