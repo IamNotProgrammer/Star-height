@@ -3,7 +3,7 @@
 
 ## Instalation
 
-### Downloading program
+#### Downloading program
 
 To download Star-hegiht you can simply download latest version from this site
 https://github.com/IamNotProgrammer/Star-height/releases
@@ -17,5 +17,19 @@ And it's done. You can enjoy program by simply opening it with terminal
 ```
 $ Star-heit
 ```
+This version of program is stable but it may not contain most recent features
 
-### Compiling program
+
+#### Compiling program
+
+Clone repository
+```
+$ git clone https://github.com/IamNotProgrammer/Star-height.git
+```
+Go to ./Star-height/ and make 'build' directory and go there
+```
+$ cd ./Star-hegiht/
+$ mkdir build
+$ cd ./build/
+```
+
