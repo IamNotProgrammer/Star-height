@@ -3,9 +3,9 @@
 
 ## Instalation
 
----
-
 #### Downloading program
+
+---
 
 To download Star-hegiht you can simply download latest version from this site
 https://github.com/IamNotProgrammer/Star-height/releases
@@ -24,6 +24,8 @@ This version of program is stable but it may not contain most recent features
 
 
 #### Compiling program
+
+---
 
 Clone repository
 ```sh
