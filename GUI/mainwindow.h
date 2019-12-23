@@ -85,7 +85,7 @@ private:
     double h, A ; // coordinates: hegight, Azimuth ;
     double ch, CT ; //changing height, changing time (in function)
 
-	std::string height, url, command, line ;
+	std::string height, url, command, line, star ;
 	QString object ;
 
 };

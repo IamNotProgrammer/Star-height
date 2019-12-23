@@ -534,21 +534,30 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 
 	command = "" ;	// clear command because it was just adding more and more url's
 
-	std::ifstream myfile ("example.txt");
+	std::ifstream myfile ("/usr/local/Data/object.txt");
 
 	if ( myfile.is_open() )
 		{
 
 		while ( getline (myfile, line) )
 			{
-			std::cout << line << '\n';
+
+			getline (myfile, line) ; // get line from file
+
+			if (line.find("<INPUT TYPE=\"hidden\" NAME=\"Coord\" ID=\"Coord\" VALUE=") != std::string::npos)
+				star = line.substr (60, line.size() - 64) ;
+
 			}
 
 		myfile.close();
 
 		}
 
-  else std::cout << "Unable to open file";
+
+	else
+		std::cout << "Unable to open file";
+
+	std::cout << star << "\n" ;	// Jesus fucking christ I wasted over hour to make that shit working
 
 }
 
