@@ -31,7 +31,7 @@ Clone repository
 ```sh
 $ git clone https://github.com/IamNotProgrammer/Star-height.git
 ```
-Go to ./Star-height/ and make 'build' directory and go there
+Go to `./Star-height/` directory, create `build` directory and go there
 ```sh
 $ cd ./Star-hegiht/
 $ mkdir build
@@ -52,3 +52,9 @@ $ sudo mv ./GUI /usr/local/bin/Star-height
 $ cd ..
 $ sudo mv ./Data /usr/local/
 ```
+
+## What even is Star-height?
+
+Star-height is program for planning astronomical observations. In given time in position it calculates local sidereal time, horizontal coordinates (elevation and azimuth) and galactic coordinates and more.
+It is tool designed for astronomers but it can also be used for amatours to find out when it's the best time to observe object in the sky.
+
