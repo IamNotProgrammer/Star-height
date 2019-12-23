@@ -3,6 +3,8 @@
 
 ## Instalation
 
+---
+
 #### Downloading program
 
 To download Star-hegiht you can simply download latest version from this site
@@ -18,6 +20,7 @@ And it's done. You can enjoy program by simply opening it with terminal
 $ Star-heit
 ```
 This version of program is stable but it may not contain most recent features
+
 
 
 #### Compiling program
@@ -39,4 +42,11 @@ $ qmake ../GUI/GUI.pro
 Compile it
 ```sh
 $ make
+```
+Now when it's compiled we can move program and Data directory where it should be in order to work properly
+
+```sh
+$ sudo mv ./GUI /usr/local/bin/Star-height
+$ cd ..
+$ sudo mv ./Data /usr/local/
 ```
