@@ -67,6 +67,7 @@ It features:
 * Local sidereal time
 * Horizontal coordinates
 * Galactic coordinates
-* Highest elevation and when time to it
+* Highest elevation and time to it
 * Current ekevation
 * Set current time button
+* Searching object (working half way)
