@@ -87,6 +87,7 @@ private:
 
 	std::string height, url, command, line, star ;
 	QString object ;
+	int pos, n ;
 
 };
 

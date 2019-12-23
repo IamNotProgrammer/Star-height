@@ -536,6 +536,12 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 
 	std::ifstream myfile ("/usr/local/Data/object.txt");
 
+//// !!!!! USE COORD. INSTEAD <INPUT TYPE=\"hidden\" NAME=\"Coord\" ID=\"Coord\" VALUE= !!!!!!! ////
+//// THAT'S VERY IMPORTANT THAT'S WHY I SPAM COMMENTS SO I WON'T IGNORE IT ////
+/// IT'S MUCH BETTER METHOD OF FINDING BUT I DON'T WANT TO CODE IT TODAY ////
+
+// REMEMBER THIS!!!!!!!!!!!!!
+
 	if ( myfile.is_open() )
 		{
 
@@ -557,7 +563,169 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 	else
 		std::cout << "Unable to open file";
 
-	std::cout << star << "\n" ;	// Jesus fucking christ I wasted over hour to make that shit working
+	// Jesus fucking christ I wasted over hour to make that shit working
+
+	n = 0 ;
+
+	if (star.find("+") != std::string::npos)
+		{
+
+		pos = star.find("+") ;
+
+		for (int i = 0 ; i < pos ; i++ )
+			{
+
+			if (star[i] == ' ')
+				n++ ;
+
+			}
+
+		if (n == 2)
+			{
+
+			ui -> ra_h -> setText( QString::fromStdString( star.substr(0, 2) ) ) ;
+			ui -> ra_m -> setText( QString::fromStdString( star.substr(3, 2) ) ) ;
+			ui -> ra_s -> setText( QString::fromStdString( star.substr(6, pos - 6) ) ) ;
+
+			}
+
+		else if (n == 1)
+			{
+
+			ui -> ra_h -> setText( QString::fromStdString( star.substr(0, 2) ) ) ;
+			ui -> ra_m -> setText( QString::fromStdString( star.substr(3, pos - 3) ) ) ;
+			ui -> ra_s -> setText( "0" ) ;
+
+			}
+
+		else
+			{
+
+			ui -> ra_h -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
+			ui -> ra_m -> setText( "0" ) ;
+			ui -> ra_s -> setText( "0" ) ;
+
+			}
+
+		n = 0 ;
+
+		for (int i = pos ; i < star.size() ; i++ )
+			{
+
+			if (star[i] == ' ')
+				n++ ;
+
+			}
+
+		if (n == 2)
+			{
+
+			ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos, 3) ) ) ;
+			ui -> dec_min -> setText( QString::fromStdString( star.substr(pos + 4, 2) ) ) ;
+			ui -> dec_sec -> setText( QString::fromStdString( star.substr(pos + 7) ) ) ;		
+
+			}
+
+		else if (n == 1)
+			{
+
+			ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos, 3) ) ) ;
+			ui -> dec_min -> setText( QString::fromStdString( star.substr(pos + 4) ) ) ;
+			ui -> dec_sec -> setText( "0" ) ;
+
+			}
+
+		else
+			{
+
+			ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos) ) ) ;
+			ui -> dec_min -> setText( "0" ) ;
+			ui -> dec_sec -> setText( "0" ) ;
+
+			}
+
+		}
+
+	else
+		{
+
+		pos = star.find("-") ;
+		std::cout << star.substr(pos) << "\n" ;
+
+		for (int i = 0 ; i < pos ; i++ )
+			{
+
+			if (star[i] == ' ')
+				n++ ;
+
+			}
+
+		if (n == 2)
+			{
+
+			ui -> ra_h -> setText( QString::fromStdString( star.substr(0, 2) ) ) ;
+			ui -> ra_m -> setText( QString::fromStdString( star.substr(3, 2) ) ) ;
+			ui -> ra_s -> setText( QString::fromStdString( star.substr(6, pos - 6) ) ) ;
+
+			}
+
+		else if (n == 1)
+			{
+
+			ui -> ra_h -> setText( QString::fromStdString( star.substr(0, 2) ) ) ;
+			ui -> ra_m -> setText( QString::fromStdString( star.substr(3, pos - 3) ) ) ;
+			ui -> ra_m -> setText( "0" ) ;
+
+			}
+
+		else
+			{
+
+			ui -> ra_h -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
+			ui -> ra_m -> setText( "0" ) ;
+			ui -> ra_s -> setText( "0" ) ;
+
+			}
+
+		n = 0 ;
+
+		for (int i = pos ; i < star.size() ; i++ )
+			{
+
+			if (star[i] == ' ')
+				n++ ;
+
+			}
+
+		if (n == 2)
+			{
+
+			ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos, 3) ) ) ;
+			ui -> dec_min -> setText( QString::fromStdString( star.substr(pos + 4, 2) ) ) ;
+			ui -> dec_sec -> setText( QString::fromStdString( star.substr(pos + 7) ) ) ;
+
+			}
+
+		else if (n == 1)
+			{
+
+			ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos, 3) ) ) ;
+			ui -> dec_min -> setText( QString::fromStdString( star.substr(pos + 4) ) ) ;
+			ui -> dec_sec -> setText( "0" ) ;
+
+			}
+
+		else
+			{
+
+			ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos) ) ) ;
+			ui -> dec_min -> setText( "0" ) ;
+			ui -> dec_sec -> setText( "0" ) ;
+
+			}
+
+		} // oh God so much fucking coding. And I hate strings but It's working (I hope)
+
 
 }
 
