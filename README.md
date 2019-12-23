@@ -1,7 +1,9 @@
 # Star-hegiht
 
 
-# Instalation
+## Instalation
+
+### Downloading program
 
 To download Star-hegiht you can simply download latest version from this site
 https://github.com/IamNotProgrammer/Star-height/releases
@@ -15,3 +17,5 @@ And it's done. You can enjoy program by simply opening it with terminal
 ```
 $ Star-heit
 ```
+
+### Compiling program
