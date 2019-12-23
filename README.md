@@ -55,6 +55,18 @@ $ sudo mv ./Data /usr/local/
 
 ## What even is Star-height?
 
-Star-height is program for planning astronomical observations. In given time in position it calculates local sidereal time, horizontal coordinates (elevation and azimuth) and galactic coordinates and more.
-It is tool designed for astronomers but it can also be used for amatours to find out when it's the best time to observe object in the sky.
+Star-height is program for planning astronomical observations.
+In given time in position it calculates local sidereal time,
+horizontal coordinates (elevation and azimuth) and galactic coordinates and more.
 
+It is tool designed for astronomers but it can also be used for amatours to find out when it's the best time
+to observe object in the sky.
+
+It features:
+
+* Local sidereal time
+* Horizontal coordinates
+* Galactic coordinates
+* Highest elevation and when time to it
+* Current ekevation
+* Set current time button
