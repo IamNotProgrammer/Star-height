@@ -44,7 +44,8 @@ sudo apt-get install qt5-default
 sudo pacman -S qt
 ```
 
-Clone repository
+
+Then clone repository
 ```sh
 $ git clone https://github.com/IamNotProgrammer/Star-height.git
 ```
