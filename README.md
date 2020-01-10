@@ -15,6 +15,10 @@ then use command
 ```sh
 $ sudo mv /path/to/directory /usr/local/bin/
 ```
+Give permissions
+```
+$ sudo chmod +x /usr/local/bin/Star-height
+```
 And it's done. You can enjoy program by simply opening it with terminal
 ```sh
 $ Star-heit
@@ -51,7 +55,9 @@ Now when it's compiled we can move program and Data directory where it should be
 $ sudo mv ./GUI /usr/local/bin/Star-height
 $ cd ..
 $ sudo mv ./Data /usr/local/
+$ sudo chmod 666 /usr/local/Data/object.txt
 ```
+`chmod 666` gives permissions to read and write in this file, it's necessary to use finding object feature
 
 ## What even is Star-height?
 
