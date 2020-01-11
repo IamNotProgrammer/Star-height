@@ -548,8 +548,7 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 
 	object = ui -> Object_name -> text() ;	// object name from gui
 	url = object.toStdString() ;
-	url.erase( remove_if( url.begin(), url.end(), isspace ), url.end() ) ;  // I'm not that good, I just googled it
-																			// I don't even understand it
+	url.erase( remove_if( url.begin(), url.end(), isspace ), url.end() ) ;  // I don't know what it does
 
 	command.append("wget -O /usr/local/Data/object.txt http://simbad.u-strasbg.fr/simbad/sim-basic?Ident=") ;	// make command
 	command.append(url) ;
@@ -559,18 +558,36 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 
 	command = "" ;	// clear command because it was just adding more and more url's
 
-//	std::ifstream myfile ("/usr/local/Data/object.txt");
-
-//// !!!!! USE COORD. INSTEAD <INPUT TYPE=\"hidden\" NAME=\"Coord\" ID=\"Coord\" VALUE= !!!!!!! ////
-//// THAT'S VERY IMPORTANT THAT'S WHY I SPAM COMMENTS SO I WON'T IGNORE IT ////
-/// IT'S MUCH BETTER METHOD OF FINDING BUT I DON'T WANT TO CODE IT TODAY ////
-
-// REMEMBER THIS!!!!!!!!!!!!!
 
 	star = cmd_out("grep -A 9 'coord\\.' /usr/local/Data/object.txt | head -n 10 | tail -n 1") ;
 
-	ui -> label_37 -> setText( QString::fromStdString( star ) ) ;
+	std::size_t found = star.find("grey") ;
 
+	if (found != std::string::npos) // get rid of gray text if there is any
+		{
+
+		int n = star.length() ;
+		star.erase(n-71, 72) ;
+
+		while (true)
+			{
+
+			std::size_t delet_1 = star.find("<") ;
+			std::size_t delet_2 = star.find(">") ;
+
+			if (delet_1 != std::string::npos)
+				star.erase(delet_1, delet_2 - delet_1 + 1) ;
+
+			else
+				break ;
+
+			}
+
+		}
+
+	std::cout << star << "\n" ;
+
+	ui -> label_37 -> setText( QString::fromStdString( star ) ) ;
 
 }
 
@@ -584,28 +601,29 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ////    THAT'S ALL FOR NOW      ////
+
+
+
+/*
+
+		 _nnnn_
+		dGGGGMMb
+	   @p~qp~~qMb
+	   M|@||@) M|
+	   @,----.JM|
+	  JS^\__/  qKL
+	 dZP        qKRb
+	dZP          qKKb
+   fZP            SMMb
+   HZM            MMMM
+   FqM            MMMM
+ __| ".        |\dS"qML
+ |    `.       | `' \Zq
+_)      \.___.,|     .'
+\____   )MMMMMP|   .'
+	 `-'       `--'
+
+
+*/
+
