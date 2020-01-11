@@ -31,6 +31,31 @@ MainWindow::~MainWindow()
 
 ////    CHANGE DECLINATION  ////
 
+std::string cmd_out(std::string cmd) // https://www.jeremymorgan.com/tutorials/c-programming/how-to-capture-the-output-of-a-linux-command-in-c/
+	{
+
+	std::string data ;
+	FILE * stream ;
+	const int max_buffer = 256 ;
+	char buffer[max_buffer] ;
+	cmd.append(" 2>&1") ;
+
+	stream = popen(cmd.c_str(), "r") ;
+
+	if (stream)
+		{
+		while (!feof(stream))
+
+			if (fgets(buffer, max_buffer, stream) != NULL)
+				data.append(buffer) ;
+
+		pclose(stream) ;
+		}
+
+	return data ;	// I have no idea what the fuck any of it means
+
+	}
+
 void MainWindow::on_dec_deg_textChanged(const QString &arg1)	// declination hours
 {
     d_d = arg1.toDouble() ;
@@ -534,7 +559,7 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 
 	command = "" ;	// clear command because it was just adding more and more url's
 
-	std::ifstream myfile ("/usr/local/Data/object.txt");
+//	std::ifstream myfile ("/usr/local/Data/object.txt");
 
 //// !!!!! USE COORD. INSTEAD <INPUT TYPE=\"hidden\" NAME=\"Coord\" ID=\"Coord\" VALUE= !!!!!!! ////
 //// THAT'S VERY IMPORTANT THAT'S WHY I SPAM COMMENTS SO I WON'T IGNORE IT ////
@@ -542,189 +567,9 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 
 // REMEMBER THIS!!!!!!!!!!!!!
 
-	if ( myfile.is_open() )
-		{
+	star = cmd_out("grep -A 9 'coord\\.' /usr/local/Data/object.txt | head -n 10 | tail -n 1") ;
 
-		while ( getline (myfile, line) )
-			{
-
-			getline (myfile, line) ; // get line from file
-
-			if (line.find("<INPUT TYPE=\"hidden\" NAME=\"Coord\" ID=\"Coord\" VALUE=") != std::string::npos)
-				star = line.substr (60, line.size() - 64) ;
-
-			}
-
-		myfile.close();
-
-		}
-
-
-	else
-		std::cout << "Unable to open file";
-
-	// Jesus fucking christ I wasted over hour to make that shit working
-
-	n = 0 ;
-
-	if (star.find("+") != std::string::npos)
-		{
-
-		pos = star.find("+") ;
-
-		for (int i = 0 ; i < pos ; i++ )
-			{
-
-			if (star[i] == ' ')
-				n++ ;
-
-			}
-
-		if (n == 2)
-			{
-
-			ui -> ra_h -> setText( QString::fromStdString( star.substr(0, 2) ) ) ;
-			ui -> ra_m -> setText( QString::fromStdString( star.substr(3, 2) ) ) ;
-			ui -> ra_s -> setText( QString::fromStdString( star.substr(6, pos - 6) ) ) ;
-
-			}
-
-		else if (n == 1)
-			{
-
-			ui -> ra_h -> setText( QString::fromStdString( star.substr(0, 2) ) ) ;
-			ui -> ra_m -> setText( QString::fromStdString( star.substr(3, pos - 3) ) ) ;
-			ui -> ra_s -> setText( "0" ) ;
-
-			}
-
-		else
-			{
-
-			ui -> ra_h -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
-			ui -> ra_m -> setText( "0" ) ;
-			ui -> ra_s -> setText( "0" ) ;
-
-			}
-
-		n = 0 ;
-
-		for (int i = pos ; i < star.size() ; i++ )
-			{
-
-			if (star[i] == ' ')
-				n++ ;
-
-			}
-
-		if (n == 2)
-			{
-
-			ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos, 3) ) ) ;
-			ui -> dec_min -> setText( QString::fromStdString( star.substr(pos + 4, 2) ) ) ;
-			ui -> dec_sec -> setText( QString::fromStdString( star.substr(pos + 7) ) ) ;		
-
-			}
-
-		else if (n == 1)
-			{
-
-			ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos, 3) ) ) ;
-			ui -> dec_min -> setText( QString::fromStdString( star.substr(pos + 4) ) ) ;
-			ui -> dec_sec -> setText( "0" ) ;
-
-			}
-
-		else
-			{
-
-			ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos) ) ) ;
-			ui -> dec_min -> setText( "0" ) ;
-			ui -> dec_sec -> setText( "0" ) ;
-
-			}
-
-		}
-
-	else
-		{
-
-		pos = star.find("-") ;
-		std::cout << star.substr(pos) << "\n" ;
-
-		for (int i = 0 ; i < pos ; i++ )
-			{
-
-			if (star[i] == ' ')
-				n++ ;
-
-			}
-
-		if (n == 2)
-			{
-
-			ui -> ra_h -> setText( QString::fromStdString( star.substr(0, 2) ) ) ;
-			ui -> ra_m -> setText( QString::fromStdString( star.substr(3, 2) ) ) ;
-			ui -> ra_s -> setText( QString::fromStdString( star.substr(6, pos - 6) ) ) ;
-
-			}
-
-		else if (n == 1)
-			{
-
-			ui -> ra_h -> setText( QString::fromStdString( star.substr(0, 2) ) ) ;
-			ui -> ra_m -> setText( QString::fromStdString( star.substr(3, pos - 3) ) ) ;
-			ui -> ra_m -> setText( "0" ) ;
-
-			}
-
-		else
-			{
-
-			ui -> ra_h -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
-			ui -> ra_m -> setText( "0" ) ;
-			ui -> ra_s -> setText( "0" ) ;
-
-			}
-
-		n = 0 ;
-
-		for (int i = pos ; i < star.size() ; i++ )
-			{
-
-			if (star[i] == ' ')
-				n++ ;
-
-			}
-
-		if (n == 2)
-			{
-
-			ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos, 3) ) ) ;
-			ui -> dec_min -> setText( QString::fromStdString( star.substr(pos + 4, 2) ) ) ;
-			ui -> dec_sec -> setText( QString::fromStdString( star.substr(pos + 7) ) ) ;
-
-			}
-
-		else if (n == 1)
-			{
-
-			ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos, 3) ) ) ;
-			ui -> dec_min -> setText( QString::fromStdString( star.substr(pos + 4) ) ) ;
-			ui -> dec_sec -> setText( "0" ) ;
-
-			}
-
-		else
-			{
-
-			ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos) ) ) ;
-			ui -> dec_min -> setText( "0" ) ;
-			ui -> dec_sec -> setText( "0" ) ;
-
-			}
-
-		} // oh God so much fucking coding. And I hate strings but It's working (I hope)
+	ui -> label_37 -> setText( QString::fromStdString( star ) ) ;
 
 
 }
