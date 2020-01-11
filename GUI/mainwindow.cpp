@@ -607,14 +607,14 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 
 /*
 
-		 _nnnn_
-		dGGGGMMb
-	   @p~qp~~qMb
-	   M|@||@) M|
-	   @,----.JM|
-	  JS^\__/  qKL
-	 dZP        qKRb
-	dZP          qKKb
+         _nnnn_
+        dGGGGMMb
+       @p~qp~~qMb
+       M|@||@) M|
+       @,----.JM|
+      JS^\__/  qKL
+     dZP        qKRb
+    dZP          qKKb
    fZP            SMMb
    HZM            MMMM
    FqM            MMMM
@@ -622,7 +622,7 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
  |    `.       | `' \Zq
 _)      \.___.,|     .'
 \____   )MMMMMP|   .'
-	 `-'       `--'
+     `-'       `--'
 
 
 */
