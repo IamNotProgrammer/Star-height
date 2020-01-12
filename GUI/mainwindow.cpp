@@ -546,6 +546,9 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check coordinates and steal them
 {
 
+	int space = 0 ;
+	int n ;
+
 	object = ui -> Object_name -> text() ;	// object name from gui
 	url = object.toStdString() ;
 	url.erase( remove_if( url.begin(), url.end(), isspace ), url.end() ) ;  // I don't know what it does
@@ -566,7 +569,7 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 	if (found != std::string::npos) // get rid of gray text if there is any
 		{
 
-		int n = star.length() ;
+		n = star.length() ;
 		star.erase(n-71, 72) ;
 
 		while (true)
@@ -585,9 +588,86 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 
 		}
 
-	std::cout << star << "\n" ;
+	std::size_t pos = star.find("+") ;
+	std::size_t apos = star.find("-") ;
 
-	ui -> label_37 -> setText( QString::fromStdString( star ) ) ;
+	n = star.length() ;
+
+	if (apos != std::string::npos) // if dec is positive it's negative
+		pos = apos ;
+
+	for (int i = 0; i < pos ; i++) // hoe many spaces in string "star"
+		{
+
+		if (star.at(i) == ' ')
+			space++ ;
+
+		}
+
+	if (space == 3) //////////////// change values of right assecion /////////////////
+		{
+
+		ui -> ra_h -> setText( QString::fromStdString( star.substr(0, 2) ) ) ;
+		ui -> ra_m -> setText( QString::fromStdString( star.substr(3, 2) ) ) ;
+		ui -> ra_s -> setText( QString::fromStdString( star.substr(6, pos-7) ) ) ;
+
+		}
+
+
+	else if (space == 2)
+		{
+
+		ui -> ra_h -> setText( QString::fromStdString( star.substr(0, 2) ) ) ;
+		ui -> ra_m -> setText( QString::fromStdString( star.substr(3, pos-4) ) ) ;
+		ui -> ra_s -> setText( QString::number(0) ) ;
+
+		}
+
+	else
+		{
+
+		ui -> ra_h -> setText( QString::fromStdString( star.substr(0, pos-1) ) ) ;
+		ui -> ra_m -> setText( QString::number(0) ) ;
+		ui -> ra_s -> setText( QString::number(0) ) ;
+
+		} /////////////////////////////////////////////////////////////////////////////////
+
+	space = 0 ;
+
+	for (int i = pos; i < n ; i++) /////////////// change values of declination ////////////
+		{
+
+		if (star.at(i) == ' ')
+			space++ ;
+
+		}
+
+	if (space == 2)
+		{
+
+		ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos, 3) ) ) ;
+		ui -> dec_min -> setText( QString::fromStdString( star.substr(pos+4, 3) ) ) ;
+		ui -> dec_sec -> setText( QString::fromStdString( star.substr(pos+7, n-pos-7) ) ) ;
+
+		}
+
+	else if (space == 1)
+		{
+
+		ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos, 3) ) ) ;
+		ui -> dec_min -> setText( QString::fromStdString( star.substr(pos+4, n-pos-4) ) ) ;
+		ui -> dec_sec -> setText( QString::number(0) ) ;
+
+		}
+
+	else
+		{
+
+		ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos, n-pos) ) ) ;
+		ui -> dec_min -> setText( QString::number(0) ) ;
+		ui -> dec_sec -> setText( QString::number(0) ) ;
+
+		} /////////////////////////////////////////////////////////////////////////////////
 
 }
 
@@ -607,14 +687,14 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 
 /*
 
-         _nnnn_
-        dGGGGMMb
-       @p~qp~~qMb
-       M|@||@) M|
-       @,----.JM|
-      JS^\__/  qKL
-     dZP        qKRb
-    dZP          qKKb
+		 _nnnn_
+		dGGGGMMb
+	   @p~qp~~qMb
+	   M|@||@) M|
+	   @,----.JM|
+	  JS^\__/  qKL
+	 dZP        qKRb
+	dZP          qKKb
    fZP            SMMb
    HZM            MMMM
    FqM            MMMM
@@ -622,7 +702,7 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
  |    `.       | `' \Zq
 _)      \.___.,|     .'
 \____   )MMMMMP|   .'
-     `-'       `--'
+	 `-'       `--'
 
 
 */
