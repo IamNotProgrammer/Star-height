@@ -7,21 +7,34 @@
 
 ---
 
-To download Star-hegiht you can simply download latest version from this site
+To download program star-hegiht you can simply download latest version of star-height from this site
+with Data.tar.gz (it's important if you want to find object)
 https://github.com/IamNotProgrammer/Star-height/releases
 
-It's working really good and doesn't need to be compiled. After downloading file find directory where it was downloaded,
-then use command
+It's working really good and doesn't need to be compiled. After downloading file find directory where it was downloaded
+and go there
 ```sh
-$ sudo mv /path/to/directory /usr/local/bin/
+$ cd /path/to/directory
 ```
+Then untar Data.tar.gz
+```sh
+$ tar -xvf Data.tar.gz
+```
+
+Move binary file and Data directory
+```sh
+$ sudo mv ./star-height /usr/local/bin/
+$ sudo mv ./Data/ /usr/local/
+```
+
 Give permissions
 ```
-$ sudo chmod +x /usr/local/bin/Star-height
+$ sudo chmod +x /usr/local/bin/star-height
+$ sudo chmod 666 /usr/local/Data/object.txt
 ```
 And it's done. You can enjoy program by simply opening it with terminal
 ```sh
-$ Star-heit
+$ star-heit
 ```
 This version of program is stable but it may not contain most recent features
 
