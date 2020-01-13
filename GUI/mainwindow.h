@@ -10,8 +10,6 @@ namespace Ui {
 class MainWindow;
 }
 
-
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -22,7 +20,6 @@ public:
     ~MainWindow();
 
 private slots:
-//	void test() ;
 
     void on_dec_deg_textChanged(const QString &arg1);
 
