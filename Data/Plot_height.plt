@@ -15,6 +15,6 @@ set yrange [*<-10 : 10<*]
 
 set object 1 rectangle from graph 0, first 0 to graph 1, 0 fs solid 0.1 fc rgb "green" behind
 
-plot '/usr/local/Data/Height.txt' using 1:2 with lines title "Elevation", 0 notitle
+plot '~/Star-height/Data/Height.txt' using 1:2 with lines title "Elevation", 0 notitle
 
 pause -1
