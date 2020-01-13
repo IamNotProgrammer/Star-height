@@ -538,10 +538,87 @@ void MainWindow::on_pushButton_clicked()
 }
 
 
+void MainWindow::on_Box_country_currentTextChanged(const QString &arg1)
+{
+
+	ui -> Box_city -> clear() ;
+
+	std::string path = "/usr/local/Data/Observatories/" ;
+	path.append(arg1.toStdString()) ;
+
+	std::ifstream muhfile ;
+	muhfile.open(path) ;
+
+	if (muhfile.is_open())
+		{
+
+		std::string line, city ;
+		std::size_t pos ;
+
+		while (getline(muhfile, line))
+			{
+
+			pos = line.find(",") ;
+			city = line.substr(0, pos) ;
+			ui -> Box_city -> addItem(QString::fromStdString(city)) ;
+
+			}
+
+		muhfile.close();
+
+		}
+
+}
 
 
+void MainWindow::on_Box_city_currentTextChanged(const QString &arg1)
+{
 
+	std::string country, city, part, dl, sz ;
+	std::string path = "/usr/local/Data/Observatories/" ;
+	QString qs = ui -> Box_country -> currentText() ;
 
+	country = qs.toStdString() ;
+	city = arg1.toStdString() ;
+	path.append(country) ;
+
+	std::ifstream muhfile ;
+	muhfile.open(path) ;
+
+	if (muhfile.is_open())
+		{
+
+		std::size_t pos, com_1, com_2 ;
+
+//		std::cout << "here 1" << "\n" ;
+
+		while (getline(muhfile, line))
+			{
+
+			pos = line.find(city) ;
+
+			if (pos != std::string::npos)
+				{
+
+				com_1 = line.find(",") ;
+				part = line.substr(com_1+1) ;
+				com_2 = part.find(",") ;
+
+				sz = line.substr(com_1+1, com_2) ; // szerokość
+				dl = line.substr(com_1+com_2+2) ; // długość
+
+				ui -> lat -> setText( QString::fromStdString(sz) ) ;
+				ui -> lon -> setText( QString::fromStdString(dl) ) ;
+
+				}
+
+			}
+
+		muhfile.close();
+
+		}
+
+}
 
 void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check coordinates and steal them
 {
@@ -706,4 +783,7 @@ _)      \.___.,|     .'
 
 
 */
+
+
+
 

@@ -54,6 +54,10 @@ private slots:
 
 	void on_pushButton_3_clicked();
 
+	void on_Box_country_currentTextChanged(const QString &arg1);
+
+	void on_Box_city_currentTextChanged(const QString &arg1);
+
 private:
 	Ui::MainWindow *ui;
 
