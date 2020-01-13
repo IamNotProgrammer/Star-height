@@ -66,7 +66,7 @@ $ make
 Now when it's compiled we can move program and Data directory where it should be in order to work properly
 
 ```sh
-$ sudo mv ./GUI /usr/local/bin/Star-height
+$ sudo mv ./star-height /usr/local/bin/
 $ cd ..
 $ sudo mv ./Data /usr/local/
 $ sudo chmod 666 /usr/local/Data/object.txt
@@ -90,4 +90,5 @@ It features:
 * Highest elevation and time to it
 * Current ekevation
 * Set current time button
-* Searching object (working half way)
+* Searching object
+* List of observatories
