@@ -62,29 +62,19 @@ Then clone repository
 ```sh
 $ git clone https://github.com/IamNotProgrammer/Star-height.git
 ```
-Go to `./Star-height/` directory, create `build` directory and go there
+Go to `./Star-height/` directory, give permission to execute install file
 ```sh
 $ cd ./Star-hegiht/
-$ mkdir build
-$ cd ./build/
+$ sudo chmod +x ./star_install.sh
+$ ./star_install.sh
 ```
-Make there 'Makefile'
-```sh
-$ qmake ../GUI/GUI.pro
-```
-Compile it
-```sh
-$ make
-```
-Now when it's compiled we can move program and Data directory where it should be in order to work properly
+
+Bash script will automatically install program and move all files to the right place.
+Run program to check if everything is working.
 
 ```sh
-$ sudo mv ./star-height /usr/local/bin/
-$ cd ..
-$ sudo mv ./Data /usr/local/
-$ sudo chmod 666 /usr/local/Data/object.txt
+$ star-height
 ```
-`chmod 666` gives permissions to read and write in this file, it's necessary to use finding object feature
 
 ## What even is Star-height?
 
