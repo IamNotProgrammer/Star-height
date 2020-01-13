@@ -8,4 +8,4 @@ sudo chmod +x ./build/star-height
 sudo chmod 666 ./Data/object.txt
 
 sudo mv ./build/star-height /usr/local/bin/
-sudo mv ./Data/ /usr/local/
+sudo cp -r ./Data/ /usr/local/
