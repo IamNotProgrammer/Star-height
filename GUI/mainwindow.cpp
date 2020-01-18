@@ -23,11 +23,6 @@ MainWindow::~MainWindow()
 
 }
 
-////	OBSERVATORIES	////
-
-// Work in progress but I have no fucking idea how to call function from mainwindow.cpp
-// when program starts. Basically I want list of observatiores in .txt file and that list
-// is downloaded each time program starts beacuse I'm lazy fuck
 
 ////    CHANGE DECLINATION  ////
 
@@ -448,8 +443,9 @@ void MainWindow::on_pushButton_clicked()
             {
 
             t_r = abs(t) ;
-            ui -> t_h -> setText( QString::number(int(t_r)) ) ;
-            ui -> t_m -> setText( QString::number( int( ( t_r - int(t_r) ) * 60 ) ) ) ;
+			ui -> t_h -> setText( QString::number(int(t_r)) ) ;
+			ui -> t_m -> setText( QString::number( int( ( t_r - int(t_r) ) * 60 ) ) ) ;
+			ui -> t_s -> setText( QString::number( int( ( ( t_r - int(t_r) ) * 60 - int( ( t_r - int(t_r) ) * 60 ) ) * 60 ) ) ) ;
 
             }
 
@@ -457,8 +453,9 @@ void MainWindow::on_pushButton_clicked()
             {
 
             t_r = 24 - t ;
-            ui -> t_h -> setText( QString::number(int(t_r)) ) ;
+			ui -> t_h -> setText( QString::number(int(t_r)) ) ;
 			ui -> t_m -> setText( QString::number( int( ( t_r - int(t_r) ) * 60 ) ) ) ;
+			ui -> t_s -> setText( QString::number( int( ( ( t_r - int(t_r) ) * 60 - int( ( t_r - int(t_r) ) * 60 ) ) * 60 ) ) ) ;
 
             }
 
@@ -469,8 +466,9 @@ void MainWindow::on_pushButton_clicked()
 
         ui -> in_was -> setText("Was") ;
         ui -> ago -> setText("ago") ;
-        ui -> t_h -> setText( QString::number(int(t)) ) ;
-        ui -> t_m -> setText( QString::number( int( ( t - int(t) ) * 60 ) ) ) ;
+		ui -> t_h -> setText( QString::number(int(t)) ) ;
+		ui -> t_m -> setText( QString::number( int( ( t - int(t) ) * 60 ) ) ) ;
+		ui -> t_s -> setText( QString::number( int( ( ( t_r - int(t_r) ) * 60 - int( ( t_r - int(t_r) ) * 60 ) ) * 60 ) ) ) ;
 
         }
 
@@ -480,8 +478,8 @@ void MainWindow::on_pushButton_clicked()
 	B = p2B(d, a, dG, aG) ;
 	L = p2L(d, a, dG, aG, theta, B) ;
 
-	ui -> galactic_b -> setText( QString::number(B * 180 / PI, 'f', 1) ) ;
-	ui -> galactic_l -> setText( QString::number(L * 180 / PI, 'f', 1) ) ;
+	ui -> galactic_b -> setText( QString::number(B * 180 / PI, 'f', 3) ) ;
+	ui -> galactic_l -> setText( QString::number(L * 180 / PI, 'f', 3) ) ;
 
 	//// MAKE DATA FOR PLOT ////
 /*
