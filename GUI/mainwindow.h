@@ -66,8 +66,12 @@ private:
 	int date_mon ;
 	int date_day ;
 
-	int H = 0, M = 0, S = 0, L_H = 0, L_M = 0, L_S = 0 ; // Time: local hour, local minute, local second, LST hour, LST minute
+	int mhd, mhm ;
+	float mhs ;
 
+	int H = 0, M = 0, S = 0, L_H = 0, L_M = 0, L_S = 0 ; // Time: local hour, local minute, local second, LST hour, LST minute
+	int c_h_d, c_h_m ;
+	float c_h_s ;
                                         // dec - declination, re - rectastence
     double d_d = 0, d_m = 0, d_s = 0 ; // dec degree, dec minute, dec second
     double re_h = 0, re_m = 0, re_s = 0 ; // ra hour, ra minute, ra second

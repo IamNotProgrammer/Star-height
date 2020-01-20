@@ -379,6 +379,9 @@ void graph()
 void MainWindow::on_pushButton_2_clicked()
 {
 
+	int tz = ui -> time_zone -> value() ;
+	ui -> time_zone -> setValue(0) ;
+
 	std::time_t now = time(NULL) ;
 	tm *ltm = localtime(&now) ;
 
@@ -395,43 +398,75 @@ void MainWindow::on_pushButton_2_clicked()
 	UT = H + double( M ) * 0.0166666666666 + double( S ) * 0.0002777777777777777 - ui -> time_zone -> value() ;
 	ui -> LT -> setTime( QTime(H, M, S) ) ; // sets current local time
 
+	ui -> time_zone -> setValue(tz) ;
+
 }
 
 ////    CLICK BUTTON    ////
 
 void MainWindow::on_pushButton_clicked()
 {
+
+	//// maximum elevation ////
+
     if (d <= phi )
         max_height = 90 - phi + d ;
 
     else
         max_height = 90 - d + phi ;
 
-    ui -> max_h_deg->setText(QString::number( int( max_height ) ) ) ;
-    ui -> max_h_m ->setText(QString::number( int( abs(max_height - int( max_height )) * 60 ) ) ) ;
+	mhd = int( max_height ) ;
+	mhm = abs( (max_height - mhd) * 60 ) ;
+	mhs = fmod( abs( (max_height - mhd) * 3600 - mhm * 60 ), 60.0 ) ;
+
+	if ( (max_height < 0) and (mhd == 0) )
+		ui -> max_h_deg-> setText("-" + QString::number( mhd ) ) ;
+
+	else
+		ui -> max_h_deg-> setText( QString::number( mhd ) ) ;
+
+	ui -> max_h_m -> setText(QString::number( mhm ) ) ;
+	ui -> max_h_s -> setText(QString::number( mhs, 'f', 1 ) ) ;
+
+
+
+	//// LST ////
 
     LST = date2LST(l, year, mon2, day2, UT) ;
 
-    L_H = int(LST) ;
-    L_M = int( ( LST - L_H ) * 60 ) ;
-	L_S = int( ( (LST - L_H) * 3600 - L_M * 60) ) ;
+	L_H = int(LST) ;	// LST hour
+	L_M = int( ( LST - L_H ) * 60 ) ;	// minute
+	L_S = int( ( (LST - L_H) * 3600 - L_M * 60) ) ; // second
 
 	ui -> label_7 -> setText( QString::number(L_H) ) ;	// I'm just too lazy to change label numbers to some names
     ui -> label_9 -> setText( QString::number(L_M) ) ;
 	ui -> label_35 -> setText( QString::number(L_S) ) ;
 
+
+	//// azimuth and elevation ////
+
     t = LST - a ;
     h = dec2height(d, t, phi) ;
     A = hour2azm (d, h, phi, t) ;
 
-    ui -> label_20 -> setText( QString::number( int(h) ) ) ;
-    ui -> label_22 -> setText( QString::number( int( abs( h - int(h) ) * 60 ) ) ) ;
+	c_h_d = int(h) ;
+	c_h_m = abs( int( (h - c_h_d) * 60 ) ) ;
+	c_h_s = fmod( abs( (h - c_h_d) * 3600 - c_h_m * 60 ), 60.0 ) ;
+
+	if ( (h < 0) and (c_h_d == 0) )
+		ui -> label_20 -> setText( "-" + QString::number( c_h_d ) ) ;
+
+	else
+		ui -> label_20 -> setText( QString::number( c_h_d ) ) ;
+
+	ui -> label_22 -> setText( QString::number( c_h_m ) ) ;
+	ui -> label_46 -> setText( QString::number( c_h_s, 'f', 1 ) ) ;
 
     ui -> label_25 -> setText( QString::number( int(A) ) ) ;
     ui -> label_27 -> setText( QString::number( int( ( A - int(A) ) * 60 ) ) ) ;
 
 
-    ////    TIME TO/FROM MAX HEIGHT     ////
+	////    TIME TO/FROM MAX ELEVATION     ////
 
     if (t < 0 or t > 12 )
         {
@@ -478,8 +513,8 @@ void MainWindow::on_pushButton_clicked()
 	B = p2B(d, a, dG, aG) ;
 	L = p2L(d, a, dG, aG, theta, B) ;
 
-	ui -> galactic_b -> setText( QString::number(B * 180 / PI, 'f', 3) ) ;
-	ui -> galactic_l -> setText( QString::number(L * 180 / PI, 'f', 3) ) ;
+	ui -> galactic_b -> setText( QString::number(B * 180 / PI, 'f', 4) ) ;
+	ui -> galactic_l -> setText( QString::number(L * 180 / PI, 'f', 4) ) ;
 
 	//// MAKE DATA FOR PLOT ////
 /*
@@ -745,12 +780,6 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 		} /////////////////////////////////////////////////////////////////////////////////
 
 }
-
-
-
-
-
-
 
 
 
