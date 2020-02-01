@@ -55,6 +55,14 @@ private slots:
 
 	void on_Box_city_currentTextChanged(const QString &arg1);
 
+	void on_lineEdit_4_textChanged(const QString &arg1);
+
+	void on_lineEdit_2_textChanged(const QString &arg1);
+
+	void on_lineEdit_textChanged(const QString &arg1);
+
+	void on_comboBox_3_activated(int index);
+
 private:
 	Ui::MainWindow *ui;
 
@@ -89,6 +97,12 @@ private:
     double max_height = 0 ;
     double h, A ; // coordinates: hegight, Azimuth ;
     double ch, CT ; //changing height, changing time (in function)
+
+	// refraction //
+
+	double pressure = 760 ;
+	double wl = 0.551 ; // wave length
+	double T = 0 ;
 
 	std::string height, url, command, line, star ;
 	QString object ;

@@ -1102,7 +1102,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -1580,6 +1580,9 @@
         <height>32</height>
        </rect>
       </property>
+      <property name="text">
+       <string>760</string>
+      </property>
      </widget>
      <widget class="QLineEdit" name="lineEdit_2">
       <property name="geometry">
@@ -1589,6 +1592,9 @@
         <width>101</width>
         <height>32</height>
        </rect>
+      </property>
+      <property name="text">
+       <string>273.15</string>
       </property>
      </widget>
      <widget class="QComboBox" name="comboBox_2">
@@ -1660,6 +1666,45 @@
       </property>
       <property name="text">
        <string>Temperature</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_49">
+      <property name="geometry">
+       <rect>
+        <x>11</x>
+        <y>130</y>
+        <width>91</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Wave length</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_4">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>130</y>
+        <width>101</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>551</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_52">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>130</y>
+        <width>62</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>nm</string>
       </property>
      </widget>
     </widget>

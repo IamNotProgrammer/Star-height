@@ -402,6 +402,47 @@ void MainWindow::on_pushButton_2_clicked()
 
 }
 
+
+////    REFRACTION    ////
+
+void MainWindow::on_lineEdit_4_textChanged(const QString &arg1) // wave length
+{
+	wl = arg1.toDouble() * 1e-3 ;
+}
+
+void MainWindow::on_lineEdit_2_textChanged(const QString &arg1) // temperature
+{
+
+	if ( ui -> comboBox_3 -> currentIndex() == 0)
+		T = arg1.toDouble() - 273.15 ;
+
+	else if ( ui -> comboBox_3 -> currentIndex() == 1)
+		T = arg1.toDouble() ;
+
+	else
+		T = ( ( ui -> lineEdit_2 -> text() ).toDouble() - 32 ) / 1.80
+
+}
+
+void MainWindow::on_lineEdit_textChanged(const QString &arg1)
+{
+	pressure = arg1.toDouble() ;
+}
+
+void MainWindow::on_comboBox_3_activated(int index)
+{
+
+	if (index == 0)
+		T = ( ui -> lineEdit_2 -> text() ).toDouble() - 273.15 ;
+
+	else if (index == 1)
+		T = ( ui -> lineEdit_2 -> text() ).toDouble() ;
+
+	else
+		T = ( ( ui -> lineEdit_2 -> text() ).toDouble() - 32 ) / 1.80 ;
+
+}
+
 ////    CLICK BUTTON    ////
 
 void MainWindow::on_pushButton_clicked()
@@ -810,6 +851,10 @@ _)      \.___.,|     .'
 
 
 */
+
+
+
+
 
 
 
