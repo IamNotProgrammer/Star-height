@@ -271,8 +271,7 @@ double dec2height (double dec, double t, double phi)
         phi = phi * PI / 180 ;
 
         S_h = sin(phi) * sin(dec) + cos(phi) * cos(dec) * cos(t) ;
-        h = asin(S_h) * 180 / PI ;
-        h = int(h * 1e4) / 1e4 ;
+		h = asin(S_h) ;
 
         return h ;
 
@@ -406,12 +405,14 @@ void MainWindow::on_pushButton_2_clicked()
 ////    REFRACTION    ////
 
 void MainWindow::on_lineEdit_4_textChanged(const QString &arg1) // wave length
-{
+	{
+
 	wl = arg1.toDouble() * 1e-3 ;
-}
+
+	}
 
 void MainWindow::on_lineEdit_2_textChanged(const QString &arg1) // temperature
-{
+	{
 
 	if ( ui -> comboBox_3 -> currentIndex() == 0)
 		T = arg1.toDouble() - 273.15 ;
@@ -420,17 +421,13 @@ void MainWindow::on_lineEdit_2_textChanged(const QString &arg1) // temperature
 		T = arg1.toDouble() ;
 
 	else
-		T = ( ( ui -> lineEdit_2 -> text() ).toDouble() - 32 ) / 1.80
+		T = ( ( ui -> lineEdit_2 -> text() ).toDouble() - 32 ) / 1.80 ;
 
-}
+	}
 
-void MainWindow::on_lineEdit_textChanged(const QString &arg1)
-{
-	pressure = arg1.toDouble() ;
-}
 
 void MainWindow::on_comboBox_3_activated(int index)
-{
+	{
 
 	if (index == 0)
 		T = ( ui -> lineEdit_2 -> text() ).toDouble() - 273.15 ;
@@ -441,7 +438,39 @@ void MainWindow::on_comboBox_3_activated(int index)
 	else
 		T = ( ( ui -> lineEdit_2 -> text() ).toDouble() - 32 ) / 1.80 ;
 
-}
+	}
+
+void MainWindow::on_lineEdit_textChanged(const QString &arg1) // pressure
+	{
+
+	pressure = arg1.toDouble() ;
+
+	}
+
+void MainWindow::ref() // calculating refraction
+	{
+
+	double A ;
+	double z, zhm ;
+
+	A = 1.032653141e-4 * pressure * ( 1 + 0.0057 / (wl * wl) ) / ( T + 273.15 ) ;
+	B = 1 / A ;
+
+	z = PI * 0.5 - h ;
+	z_0 = z + 0.02 ;
+
+	zhm = PI * 0.5 - max_height * PI / 180 ;
+	z_m = zhm + 0.02 ;
+
+	for ( int c = 0; c < 50; c++ )
+		{
+
+		z_0 = z - A * tan(z_0) ;
+		z_m = zhm - A * tan(z_m) ;
+
+		}
+
+	}
 
 ////    CLICK BUTTON    ////
 
@@ -488,11 +517,12 @@ void MainWindow::on_pushButton_clicked()
 
     t = LST - a ;
     h = dec2height(d, t, phi) ;
-    A = hour2azm (d, h, phi, t) ;
+	A = hour2azm (d, h, phi, t) ;
+	elevation = h * 180 / PI ;
 
-	c_h_d = int(h) ;
-	c_h_m = abs( int( (h - c_h_d) * 60 ) ) ;
-	c_h_s = fmod( abs( (h - c_h_d) * 3600 - c_h_m * 60 ), 60.0 ) ;
+	c_h_d = int(elevation) ;
+	c_h_m = abs( int( (elevation - c_h_d) * 60 ) ) ;
+	c_h_s = fmod( abs( (elevation - c_h_d) * 3600 - c_h_m * 60 ), 60.0 ) ;
 
 	if ( (h < 0) and (c_h_d == 0) )
 		ui -> label_20 -> setText( "-" + QString::number( c_h_d ) ) ;
@@ -505,6 +535,41 @@ void MainWindow::on_pushButton_clicked()
 
     ui -> label_25 -> setText( QString::number( int(A) ) ) ;
     ui -> label_27 -> setText( QString::number( int( ( A - int(A) ) * 60 ) ) ) ;
+
+
+	////    REFRACTION    ////
+
+	ref() ;
+
+	double R = 90 - z_0 * 180 / PI ;
+
+	c_h_d = int(R) ;
+	c_h_m = abs( int( (R - c_h_d) * 60 ) ) ;
+	c_h_s = fmod( abs( (R - c_h_d) * 3600 - c_h_m * 60 ), 60.0 ) ;
+
+	if ( (R < 0) and (c_h_d == 0) )
+		ui -> ref_deg -> setText( "-" + QString::number( c_h_d ) ) ;
+
+	else
+		ui -> ref_deg -> setText( QString::number( c_h_d ) ) ;
+
+	ui -> ref_min -> setText( QString::number( c_h_m ) ) ;
+	ui -> ref_sec -> setText( QString::number( c_h_s, 'f', 1 ) ) ;
+
+	double R_max = 90 - z_m * 180 / PI ;
+
+	mhd = int( R_max ) ;
+	mhm = abs( (R_max - mhd) * 60 ) ;
+	mhs = fmod( abs( (R_max - mhd) * 3600 - mhm * 60 ), 60.0 ) ;
+
+	if ( (R_max < 0) and (mhd == 0) )
+		ui -> max_ref_d-> setText("-" + QString::number( mhd ) ) ;
+
+	else
+		ui -> max_ref_d-> setText( QString::number( mhd ) ) ;
+
+	ui -> max_ref_m -> setText(QString::number( mhm ) ) ;
+	ui -> max_ref_s -> setText(QString::number( mhs, 'f', 1 ) ) ;
 
 
 	////    TIME TO/FROM MAX ELEVATION     ////

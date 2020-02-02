@@ -39,7 +39,7 @@
       <x>340</x>
       <y>80</y>
       <width>241</width>
-      <height>231</height>
+      <height>261</height>
      </rect>
     </property>
     <property name="title">
@@ -429,38 +429,18 @@
       </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <layout class="QHBoxLayout" name="horizontalLayout_8">
        <item>
-        <widget class="QLabel" name="label_19">
+        <widget class="QLabel" name="label_56">
          <property name="minimumSize">
           <size>
-           <width>73</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>12</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Height:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_20">
-         <property name="minimumSize">
-          <size>
-           <width>31</width>
+           <width>84</width>
            <height>0</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>31</width>
+           <width>72</width>
            <height>16777215</height>
           </size>
          </property>
@@ -468,12 +448,26 @@
           <font>
            <family>Droid Arabic Kufi</family>
            <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Elevation:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="ref_deg">
+         <property name="font">
+          <font>
+           <family>Droid Arabic Kufi</family>
+           <pointsize>12</pointsize>
            <weight>50</weight>
+           <italic>false</italic>
            <bold>false</bold>
           </font>
          </property>
          <property name="text">
-          <string>06</string>
+          <string>15</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -481,7 +475,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_21">
+        <widget class="QLabel" name="label_53">
          <property name="minimumSize">
           <size>
            <width>8</width>
@@ -498,17 +492,18 @@
           <font>
            <family>Droid Arabic Kufi</family>
            <pointsize>12</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
           </font>
          </property>
          <property name="text">
           <string>°</string>
          </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_22">
+        <widget class="QLabel" name="ref_min">
          <property name="minimumSize">
           <size>
            <width>21</width>
@@ -531,7 +526,7 @@
           </font>
          </property>
          <property name="text">
-          <string>66</string>
+          <string>20</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -539,7 +534,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_23">
+        <widget class="QLabel" name="label_54">
          <property name="minimumSize">
           <size>
            <width>3</width>
@@ -556,17 +551,18 @@
           <font>
            <family>Droid Arabic Kufi</family>
            <pointsize>12</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
           </font>
          </property>
          <property name="text">
           <string>'</string>
          </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_46">
+        <widget class="QLabel" name="ref_sec">
          <property name="minimumSize">
           <size>
            <width>35</width>
@@ -589,15 +585,12 @@
           </font>
          </property>
          <property name="text">
-          <string>15.8</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
+          <string>30</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_47">
+        <widget class="QLabel" name="label_55">
          <property name="maximumSize">
           <size>
            <width>8</width>
@@ -608,9 +601,6 @@
           <font>
            <family>Droid Arabic Kufi</family>
            <pointsize>12</pointsize>
-           <weight>50</weight>
-           <italic>false</italic>
-           <bold>false</bold>
           </font>
          </property>
          <property name="text">
@@ -628,20 +618,19 @@
       </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <layout class="QHBoxLayout" name="horizontalLayout_9">
        <item>
-        <widget class="QLabel" name="label_29">
+        <widget class="QLabel" name="label_57">
          <property name="minimumSize">
           <size>
-           <width>73</width>
+           <width>83</width>
            <height>0</height>
           </size>
          </property>
          <property name="font">
           <font>
+           <family>Droid Arabic Kufi</family>
            <pointsize>12</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
           </font>
          </property>
          <property name="text">
@@ -650,29 +639,15 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="max_h_deg">
-         <property name="minimumSize">
-          <size>
-           <width>31</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>31</width>
-           <height>16777215</height>
-          </size>
-         </property>
+        <widget class="QLabel" name="max_ref_d">
          <property name="font">
           <font>
            <family>Droid Arabic Kufi</family>
            <pointsize>12</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
           </font>
          </property>
          <property name="text">
-          <string>04</string>
+          <string>50</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -680,13 +655,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_31">
-         <property name="minimumSize">
-          <size>
-           <width>8</width>
-           <height>0</height>
-          </size>
-         </property>
+        <widget class="QLabel" name="label_59">
          <property name="maximumSize">
           <size>
            <width>8</width>
@@ -697,47 +666,34 @@
           <font>
            <family>Droid Arabic Kufi</family>
            <pointsize>12</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
           </font>
          </property>
          <property name="text">
           <string>°</string>
          </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="max_h_m">
-         <property name="minimumSize">
-          <size>
-           <width>21</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>21</width>
-           <height>16777215</height>
-          </size>
-         </property>
+        <widget class="QLabel" name="max_ref_m">
          <property name="font">
           <font>
            <family>Droid Arabic Kufi</family>
            <pointsize>12</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
           </font>
          </property>
          <property name="text">
-          <string>20</string>
+          <string>29</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignCenter</set>
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_33">
+        <widget class="QLabel" name="label_61">
          <property name="minimumSize">
           <size>
            <width>3</width>
@@ -754,17 +710,18 @@
           <font>
            <family>Droid Arabic Kufi</family>
            <pointsize>12</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
           </font>
          </property>
          <property name="text">
           <string>'</string>
          </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="max_h_s">
+        <widget class="QLabel" name="max_ref_s">
          <property name="minimumSize">
           <size>
            <width>35</width>
@@ -784,15 +741,12 @@
           </font>
          </property>
          <property name="text">
-          <string>98.3</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
+          <string>13</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_51">
+        <widget class="QLabel" name="label_63">
          <property name="maximumSize">
           <size>
            <width>8</width>
@@ -952,7 +906,7 @@
     <property name="geometry">
      <rect>
       <x>340</x>
-      <y>330</y>
+      <y>480</y>
       <width>241</width>
       <height>101</height>
      </rect>
@@ -1102,7 +1056,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -1708,6 +1662,417 @@
       </property>
      </widget>
     </widget>
+   </widget>
+   <widget class="QGroupBox" name="Without_refraction">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>350</y>
+      <width>241</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Without refraction</string>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="leftMargin">
+      <number>9</number>
+     </property>
+     <property name="topMargin">
+      <number>9</number>
+     </property>
+     <property name="rightMargin">
+      <number>9</number>
+     </property>
+     <property name="bottomMargin">
+      <number>9</number>
+     </property>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="label_19">
+         <property name="minimumSize">
+          <size>
+           <width>79</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Elevation: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_20">
+         <property name="minimumSize">
+          <size>
+           <width>27</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>23</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Droid Arabic Kufi</family>
+           <pointsize>12</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>06</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_21">
+         <property name="minimumSize">
+          <size>
+           <width>8</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>8</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Droid Arabic Kufi</family>
+           <pointsize>12</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>°</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_22">
+         <property name="minimumSize">
+          <size>
+           <width>21</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>21</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Droid Arabic Kufi</family>
+           <pointsize>12</pointsize>
+           <weight>50</weight>
+           <italic>false</italic>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>66</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_23">
+         <property name="minimumSize">
+          <size>
+           <width>3</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>5</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Droid Arabic Kufi</family>
+           <pointsize>12</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>'</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_46">
+         <property name="minimumSize">
+          <size>
+           <width>35</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>45</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Droid Arabic Kufi</family>
+           <pointsize>12</pointsize>
+           <weight>50</weight>
+           <italic>false</italic>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>15.8</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_47">
+         <property name="maximumSize">
+          <size>
+           <width>8</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Droid Arabic Kufi</family>
+           <pointsize>12</pointsize>
+           <weight>50</weight>
+           <italic>false</italic>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>&quot;</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="Line" name="line_6">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QLabel" name="label_29">
+         <property name="minimumSize">
+          <size>
+           <width>73</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Max:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="max_h_deg">
+         <property name="minimumSize">
+          <size>
+           <width>31</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>31</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Droid Arabic Kufi</family>
+           <pointsize>12</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>04</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_31">
+         <property name="minimumSize">
+          <size>
+           <width>8</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>8</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Droid Arabic Kufi</family>
+           <pointsize>12</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>°</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="max_h_m">
+         <property name="minimumSize">
+          <size>
+           <width>21</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>21</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Droid Arabic Kufi</family>
+           <pointsize>12</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>20</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_33">
+         <property name="minimumSize">
+          <size>
+           <width>3</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>5</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Droid Arabic Kufi</family>
+           <pointsize>12</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>'</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="max_h_s">
+         <property name="minimumSize">
+          <size>
+           <width>35</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>45</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Droid Arabic Kufi</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>98.3</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_51">
+         <property name="maximumSize">
+          <size>
+           <width>8</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Droid Arabic Kufi</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>&quot;</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
