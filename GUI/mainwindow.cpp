@@ -9,21 +9,34 @@
 #include <iomanip>
 #include <stdio.h>
 #include <fstream>
+#include <QMessageBox>
+#include <QDir>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
 	version = new QLabel(this);
 	statusBar() -> addPermanentWidget(version);
 	version -> setText(VERSION_STRING) ;
+
+	QDir directory("/usr/local/Data/Observatories/") ;
+
+	QStringList ct = directory.entryList( QStringList() << "*", QDir::Files ) ;
+
+	foreach(QString filename, ct)
+		{
+
+		ui -> Box_country -> addItem(filename) ;
+
+		}
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-
 }
 
 
@@ -712,6 +725,7 @@ void MainWindow::on_Box_country_currentTextChanged(const QString &arg1)
 
 }
 
+//// COUNTRIES AND CITIES ////
 
 void MainWindow::on_Box_city_currentTextChanged(const QString &arg1)
 {
@@ -732,8 +746,6 @@ void MainWindow::on_Box_city_currentTextChanged(const QString &arg1)
 
 		std::size_t pos, com_1, com_2 ;
 
-//		std::cout << "here 1" << "\n" ;
-
 		while (getline(muhfile, line))
 			{
 
@@ -743,11 +755,11 @@ void MainWindow::on_Box_city_currentTextChanged(const QString &arg1)
 				{
 
 				com_1 = line.find(",") ;
-				part = line.substr(com_1+1) ;
+				part = line.substr(com_1 + 1) ;
 				com_2 = part.find(",") ;
 
-				sz = line.substr(com_1+1, com_2) ; // szerokość
-				dl = line.substr(com_1+com_2+2) ; // długość
+				sz = line.substr(com_1+1, com_2) ; // latitude
+				dl = line.substr(com_1+com_2+2) ; // longitude
 
 				ui -> lat -> setText( QString::fromStdString(sz) ) ;
 				ui -> lon -> setText( QString::fromStdString(dl) ) ;
@@ -772,105 +784,114 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 	url = object.toStdString() ;
 	url.erase( remove_if( url.begin(), url.end(), isspace ), url.end() ) ;
 
-	command.append("wget -O /usr/local/Data/object.txt \"http://simbad.u-strasbg.fr/simbad/sim-script?script=format%20object%20%22%25IDLIST(1)%20%7C%20%25COO(A%20D)%22%0A") ;	// make command
+	command.append("wget -O /usr/local/Data/object.txt "
+	"\"http://simbad.u-strasbg.fr/simbad/sim-script?script=format%20object%20%22%25IDLIST(1)%20%7C%20%25COO(A%20D)%22%0A") ;	// make command
 	command.append(url) ;
 	command.append("\"") ;
-
-
 
 	system(command.c_str()) ;
 
 	command = "" ;	// clear command because it was just adding more and more url's
 
-
 	star = cmd_out("tail -n 2 /usr/local/Data/object.txt | head -n 1 ") ;
 
 	std::size_t found = star.find("|") ;
-	star.erase(0, found + 2) ;
 
-	std::cout << star << "\n" ;
-
-	std::size_t pos = star.find("+") ;
-	std::size_t apos = star.find("-") ;
-
-	n = star.length() ;
-
-	if (apos != std::string::npos) // if dec is positive it's negative
-		pos = apos ;
-
-	for (int i = 0; i < pos ; i++) // hoe many spaces in string "star"
+	if (found != std::string::npos)
 		{
 
-		if (star.at(i) == ' ')
-			space++ ;
+		star.erase(0, found + 2) ;
 
-		}
+		std::size_t pos = star.find("+") ;
+		std::size_t apos = star.find("-") ;
 
-	if (space == 3) //////////////// change values of right assecion /////////////////
-		{
+		n = star.length() ;
 
-		ui -> ra_h -> setText( QString::fromStdString( star.substr(0, 2) ) ) ;
-		ui -> ra_m -> setText( QString::fromStdString( star.substr(3, 2) ) ) ;
-		ui -> ra_s -> setText( QString::fromStdString( star.substr(6, pos-7) ) ) ;
+		if (apos != std::string::npos) // if dec is positive it's negative
+			pos = apos ;
 
-		}
+		for (int i = 0; i < pos ; i++) // hoe many spaces in string "star"
+			{
+
+			if (star.at(i) == ' ')
+				space++ ;
+
+			}
+
+		if (space == 3) //////////////// change values of right assecion /////////////////
+			{
+
+			ui -> ra_h -> setText( QString::fromStdString( star.substr(0, 2) ) ) ;
+			ui -> ra_m -> setText( QString::fromStdString( star.substr(3, 2) ) ) ;
+			ui -> ra_s -> setText( QString::fromStdString( star.substr(6, pos-7) ) ) ;
+
+			}
 
 
-	else if (space == 2)
-		{
+		else if (space == 2)
+			{
 
-		ui -> ra_h -> setText( QString::fromStdString( star.substr(0, 2) ) ) ;
-		ui -> ra_m -> setText( QString::fromStdString( star.substr(3, pos-4) ) ) ;
-		ui -> ra_s -> setText( QString::number(0) ) ;
+			ui -> ra_h -> setText( QString::fromStdString( star.substr(0, 2) ) ) ;
+			ui -> ra_m -> setText( QString::fromStdString( star.substr(3, pos-4) ) ) ;
+			ui -> ra_s -> setText( QString::number(0) ) ;
+
+			}
+
+		else
+			{
+
+			ui -> ra_h -> setText( QString::fromStdString( star.substr(0, pos-1) ) ) ;
+			ui -> ra_m -> setText( QString::number(0) ) ;
+			ui -> ra_s -> setText( QString::number(0) ) ;
+
+			} /////////////////////////////////////////////////////////////////////////////////
+
+		space = 0 ;
+
+		for (int i = pos; i < n ; i++) /////////////// change values of declination ////////////
+			{
+
+			if (star.at(i) == ' ')
+				space++ ;
+
+			}
+
+		if (space == 2)
+			{
+
+			ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos, 3) ) ) ;
+			ui -> dec_min -> setText( QString::fromStdString( star.substr(pos+4, 3) ) ) ;
+			ui -> dec_sec -> setText( QString::fromStdString( star.substr(pos+7, n-pos-7) ) ) ;
+
+			}
+
+		else if (space == 1)
+			{
+
+			ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos, 3) ) ) ;
+			ui -> dec_min -> setText( QString::fromStdString( star.substr(pos+4, n-pos-4) ) ) ;
+			ui -> dec_sec -> setText( QString::number(0) ) ;
+
+			}
+
+		else
+			{
+
+			ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos, n-pos) ) ) ;
+			ui -> dec_min -> setText( QString::number(0) ) ;
+			ui -> dec_sec -> setText( QString::number(0) ) ;
+
+			} /////////////////////////////////////////////////////////////////////////////////
 
 		}
 
 	else
 		{
 
-		ui -> ra_h -> setText( QString::fromStdString( star.substr(0, pos-1) ) ) ;
-		ui -> ra_m -> setText( QString::number(0) ) ;
-		ui -> ra_s -> setText( QString::number(0) ) ;
-
-		} /////////////////////////////////////////////////////////////////////////////////
-
-	space = 0 ;
-
-	for (int i = pos; i < n ; i++) /////////////// change values of declination ////////////
-		{
-
-		if (star.at(i) == ' ')
-			space++ ;
+		QMessageBox::warning(this, "Object not found",
+		"No such object was found. Please check again.") ;
 
 		}
-
-	if (space == 2)
-		{
-
-		ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos, 3) ) ) ;
-		ui -> dec_min -> setText( QString::fromStdString( star.substr(pos+4, 3) ) ) ;
-		ui -> dec_sec -> setText( QString::fromStdString( star.substr(pos+7, n-pos-7) ) ) ;
-
-		}
-
-	else if (space == 1)
-		{
-
-		ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos, 3) ) ) ;
-		ui -> dec_min -> setText( QString::fromStdString( star.substr(pos+4, n-pos-4) ) ) ;
-		ui -> dec_sec -> setText( QString::number(0) ) ;
-
-		}
-
-	else
-		{
-
-		ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos, n-pos) ) ) ;
-		ui -> dec_min -> setText( QString::number(0) ) ;
-		ui -> dec_sec -> setText( QString::number(0) ) ;
-
-		} /////////////////////////////////////////////////////////////////////////////////
-
 }
 
 
