@@ -5,6 +5,7 @@
 
 #include <QMainWindow>
 #include <QPixmap>
+#include <QLabel>
 
 namespace Ui {
 class MainWindow;
@@ -67,6 +68,8 @@ private slots:
 
 private:
 	Ui::MainWindow *ui;
+
+	QLabel *version ;
 
     int year = 2019 ; // current year
     int mon2 = 5 ; // current month

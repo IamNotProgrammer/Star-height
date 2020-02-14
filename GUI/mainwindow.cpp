@@ -15,6 +15,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+	version = new QLabel(this);
+	statusBar() -> addPermanentWidget(version);
+	version -> setText(VERSION_STRING) ;
 }
 
 MainWindow::~MainWindow()
@@ -767,42 +770,25 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 
 	object = ui -> Object_name -> text() ;	// object name from gui
 	url = object.toStdString() ;
-	url.erase( remove_if( url.begin(), url.end(), isspace ), url.end() ) ;  // I don't know what it does
+	url.erase( remove_if( url.begin(), url.end(), isspace ), url.end() ) ;
 
-	command.append("wget -O /usr/local/Data/object.txt http://simbad.u-strasbg.fr/simbad/sim-basic?Ident=") ;	// make command
+	command.append("wget -O /usr/local/Data/object.txt \"http://simbad.u-strasbg.fr/simbad/sim-script?script=format%20object%20%22%25IDLIST(1)%20%7C%20%25COO(A%20D)%22%0A") ;	// make command
 	command.append(url) ;
-	command.append("\\&submit=SIMBAD+search") ;
+	command.append("\"") ;
+
+
 
 	system(command.c_str()) ;
 
 	command = "" ;	// clear command because it was just adding more and more url's
 
 
-	star = cmd_out("grep -A 9 'coord\\.' /usr/local/Data/object.txt | head -n 10 | tail -n 1") ;
+	star = cmd_out("tail -n 2 /usr/local/Data/object.txt | head -n 1 ") ;
 
-	std::size_t found = star.find("grey") ;
+	std::size_t found = star.find("|") ;
+	star.erase(0, found + 2) ;
 
-	if (found != std::string::npos) // get rid of gray text if there is any
-		{
-
-		n = star.length() ;
-		star.erase(n-71, 72) ;
-
-		while (true)
-			{
-
-			std::size_t delet_1 = star.find("<") ;
-			std::size_t delet_2 = star.find(">") ;
-
-			if (delet_1 != std::string::npos)
-				star.erase(delet_1, delet_2 - delet_1 + 1) ;
-
-			else
-				break ;
-
-			}
-
-		}
+	std::cout << star << "\n" ;
 
 	std::size_t pos = star.find("+") ;
 	std::size_t apos = star.find("-") ;
