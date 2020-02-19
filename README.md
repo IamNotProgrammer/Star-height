@@ -1,7 +1,7 @@
 # Star-hegiht
 
 
-## Instalation
+## Installation
 
 #### Downloading program
 
