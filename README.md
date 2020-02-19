@@ -95,7 +95,7 @@ It features:
 * Highest elevation and time to it
 * Current ekevation
 * Set current time button
-* Searching object
+* Searching object (over 10 million objects available)
 * List of observatories
 * Including refraction in calculations
 
