@@ -99,6 +99,10 @@ It features:
 * List of observatories
 * Including refraction in calculations
 
+## Why should I use this instead stellarium?
+
+That's great question. Stellarium doesn't show local sidereal time which is the only imperfection in stellarium unlike my program where LST is the only perfect thing
+
 ## Screenshots
 
 
