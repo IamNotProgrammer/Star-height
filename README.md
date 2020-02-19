@@ -95,3 +95,4 @@ It features:
 * Set current time button
 * Searching object
 * List of observatories
+* Including refraction in calculations
