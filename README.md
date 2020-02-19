@@ -99,13 +99,12 @@ It features:
 
 ## Screenshots
 
----
 
 Calculate everything you need
 
  ![alt text](https://raw.githubusercontent.com/IamNotProgrammer/Star-height/master/screenshots/Screenshot_20200219_190134.png)
  
- Include refractio
+ Include refraction
  
  ![alt text](https://raw.githubusercontent.com/IamNotProgrammer/Star-height/master/screenshots/Screenshot_20200219_190246.png)
  
