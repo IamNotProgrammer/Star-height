@@ -46,6 +46,8 @@ This version of program is stable but it may not contain most recent features
 
 qmake is required to compile files. If you don't have it installed install it
 
+---
+
 1. On Ubuntu
 ```sh
 $ sudo apt-get install build-essential
@@ -56,7 +58,7 @@ $ sudo apt-get install qt5-default
 ```sh
 $ sudo pacman -S qt
 ```
-
+---
 
 Then clone repository
 ```sh
