@@ -97,10 +97,18 @@ It features:
 * List of observatories
 * Including refraction in calculations
 
-##Screenshots
+## Screenshots
+
+---
+
+Calculate everything you need
 
  ![alt text](https://raw.githubusercontent.com/IamNotProgrammer/Star-height/master/screenshots/Screenshot_20200219_190134.png)
  
+ Include refractio
+ 
  ![alt text](https://raw.githubusercontent.com/IamNotProgrammer/Star-height/master/screenshots/Screenshot_20200219_190246.png)
+ 
+ Find your object
  
  ![alt text](https://raw.githubusercontent.com/IamNotProgrammer/Star-height/master/screenshots/Screenshot_20200219_190337.png)
