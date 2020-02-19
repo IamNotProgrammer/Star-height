@@ -96,3 +96,11 @@ It features:
 * Searching object
 * List of observatories
 * Including refraction in calculations
+
+##Screenshots
+
+ ![alt text](https://raw.githubusercontent.com/IamNotProgrammer/Star-height/master/screenshots/Screenshot_20200219_190134.png)
+ 
+ ![alt text](https://raw.githubusercontent.com/IamNotProgrammer/Star-height/master/screenshots/Screenshot_20200219_190246.png)
+ 
+ ![alt text](https://raw.githubusercontent.com/IamNotProgrammer/Star-height/master/screenshots/Screenshot_20200219_190337.png)
