@@ -105,7 +105,7 @@ void MainWindow::on_dec_sec_textChanged(const QString &arg1)	// seconds
 
 void MainWindow::on_ra_h_textChanged(const QString &arg1)	// right ascention hours
 {
-    re_h = arg1.toInt() ;
+	re_h = arg1.toDouble() ;
     a = re_h + re_m + re_s ;
 }
 
@@ -318,8 +318,8 @@ double hour2azm (double dec, double h, double phi, double t)
 
         }
 
-////	GALACTIC COORDINATES	////
 
+////	GALACTIC COORDINATES	////
 
 double p2B (double d, double a, double dG, double aG)	// calculates latitude in galactic coordinates
 	{
@@ -376,17 +376,6 @@ double p2L (double d, double a, double dG, double aG, double theta, double B)	//
 	return L ;
 
 	}
-
-
-
-/*
-void graph()
-    {
-
-     system("/usr/local/Data/Plot_height.plt") ;
-
-    }
-*/
 
 
 //// SET CURRENT TIME ////
@@ -463,30 +452,92 @@ void MainWindow::on_lineEdit_textChanged(const QString &arg1) // pressure
 
 	}
 
-void MainWindow::ref() // calculating refraction
+double MainWindow::ref(double height) // calculating refraction
 	{
 
-	double A ;
-	double z, zhm ;
+	double A, z, z_0 ;
 
-	A = 1.032653141e-4 * pressure * ( 1 + 0.0057 / (wl * wl) ) / ( T + 273.15 ) ;
+	A = 1.032653141e-4 * pressure * ( 1 + 0.0057 / (wl * wl) ) / ( T + 273 ) ;
 	B = 1 / A ;
 
-	z = PI * 0.5 - h ;
-	z_0 = z + 0.02 ;
+	z = PI * 0.5 - height ;
+	z_0 = z - 0.01 ;
 
-	zhm = PI * 0.5 - max_height * PI / 180 ;
-	z_m = zhm + 0.02 ;
+	for ( int c = 0; c < 20; c++ )
+		z_0 = z - A * tan(z_0) ;
 
-	for ( int c = 0; c < 50; c++ )
+	if (height < 0)
+		z_0 = 2 * z - z_0 ;
+
+	return z_0 ;
+
+	}
+
+
+////    GRAPH    ////
+
+void MainWindow::on_pushButton_4_clicked()
+{
+
+	double elev ;
+	std::string grph ;
+
+	system("> /usr/local/Data/Height.txt") ;
+
+	for (double i = UT - 5; i <= (UT + 5); i += 0.166666666666666)
 		{
 
-		z_0 = z - A * tan(z_0) ;
-		z_m = zhm - A * tan(z_m) ;
+		int h, m, rd ;
+		double j ;
+		std::string e ; // elevation
+
+		LST = date2LST(l, year, mon2, day2, i) ;
+		t = LST - a ;
+
+		elev = dec2height(d, t, phi) ;
+
+		grph = "" ;
+
+		grph.append("echo \"") ;
+
+		if (i < 0)
+			{
+
+			j = i + 24 ;
+			rd = day2 -1 ;
+
+			h = int(j) ;
+			m = int( (j - h) * 60 ) ;
+
+			grph.append( std::to_string(rd) + "/" + std::to_string(mon2) + " " ) ;
+			grph.append( std::to_string(h) + ":" + std::to_string(m) + ", " ) ;
+
+			}
+
+		else
+			{
+
+			h = int(i) ;
+			m = int( (i - h) * 60 ) ;
+
+			grph.append( std::to_string(day2) + "/" + std::to_string(mon2) + " " ) ;
+			grph.append( std::to_string(h) + ":" + std::to_string(m) + ", " ) ;
+
+			}
+
+		e = std::to_string(90 - ref(elev) * 180 / PI) ;
+		std::replace( e.begin(), e.end(), ',', '.') ;
+
+		grph.append(e) ;
+		grph.append("\" >> /usr/local/Data/Height.txt") ;
+
+		std::cout << grph << "\n" ;
+		system(grph.c_str()) ;
 
 		}
 
-	}
+}
+
 
 ////    CLICK BUTTON    ////
 
@@ -496,7 +547,7 @@ void MainWindow::on_pushButton_clicked()
 	//// maximum elevation ////
 
     if (d <= phi )
-        max_height = 90 - phi + d ;
+		max_height = 90 - phi + d ; // degrees
 
     else
         max_height = 90 - d + phi ;
@@ -555,9 +606,7 @@ void MainWindow::on_pushButton_clicked()
 
 	////    REFRACTION    ////
 
-	ref() ;
-
-	double R = 90 - z_0 * 180 / PI ;
+	double R = 90 - ref(h) * 180 / PI ;
 
 	c_h_d = int(R) ;
 	c_h_m = abs( int( (R - c_h_d) * 60 ) ) ;
@@ -572,7 +621,7 @@ void MainWindow::on_pushButton_clicked()
 	ui -> ref_min -> setText( QString::number( c_h_m ) ) ;
 	ui -> ref_sec -> setText( QString::number( c_h_s, 'f', 1 ) ) ;
 
-	double R_max = 90 - z_m * 180 / PI ;
+	double R_max = 90 - ref(max_height * PI / 180) * 180 / PI ;
 
 	mhd = int( R_max ) ;
 	mhm = abs( (R_max - mhd) * 60 ) ;
@@ -629,7 +678,6 @@ void MainWindow::on_pushButton_clicked()
 
         }
 
-//	test() ;
 	//// GALACTIC COORDINATES ////
 
 	B = p2B(d, a, dG, aG) ;
@@ -638,60 +686,10 @@ void MainWindow::on_pushButton_clicked()
 	ui -> galactic_b -> setText( QString::number(B * 180 / PI, 'f', 4) ) ;
 	ui -> galactic_l -> setText( QString::number(L * 180 / PI, 'f', 4) ) ;
 
-	//// MAKE DATA FOR PLOT ////
-/*
-    system("> /usr/local/Data/Height.txt") ;
-
-    for (double i = t - 5; i < (t + 5); i += 0.1666666)
-        {
-
-        CT = LMST + i - t ;
-        ch = dec2height (d, i, phi);
-        height = "echo '" ;
-
-        if (CT > 0 and CT < 24)
-            {
-
-            H = int(CT) ;
-            M = int( (CT - H) * 60 ) ;
-            height += std::to_string(day2) + "/" + std::to_string(mon2) + " " + std::to_string(H) + ":" + std::to_string(M) ;
-
-            }
-        else if (CT > 24)
-            {
-
-                        H = fmod(int(CT), 24)  ;
-                        M = int( ( fmod(CT, 24) - H ) * 60 ) ;
-                        height += std::to_string(day2 + 1) + "/" + std::to_string(mon2) + " " + std::to_string(H) + ":" + std::to_string(M) ;
-
-
-            }
-
-        else
-            {
-
-            CT += 24 ;
-                        H = int(CT) ;
-                        M = int( (CT - H) * 60 ) ;
-                        height += std::to_string(day2 - 1) + "/" + std::to_string(mon2) + " " + std::to_string(H) + ":" + std::to_string(M) ;
-
-            }
-
-        std::string str = std::to_string(ch) ;
-        std::replace( str.begin(), str.end(), ',', '.');
-        height += ", " + str + "' >> /usr/local/Data/Height.txt";
-
-        system( height.c_str() ) ;
-
-        }
-
-
-    ////    CALL GRAPH      ////
-
-    graph() ;
-*/
 }
 
+
+////    LOAD CITIES    ////
 
 void MainWindow::on_Box_country_currentTextChanged(const QString &arg1)
 {
@@ -773,6 +771,9 @@ void MainWindow::on_Box_city_currentTextChanged(const QString &arg1)
 		}
 
 }
+
+
+////    FIND OBJECT    ////
 
 void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check coordinates and steal them
 {
@@ -923,6 +924,8 @@ _)      \.___.,|     .'
 
 
 */
+
+
 
 
 

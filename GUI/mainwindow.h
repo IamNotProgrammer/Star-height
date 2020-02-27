@@ -64,7 +64,9 @@ private slots:
 
 	void on_comboBox_3_activated(int index);
 
-	void ref() ;
+	double ref(double height) ;
+
+	void on_pushButton_4_clicked();
 
 private:
 	Ui::MainWindow *ui;
@@ -101,7 +103,7 @@ private:
 
     double UT = 0, LST = 0, LMST = 0, t = 0, t_r ; // time: Greenwich time, local siderial time, local time, hour angle
     double max_height = 0 ;
-    double h, A ; // coordinates: hegight, Azimuth ;
+	double h, A ; // coordinates: hegight (rad), Azimuth ;
     double ch, CT ; //changing height, changing time (in function)
 
 	// refraction //
@@ -109,7 +111,6 @@ private:
 	double pressure = 760 ;
 	double wl = 0.551 ; // wave length
 	double T = 0 ;
-	double z_0, z_m ;
 
 	std::string height, url, command, line, star ;
 	QString object ;
