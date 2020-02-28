@@ -331,9 +331,8 @@ double hour2azm (double dec, double h, double phi, double t)
         t = t * PI / 12 ;
 
 
-        C_A = (  sin(h) * cos(phi) - cos(dec) * cos(t) ) / ( cos(h) * sin(phi)  ) ;
+		C_A = (  sin(dec) - cos(PI * 0.5 - h) * sin(phi) ) / ( cos(phi) * sin(PI * 0.5 - h)  ) ;
         A = acos(C_A) * 180 / PI ;
-		A = int(A * 1e4) / 1e4 ;	// I forgot what it does but it does something
 
         if (t > PI)
                 A = fmod(360 - A, 360) ;
@@ -596,7 +595,26 @@ void MainWindow::on_pushButton_4_clicked()
 	system("/usr/local/Data/Plot.gnu") ;
 
 	el = new Elevation(this) ;
+	azimuth = new Azimuth(this) ;
+
+	if (ui -> Object_name -> text() != "")
+		{
+
+		el -> setWindowTitle("Elevation of " + ui -> Object_name -> text()) ;
+		azimuth -> setWindowTitle("Azimuth of " + ui -> Object_name -> text()) ;
+
+		}
+
+	else
+		{
+
+		el -> setWindowTitle("Elevation of " + ui -> Object_name -> text()) ;
+		azimuth -> setWindowTitle("Azimuth of " + ui -> Object_name -> text()) ;
+
+		}
+
 	el -> show() ;
+	azimuth -> show() ;
 
 }
 

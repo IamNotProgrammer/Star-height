@@ -7,6 +7,7 @@
 #include <QPixmap>
 #include <QLabel>
 #include <elevation.h>
+#include <azimuth.h>
 
 namespace Ui {
 class MainWindow;
@@ -117,6 +118,7 @@ private:
 	QString object ;
 
 	Elevation *el ;
+	Azimuth *azimuth ;
 
 };
 

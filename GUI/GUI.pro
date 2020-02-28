@@ -25,17 +25,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    azimuth.cpp \
     elevation.cpp \
         main.cpp \
 mainwindow.cpp \
 astm.cpp
 
 HEADERS += \
+    azimuth.h \
     elevation.h \
 mainwindow.h \
 astm.h
 
 FORMS += \
+        azimuth.ui \
         elevation.ui \
         mainwindow.ui
 
