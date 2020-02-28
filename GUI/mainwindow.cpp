@@ -323,21 +323,24 @@ double hour2azm (double dec, double h, double phi, double t)
         {
 
         double A ;      // azimuth
-        double C_A ;    // cos A
+		double C_A, S_A ;    // cos A, sin A
 
 		h = h * PI / 180 ;	// radian masetrace
         dec = dec * PI / 180 ;
         phi = phi * PI / 180 ;
         t = t * PI / 12 ;
 
-
 		C_A = (  sin(dec) - cos(PI * 0.5 - h) * sin(phi) ) / ( cos(phi) * sin(PI * 0.5 - h)  ) ;
-        A = acos(C_A) * 180 / PI ;
+		S_A = sin(t) * cos(dec) / cos(h) ;
 
-        if (t > PI)
-                A = fmod(360 - A, 360) ;
+		A = atan2(S_A, C_A) ;
 
-        return A ;
+		A *= 180 / PI ;
+
+		if (A < 0)
+			A += 360 ;
+
+		return A ;
 
         }
 
@@ -863,7 +866,7 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 
 	object = ui -> Object_name -> text() ;	// object name from gui
 	url = object.toStdString() ;
-	url.erase( remove_if( url.begin(), url.end(), isspace ), url.end() ) ;
+	std::replace( url.begin(), url.end(), ' ', '+') ;
 
 	command.append("wget -O /usr/local/Data/object.txt "
 	"\"http://simbad.u-strasbg.fr/simbad/sim-script?script=format%20object%20%22%25IDLIST(1)%20%7C%20%25COO(A%20D)%22%0A") ;	// make command
