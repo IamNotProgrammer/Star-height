@@ -20,7 +20,7 @@ set yrange [a:b]
 
 set border linecolor "#5E610B"
 set object 1 rect from screen 0, 0 to screen 1, 1 fc rgb "#0B0B3B" behind
-set object 2 rect from graph 0, first 0 to graph 1, 0 fc rgb "#009400" behind
+set object 2 rect from graph 0, first 0 to graph 1, 0 fc rgb "#006E00" behind
 
 set format x "%H:%M\n%d/%m"
 
