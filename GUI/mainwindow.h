@@ -5,11 +5,12 @@
 
 #include <QMainWindow>
 #include <QPixmap>
-#include <QLabel>
 
 namespace Ui {
 class MainWindow;
 }
+
+
 
 class MainWindow : public QMainWindow
 {
@@ -21,6 +22,7 @@ public:
     ~MainWindow();
 
 private slots:
+//	void test() ;
 
     void on_dec_deg_textChanged(const QString &arg1);
 
@@ -52,26 +54,8 @@ private slots:
 
 	void on_pushButton_3_clicked();
 
-	void on_Box_country_currentTextChanged(const QString &arg1);
-
-	void on_Box_city_currentTextChanged(const QString &arg1);
-
-	void on_lineEdit_4_textChanged(const QString &arg1);
-
-	void on_lineEdit_2_textChanged(const QString &arg1);
-
-	void on_lineEdit_textChanged(const QString &arg1);
-
-	void on_comboBox_3_activated(int index);
-
-	double ref(double height) ;
-
-	void on_pushButton_4_clicked();
-
 private:
 	Ui::MainWindow *ui;
-
-	QLabel *version ;
 
     int year = 2019 ; // current year
     int mon2 = 5 ; // current month
@@ -81,13 +65,8 @@ private:
 	int date_mon ;
 	int date_day ;
 
-	int mhd, mhm ;
-	float mhs ;
-
 	int H = 0, M = 0, S = 0, L_H = 0, L_M = 0, L_S = 0 ; // Time: local hour, local minute, local second, LST hour, LST minute
-	int c_h_d, c_h_m ;
-	float c_h_s ;
-	double elevation ;
+
                                         // dec - declination, re - rectastence
     double d_d = 0, d_m = 0, d_s = 0 ; // dec degree, dec minute, dec second
     double re_h = 0, re_m = 0, re_s = 0 ; // ra hour, ra minute, ra second
@@ -103,17 +82,12 @@ private:
 
     double UT = 0, LST = 0, LMST = 0, t = 0, t_r ; // time: Greenwich time, local siderial time, local time, hour angle
     double max_height = 0 ;
-	double h, A ; // coordinates: hegight (rad), Azimuth ;
+    double h, A ; // coordinates: hegight, Azimuth ;
     double ch, CT ; //changing height, changing time (in function)
-
-	// refraction //
-
-	double pressure = 760 ;
-	double wl = 0.551 ; // wave length
-	double T = 0 ;
 
 	std::string height, url, command, line, star ;
 	QString object ;
+	int pos, n ;
 
 };
 

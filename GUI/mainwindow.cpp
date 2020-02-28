@@ -9,63 +9,27 @@
 #include <iomanip>
 #include <stdio.h>
 #include <fstream>
-#include <QMessageBox>
-#include <QDir>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-	version = new QLabel(this);
-	statusBar() -> addPermanentWidget(version);
-	version -> setText(VERSION_STRING) ;
-
-	QDir directory("/usr/local/Data/Observatories/") ;
-
-	QStringList ct = directory.entryList( QStringList() << "*", QDir::Files ) ;
-
-	foreach(QString filename, ct)
-		{
-
-		ui -> Box_country -> addItem(filename) ;
-
-		}
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+
 }
 
+////	OBSERVATORIES	////
+
+// Work in progress but I have no fucking idea how to call function from mainwindow.cpp
+// when program starts. Basically I want list of observatiores in .txt file and that list
+// is downloaded each time program starts beacuse I'm lazy fuck
 
 ////    CHANGE DECLINATION  ////
-
-std::string cmd_out(std::string cmd) // https://www.jeremymorgan.com/tutorials/c-programming/how-to-capture-the-output-of-a-linux-command-in-c/
-	{
-
-	std::string data ;
-	FILE * stream ;
-	const int max_buffer = 256 ;
-	char buffer[max_buffer] ;
-	cmd.append(" 2>&1") ;
-
-	stream = popen(cmd.c_str(), "r") ;
-
-	if (stream)
-		{
-		while (!feof(stream))
-
-			if (fgets(buffer, max_buffer, stream) != NULL)
-				data.append(buffer) ;
-
-		pclose(stream) ;
-		}
-
-	return data ;	// I have no idea what the fuck any of it means
-
-	}
 
 void MainWindow::on_dec_deg_textChanged(const QString &arg1)	// declination hours
 {
@@ -105,7 +69,7 @@ void MainWindow::on_dec_sec_textChanged(const QString &arg1)	// seconds
 
 void MainWindow::on_ra_h_textChanged(const QString &arg1)	// right ascention hours
 {
-	re_h = arg1.toDouble() ;
+    re_h = arg1.toInt() ;
     a = re_h + re_m + re_s ;
 }
 
@@ -287,7 +251,8 @@ double dec2height (double dec, double t, double phi)
         phi = phi * PI / 180 ;
 
         S_h = sin(phi) * sin(dec) + cos(phi) * cos(dec) * cos(t) ;
-		h = asin(S_h) ;
+        h = asin(S_h) * 180 / PI ;
+        h = int(h * 1e4) / 1e4 ;
 
         return h ;
 
@@ -318,8 +283,8 @@ double hour2azm (double dec, double h, double phi, double t)
 
         }
 
-
 ////	GALACTIC COORDINATES	////
+
 
 double p2B (double d, double a, double dG, double aG)	// calculates latitude in galactic coordinates
 	{
@@ -378,13 +343,21 @@ double p2L (double d, double a, double dG, double aG, double theta, double B)	//
 	}
 
 
+
+/*
+void graph()
+    {
+
+     system("/usr/local/Data/Plot_height.plt") ;
+
+    }
+*/
+
+
 //// SET CURRENT TIME ////
 
 void MainWindow::on_pushButton_2_clicked()
 {
-
-	int tz = ui -> time_zone -> value() ;
-	ui -> time_zone -> setValue(0) ;
 
 	std::time_t now = time(NULL) ;
 	tm *ltm = localtime(&now) ;
@@ -402,242 +375,43 @@ void MainWindow::on_pushButton_2_clicked()
 	UT = H + double( M ) * 0.0166666666666 + double( S ) * 0.0002777777777777777 - ui -> time_zone -> value() ;
 	ui -> LT -> setTime( QTime(H, M, S) ) ; // sets current local time
 
-	ui -> time_zone -> setValue(tz) ;
-
 }
-
-
-////    REFRACTION    ////
-
-void MainWindow::on_lineEdit_4_textChanged(const QString &arg1) // wave length
-	{
-
-	wl = arg1.toDouble() * 1e-3 ;
-
-	}
-
-void MainWindow::on_lineEdit_2_textChanged(const QString &arg1) // temperature
-	{
-
-	if ( ui -> comboBox_3 -> currentIndex() == 0)
-		T = arg1.toDouble() - 273.15 ;
-
-	else if ( ui -> comboBox_3 -> currentIndex() == 1)
-		T = arg1.toDouble() ;
-
-	else
-		T = ( ( ui -> lineEdit_2 -> text() ).toDouble() - 32 ) / 1.80 ;
-
-	}
-
-
-void MainWindow::on_comboBox_3_activated(int index)
-	{
-
-	if (index == 0)
-		T = ( ui -> lineEdit_2 -> text() ).toDouble() - 273.15 ;
-
-	else if (index == 1)
-		T = ( ui -> lineEdit_2 -> text() ).toDouble() ;
-
-	else
-		T = ( ( ui -> lineEdit_2 -> text() ).toDouble() - 32 ) / 1.80 ;
-
-	}
-
-void MainWindow::on_lineEdit_textChanged(const QString &arg1) // pressure
-	{
-
-	pressure = arg1.toDouble() ;
-
-	}
-
-double MainWindow::ref(double height) // calculating refraction
-	{
-
-	double A, z, z_0 ;
-
-	A = 1.032653141e-4 * pressure * ( 1 + 0.0057 / (wl * wl) ) / ( T + 273 ) ;
-	B = 1 / A ;
-
-	z = PI * 0.5 - height ;
-	z_0 = z - 0.01 ;
-
-	for ( int c = 0; c < 20; c++ )
-		z_0 = z - A * tan(z_0) ;
-
-	if (height < 0)
-		z_0 = 2 * z - z_0 ;
-
-	return z_0 ;
-
-	}
-
-
-////    GRAPH    ////
-
-void MainWindow::on_pushButton_4_clicked()
-{
-
-	double elev ;
-	std::string grph ;
-
-	system("> /usr/local/Data/Height.txt") ;
-
-	for (double i = UT - 5; i <= (UT + 5); i += 0.166666666666666)
-		{
-
-		int h, m, rd ;
-		double j ;
-		std::string e ; // elevation
-
-		LST = date2LST(l, year, mon2, day2, i) ;
-		t = LST - a ;
-
-		elev = dec2height(d, t, phi) ;
-
-		grph = "" ;
-
-		grph.append("echo \"") ;
-
-		if (i < 0)
-			{
-
-			j = i + 24 ;
-			rd = day2 -1 ;
-
-			h = int(j) ;
-			m = int( (j - h) * 60 ) ;
-
-			grph.append( std::to_string(rd) + "/" + std::to_string(mon2) + " " ) ;
-			grph.append( std::to_string(h) + ":" + std::to_string(m) + ", " ) ;
-
-			}
-
-		else
-			{
-
-			h = int(i) ;
-			m = int( (i - h) * 60 ) ;
-
-			grph.append( std::to_string(day2) + "/" + std::to_string(mon2) + " " ) ;
-			grph.append( std::to_string(h) + ":" + std::to_string(m) + ", " ) ;
-
-			}
-
-		e = std::to_string(90 - ref(elev) * 180 / PI) ;
-		std::replace( e.begin(), e.end(), ',', '.') ;
-
-		grph.append(e) ;
-		grph.append("\" >> /usr/local/Data/Height.txt") ;
-
-		std::cout << grph << "\n" ;
-		system(grph.c_str()) ;
-
-		}
-
-}
-
 
 ////    CLICK BUTTON    ////
 
 void MainWindow::on_pushButton_clicked()
 {
-
-	//// maximum elevation ////
-
     if (d <= phi )
-		max_height = 90 - phi + d ; // degrees
+        max_height = 90 - phi + d ;
 
     else
         max_height = 90 - d + phi ;
 
-	mhd = int( max_height ) ;
-	mhm = abs( (max_height - mhd) * 60 ) ;
-	mhs = fmod( abs( (max_height - mhd) * 3600 - mhm * 60 ), 60.0 ) ;
-
-	if ( (max_height < 0) and (mhd == 0) )
-		ui -> max_h_deg-> setText("-" + QString::number( mhd ) ) ;
-
-	else
-		ui -> max_h_deg-> setText( QString::number( mhd ) ) ;
-
-	ui -> max_h_m -> setText(QString::number( mhm ) ) ;
-	ui -> max_h_s -> setText(QString::number( mhs, 'f', 1 ) ) ;
-
-
-
-	//// LST ////
+    ui -> max_h_deg->setText(QString::number( int( max_height ) ) ) ;
+    ui -> max_h_m ->setText(QString::number( int( abs(max_height - int( max_height )) * 60 ) ) ) ;
 
     LST = date2LST(l, year, mon2, day2, UT) ;
 
-	L_H = int(LST) ;	// LST hour
-	L_M = int( ( LST - L_H ) * 60 ) ;	// minute
-	L_S = int( ( (LST - L_H) * 3600 - L_M * 60) ) ; // second
+    L_H = int(LST) ;
+    L_M = int( ( LST - L_H ) * 60 ) ;
+	L_S = int( ( (LST - L_H) * 3600 - L_M * 60) ) ;
 
 	ui -> label_7 -> setText( QString::number(L_H) ) ;	// I'm just too lazy to change label numbers to some names
     ui -> label_9 -> setText( QString::number(L_M) ) ;
 	ui -> label_35 -> setText( QString::number(L_S) ) ;
 
-
-	//// azimuth and elevation ////
-
     t = LST - a ;
     h = dec2height(d, t, phi) ;
-	A = hour2azm (d, h, phi, t) ;
-	elevation = h * 180 / PI ;
+    A = hour2azm (d, h, phi, t) ;
 
-	c_h_d = int(elevation) ;
-	c_h_m = abs( int( (elevation - c_h_d) * 60 ) ) ;
-	c_h_s = fmod( abs( (elevation - c_h_d) * 3600 - c_h_m * 60 ), 60.0 ) ;
-
-	if ( (h < 0) and (c_h_d == 0) )
-		ui -> label_20 -> setText( "-" + QString::number( c_h_d ) ) ;
-
-	else
-		ui -> label_20 -> setText( QString::number( c_h_d ) ) ;
-
-	ui -> label_22 -> setText( QString::number( c_h_m ) ) ;
-	ui -> label_46 -> setText( QString::number( c_h_s, 'f', 1 ) ) ;
+    ui -> label_20 -> setText( QString::number( int(h) ) ) ;
+    ui -> label_22 -> setText( QString::number( int( abs( h - int(h) ) * 60 ) ) ) ;
 
     ui -> label_25 -> setText( QString::number( int(A) ) ) ;
     ui -> label_27 -> setText( QString::number( int( ( A - int(A) ) * 60 ) ) ) ;
 
 
-	////    REFRACTION    ////
-
-	double R = 90 - ref(h) * 180 / PI ;
-
-	c_h_d = int(R) ;
-	c_h_m = abs( int( (R - c_h_d) * 60 ) ) ;
-	c_h_s = fmod( abs( (R - c_h_d) * 3600 - c_h_m * 60 ), 60.0 ) ;
-
-	if ( (R < 0) and (c_h_d == 0) )
-		ui -> ref_deg -> setText( "-" + QString::number( c_h_d ) ) ;
-
-	else
-		ui -> ref_deg -> setText( QString::number( c_h_d ) ) ;
-
-	ui -> ref_min -> setText( QString::number( c_h_m ) ) ;
-	ui -> ref_sec -> setText( QString::number( c_h_s, 'f', 1 ) ) ;
-
-	double R_max = 90 - ref(max_height * PI / 180) * 180 / PI ;
-
-	mhd = int( R_max ) ;
-	mhm = abs( (R_max - mhd) * 60 ) ;
-	mhs = fmod( abs( (R_max - mhd) * 3600 - mhm * 60 ), 60.0 ) ;
-
-	if ( (R_max < 0) and (mhd == 0) )
-		ui -> max_ref_d-> setText("-" + QString::number( mhd ) ) ;
-
-	else
-		ui -> max_ref_d-> setText( QString::number( mhd ) ) ;
-
-	ui -> max_ref_m -> setText(QString::number( mhm ) ) ;
-	ui -> max_ref_s -> setText(QString::number( mhs, 'f', 1 ) ) ;
-
-
-	////    TIME TO/FROM MAX ELEVATION     ////
+    ////    TIME TO/FROM MAX HEIGHT     ////
 
     if (t < 0 or t > 12 )
         {
@@ -649,9 +423,8 @@ void MainWindow::on_pushButton_clicked()
             {
 
             t_r = abs(t) ;
-			ui -> t_h -> setText( QString::number(int(t_r)) ) ;
-			ui -> t_m -> setText( QString::number( int( ( t_r - int(t_r) ) * 60 ) ) ) ;
-			ui -> t_s -> setText( QString::number( int( ( ( t_r - int(t_r) ) * 60 - int( ( t_r - int(t_r) ) * 60 ) ) * 60 ) ) ) ;
+            ui -> t_h -> setText( QString::number(int(t_r)) ) ;
+            ui -> t_m -> setText( QString::number( int( ( t_r - int(t_r) ) * 60 ) ) ) ;
 
             }
 
@@ -659,9 +432,8 @@ void MainWindow::on_pushButton_clicked()
             {
 
             t_r = 24 - t ;
-			ui -> t_h -> setText( QString::number(int(t_r)) ) ;
+            ui -> t_h -> setText( QString::number(int(t_r)) ) ;
 			ui -> t_m -> setText( QString::number( int( ( t_r - int(t_r) ) * 60 ) ) ) ;
-			ui -> t_s -> setText( QString::number( int( ( ( t_r - int(t_r) ) * 60 - int( ( t_r - int(t_r) ) * 60 ) ) * 60 ) ) ) ;
 
             }
 
@@ -672,265 +444,323 @@ void MainWindow::on_pushButton_clicked()
 
         ui -> in_was -> setText("Was") ;
         ui -> ago -> setText("ago") ;
-		ui -> t_h -> setText( QString::number(int(t)) ) ;
-		ui -> t_m -> setText( QString::number( int( ( t - int(t) ) * 60 ) ) ) ;
-		ui -> t_s -> setText( QString::number( int( ( ( t_r - int(t_r) ) * 60 - int( ( t_r - int(t_r) ) * 60 ) ) * 60 ) ) ) ;
+        ui -> t_h -> setText( QString::number(int(t)) ) ;
+        ui -> t_m -> setText( QString::number( int( ( t - int(t) ) * 60 ) ) ) ;
 
         }
 
+//	test() ;
 	//// GALACTIC COORDINATES ////
 
 	B = p2B(d, a, dG, aG) ;
 	L = p2L(d, a, dG, aG, theta, B) ;
 
-	ui -> galactic_b -> setText( QString::number(B * 180 / PI, 'f', 4) ) ;
-	ui -> galactic_l -> setText( QString::number(L * 180 / PI, 'f', 4) ) ;
+	ui -> galactic_b -> setText( QString::number(B * 180 / PI, 'f', 1) ) ;
+	ui -> galactic_l -> setText( QString::number(L * 180 / PI, 'f', 1) ) ;
 
+	//// MAKE DATA FOR PLOT ////
+/*
+    system("> /usr/local/Data/Height.txt") ;
+
+    for (double i = t - 5; i < (t + 5); i += 0.1666666)
+        {
+
+        CT = LMST + i - t ;
+        ch = dec2height (d, i, phi);
+        height = "echo '" ;
+
+        if (CT > 0 and CT < 24)
+            {
+
+            H = int(CT) ;
+            M = int( (CT - H) * 60 ) ;
+            height += std::to_string(day2) + "/" + std::to_string(mon2) + " " + std::to_string(H) + ":" + std::to_string(M) ;
+
+            }
+        else if (CT > 24)
+            {
+
+                        H = fmod(int(CT), 24)  ;
+                        M = int( ( fmod(CT, 24) - H ) * 60 ) ;
+                        height += std::to_string(day2 + 1) + "/" + std::to_string(mon2) + " " + std::to_string(H) + ":" + std::to_string(M) ;
+
+
+            }
+
+        else
+            {
+
+            CT += 24 ;
+                        H = int(CT) ;
+                        M = int( (CT - H) * 60 ) ;
+                        height += std::to_string(day2 - 1) + "/" + std::to_string(mon2) + " " + std::to_string(H) + ":" + std::to_string(M) ;
+
+            }
+
+        std::string str = std::to_string(ch) ;
+        std::replace( str.begin(), str.end(), ',', '.');
+        height += ", " + str + "' >> /usr/local/Data/Height.txt";
+
+        system( height.c_str() ) ;
+
+        }
+
+
+    ////    CALL GRAPH      ////
+
+    graph() ;
+*/
 }
 
 
-////    LOAD CITIES    ////
-
-void MainWindow::on_Box_country_currentTextChanged(const QString &arg1)
-{
-
-	ui -> Box_city -> clear() ;
-
-	std::string path = "/usr/local/Data/Observatories/" ;
-	path.append(arg1.toStdString()) ;
-
-	std::ifstream muhfile ;
-	muhfile.open(path) ;
-
-	if (muhfile.is_open())
-		{
-
-		std::string line, city ;
-		std::size_t pos ;
-
-		while (getline(muhfile, line))
-			{
-
-			pos = line.find(",") ;
-			city = line.substr(0, pos) ;
-			ui -> Box_city -> addItem(QString::fromStdString(city)) ;
-
-			}
-
-		muhfile.close();
-
-		}
-
-}
-
-//// COUNTRIES AND CITIES ////
-
-void MainWindow::on_Box_city_currentTextChanged(const QString &arg1)
-{
-
-	std::string country, city, part, dl, sz ;
-	std::string path = "/usr/local/Data/Observatories/" ;
-	QString qs = ui -> Box_country -> currentText() ;
-
-	country = qs.toStdString() ;
-	city = arg1.toStdString() ;
-	path.append(country) ;
-
-	std::ifstream muhfile ;
-	muhfile.open(path) ;
-
-	if (muhfile.is_open())
-		{
-
-		std::size_t pos, com_1, com_2 ;
-
-		while (getline(muhfile, line))
-			{
-
-			pos = line.find(city) ;
-
-			if (pos != std::string::npos)
-				{
-
-				com_1 = line.find(",") ;
-				part = line.substr(com_1 + 1) ;
-				com_2 = part.find(",") ;
-
-				sz = line.substr(com_1+1, com_2) ; // latitude
-				dl = line.substr(com_1+com_2+2) ; // longitude
-
-				ui -> lat -> setText( QString::fromStdString(sz) ) ;
-				ui -> lon -> setText( QString::fromStdString(dl) ) ;
-
-				}
-
-			}
-
-		muhfile.close();
-
-		}
-
-}
 
 
-////    FIND OBJECT    ////
+
+
 
 void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check coordinates and steal them
 {
 
-	int space = 0 ;
-	int n ;
-
 	object = ui -> Object_name -> text() ;	// object name from gui
 	url = object.toStdString() ;
-	url.erase( remove_if( url.begin(), url.end(), isspace ), url.end() ) ;
+	url.erase( remove_if( url.begin(), url.end(), isspace ), url.end() ) ;  // I'm not that good, I just googled it
+																			// I don't even understand it
 
-	command.append("wget -O /usr/local/Data/object.txt "
-	"\"http://simbad.u-strasbg.fr/simbad/sim-script?script=format%20object%20%22%25IDLIST(1)%20%7C%20%25COO(A%20D)%22%0A") ;	// make command
+	command.append("wget -O /usr/local/Data/object.txt http://simbad.u-strasbg.fr/simbad/sim-basic?Ident=") ;	// make command
 	command.append(url) ;
-	command.append("\"") ;
+	command.append("\\&submit=SIMBAD+search") ;
 
 	system(command.c_str()) ;
 
 	command = "" ;	// clear command because it was just adding more and more url's
 
-	star = cmd_out("tail -n 2 /usr/local/Data/object.txt | head -n 1 ") ;
+	std::ifstream myfile ("/usr/local/Data/object.txt");
 
-	std::size_t found = star.find("|") ;
+//// !!!!! USE COORD. INSTEAD <INPUT TYPE=\"hidden\" NAME=\"Coord\" ID=\"Coord\" VALUE= !!!!!!! ////
+//// THAT'S VERY IMPORTANT THAT'S WHY I SPAM COMMENTS SO I WON'T IGNORE IT ////
+/// IT'S MUCH BETTER METHOD OF FINDING BUT I DON'T WANT TO CODE IT TODAY ////
 
-	if (found != std::string::npos)
+// REMEMBER THIS!!!!!!!!!!!!!
+
+	if ( myfile.is_open() )
 		{
 
-		star.erase(0, found + 2) ;
-
-		std::size_t pos = star.find("+") ;
-		std::size_t apos = star.find("-") ;
-
-		n = star.length() ;
-
-		if (apos != std::string::npos) // if dec is positive it's negative
-			pos = apos ;
-
-		for (int i = 0; i < pos ; i++) // hoe many spaces in string "star"
+		while ( getline (myfile, line) )
 			{
 
-			if (star.at(i) == ' ')
-				space++ ;
+			getline (myfile, line) ; // get line from file
+
+			if (line.find("<INPUT TYPE=\"hidden\" NAME=\"Coord\" ID=\"Coord\" VALUE=") != std::string::npos)
+				star = line.substr (60, line.size() - 64) ;
 
 			}
 
-		if (space == 3) //////////////// change values of right assecion /////////////////
+		myfile.close();
+
+		}
+
+
+	else
+		std::cout << "Unable to open file";
+
+	// Jesus fucking christ I wasted over hour to make that shit working
+
+	n = 0 ;
+
+	if (star.find("+") != std::string::npos)
+		{
+
+		pos = star.find("+") ;
+
+		for (int i = 0 ; i < pos ; i++ )
+			{
+
+			if (star[i] == ' ')
+				n++ ;
+
+			}
+
+		if (n == 2)
 			{
 
 			ui -> ra_h -> setText( QString::fromStdString( star.substr(0, 2) ) ) ;
 			ui -> ra_m -> setText( QString::fromStdString( star.substr(3, 2) ) ) ;
-			ui -> ra_s -> setText( QString::fromStdString( star.substr(6, pos-7) ) ) ;
+			ui -> ra_s -> setText( QString::fromStdString( star.substr(6, pos - 6) ) ) ;
 
 			}
 
-
-		else if (space == 2)
+		else if (n == 1)
 			{
 
 			ui -> ra_h -> setText( QString::fromStdString( star.substr(0, 2) ) ) ;
-			ui -> ra_m -> setText( QString::fromStdString( star.substr(3, pos-4) ) ) ;
-			ui -> ra_s -> setText( QString::number(0) ) ;
+			ui -> ra_m -> setText( QString::fromStdString( star.substr(3, pos - 3) ) ) ;
+			ui -> ra_s -> setText( "0" ) ;
 
 			}
 
 		else
 			{
 
-			ui -> ra_h -> setText( QString::fromStdString( star.substr(0, pos-1) ) ) ;
-			ui -> ra_m -> setText( QString::number(0) ) ;
-			ui -> ra_s -> setText( QString::number(0) ) ;
-
-			} /////////////////////////////////////////////////////////////////////////////////
-
-		space = 0 ;
-
-		for (int i = pos; i < n ; i++) /////////////// change values of declination ////////////
-			{
-
-			if (star.at(i) == ' ')
-				space++ ;
+			ui -> ra_h -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
+			ui -> ra_m -> setText( "0" ) ;
+			ui -> ra_s -> setText( "0" ) ;
 
 			}
 
-		if (space == 2)
+		n = 0 ;
+
+		for (int i = pos ; i < star.size() ; i++ )
 			{
 
-			ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos, 3) ) ) ;
-			ui -> dec_min -> setText( QString::fromStdString( star.substr(pos+4, 3) ) ) ;
-			ui -> dec_sec -> setText( QString::fromStdString( star.substr(pos+7, n-pos-7) ) ) ;
+			if (star[i] == ' ')
+				n++ ;
 
 			}
 
-		else if (space == 1)
+		if (n == 2)
 			{
 
 			ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos, 3) ) ) ;
-			ui -> dec_min -> setText( QString::fromStdString( star.substr(pos+4, n-pos-4) ) ) ;
-			ui -> dec_sec -> setText( QString::number(0) ) ;
+			ui -> dec_min -> setText( QString::fromStdString( star.substr(pos + 4, 2) ) ) ;
+			ui -> dec_sec -> setText( QString::fromStdString( star.substr(pos + 7) ) ) ;		
+
+			}
+
+		else if (n == 1)
+			{
+
+			ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos, 3) ) ) ;
+			ui -> dec_min -> setText( QString::fromStdString( star.substr(pos + 4) ) ) ;
+			ui -> dec_sec -> setText( "0" ) ;
 
 			}
 
 		else
 			{
 
-			ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos, n-pos) ) ) ;
-			ui -> dec_min -> setText( QString::number(0) ) ;
-			ui -> dec_sec -> setText( QString::number(0) ) ;
+			ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos) ) ) ;
+			ui -> dec_min -> setText( "0" ) ;
+			ui -> dec_sec -> setText( "0" ) ;
 
-			} /////////////////////////////////////////////////////////////////////////////////
+			}
 
 		}
 
 	else
 		{
 
-		QMessageBox::warning(this, "Object not found",
-		"No such object was found. Please check again.") ;
+		pos = star.find("-") ;
+		std::cout << star.substr(pos) << "\n" ;
 
-		}
+		for (int i = 0 ; i < pos ; i++ )
+			{
+
+			if (star[i] == ' ')
+				n++ ;
+
+			}
+
+		if (n == 2)
+			{
+
+			ui -> ra_h -> setText( QString::fromStdString( star.substr(0, 2) ) ) ;
+			ui -> ra_m -> setText( QString::fromStdString( star.substr(3, 2) ) ) ;
+			ui -> ra_s -> setText( QString::fromStdString( star.substr(6, pos - 6) ) ) ;
+
+			}
+
+		else if (n == 1)
+			{
+
+			ui -> ra_h -> setText( QString::fromStdString( star.substr(0, 2) ) ) ;
+			ui -> ra_m -> setText( QString::fromStdString( star.substr(3, pos - 3) ) ) ;
+			ui -> ra_m -> setText( "0" ) ;
+
+			}
+
+		else
+			{
+
+			ui -> ra_h -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
+			ui -> ra_m -> setText( "0" ) ;
+			ui -> ra_s -> setText( "0" ) ;
+
+			}
+
+		n = 0 ;
+
+		for (int i = pos ; i < star.size() ; i++ )
+			{
+
+			if (star[i] == ' ')
+				n++ ;
+
+			}
+
+		if (n == 2)
+			{
+
+			ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos, 3) ) ) ;
+			ui -> dec_min -> setText( QString::fromStdString( star.substr(pos + 4, 2) ) ) ;
+			ui -> dec_sec -> setText( QString::fromStdString( star.substr(pos + 7) ) ) ;
+
+			}
+
+		else if (n == 1)
+			{
+
+			ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos, 3) ) ) ;
+			ui -> dec_min -> setText( QString::fromStdString( star.substr(pos + 4) ) ) ;
+			ui -> dec_sec -> setText( "0" ) ;
+
+			}
+
+		else
+			{
+
+			ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos) ) ) ;
+			ui -> dec_min -> setText( "0" ) ;
+			ui -> dec_sec -> setText( "0" ) ;
+
+			}
+
+		} // oh God so much fucking coding. And I hate strings but It's working (I hope)
+
+
 }
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ////    THAT'S ALL FOR NOW      ////
-
-
-
-/*
-
-		 _nnnn_
-		dGGGGMMb
-	   @p~qp~~qMb
-	   M|@||@) M|
-	   @,----.JM|
-	  JS^\__/  qKL
-	 dZP        qKRb
-	dZP          qKKb
-   fZP            SMMb
-   HZM            MMMM
-   FqM            MMMM
- __| ".        |\dS"qML
- |    `.       | `' \Zq
-_)      \.___.,|     .'
-\____   )MMMMMP|   .'
-	 `-'       `--'
-
-
-*/
-
-
-
-
-
-
-
-
-
-
