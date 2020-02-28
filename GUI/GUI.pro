@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = GUI
+TARGET = star-height
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -25,18 +25,24 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    elevation.cpp \
         main.cpp \
 mainwindow.cpp \
 astm.cpp
 
 HEADERS += \
+    elevation.h \
 mainwindow.h \
 astm.h
 
 FORMS += \
+        elevation.ui \
         mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+VERSION = 1.6.3
+DEFINES += VERSION_STRING=\\\"$${VERSION}\\\"
