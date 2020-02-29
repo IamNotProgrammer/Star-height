@@ -48,10 +48,10 @@ qmake is required to compile files. If you don't have it installed install it
 
 ---
 
-1. On Ubuntu
+1. On Ubuntu or Linux Mint
 ```sh
-$ sudo apt-get install build-essential
-$ sudo apt-get install qt5-default
+$ sudo apt-get build-dep qt5-default
+$ sudo apt-get install libxcb-xinerama0-dev 
 ```
 
 2. On Arch, the superior distro
