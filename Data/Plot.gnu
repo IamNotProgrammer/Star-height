@@ -1,6 +1,6 @@
 #!/usr/bin/gnuplot
 
-set term pngcairo size 480, 360 font ",7"
+set term pngcairo size 960, 720 font ",14"
 set output "/usr/local/Data/Images/elevation.png"
 
 unset key
@@ -31,11 +31,11 @@ set ylabel "Elevation [°]" tc rgb "red"
 set xlabel "Date and time" tc rgb "red"
 
 plot "/usr/local/Data/Height.txt" every ::0::60 using 1:2 with lines lc rgb "red", \
-"/usr/local/Data/Height.txt" every ::30::30 using 1:2 with points pt 3 ps 2 lc rgb "yellow"
+"/usr/local/Data/Height.txt" every ::30::30 using 1:2 with points pt 3 ps 2.5 lc rgb "yellow"
 
 reset
 
-set term pngcairo size 400, 400 font ",7"
+set term pngcairo size 800, 800 font ",14"
 set output "/usr/local/Data/Images/azimuth.png"
 
 unset key
@@ -67,10 +67,10 @@ unset raxis
 
 set arrow from 0, 0 to polar STATS_min_x, 2 lc rgb "red" nohead
 
-set label "N" at screen 0.5, 0.96 center tc rgb "red" font ", 10"
-set label "E" at screen 0.96, 0.5 center tc rgb "red" font ", 10"
-set label "S" at screen 0.5, 0.04 center tc rgb "red" font ", 10"
-set label "W" at screen 0.04, 0.5 center tc rgb "red" font ", 10"
+set label "N" at screen 0.5, 0.96 center tc rgb "red" font ", 20"
+set label "E" at screen 0.96, 0.5 center tc rgb "red" font ", 20"
+set label "S" at screen 0.5, 0.04 center tc rgb "red" font ", 20"
+set label "W" at screen 0.04, 0.5 center tc rgb "red" font ", 20"
 
 plot 0.6666666 ls 12, 1.33333333 ls 12, \
-"/usr/local/Data/Height.txt" every ::61::61 using 1:2 with points pt 3 ps 2 lc rgb "yellow"
+"/usr/local/Data/Height.txt" every ::61::61 using 1:2 with points pt 3 ps 2.5 lc rgb "yellow"
