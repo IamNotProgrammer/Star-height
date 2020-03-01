@@ -6,8 +6,10 @@
 #include <QMainWindow>
 #include <QPixmap>
 #include <QLabel>
+
 #include <elevation.h>
 #include <azimuth.h>
+#include <opt_new_obs.h>
 
 namespace Ui {
 class MainWindow;
@@ -70,6 +72,8 @@ private slots:
 
 	void on_pushButton_4_clicked();
 
+	void on_actionAdd_observatory_triggered();
+
 private:
 	Ui::MainWindow *ui;
 
@@ -119,6 +123,9 @@ private:
 
 	Elevation *el ;
 	Azimuth *azimuth ;
+	Opt_new_obs *opt_new_obs ;
+
+
 
 };
 

@@ -811,7 +811,7 @@ void MainWindow::on_Box_country_currentTextChanged(const QString &arg1)
 void MainWindow::on_Box_city_currentTextChanged(const QString &arg1)
 {
 
-	std::string country, city, part, dl, sz ;
+	std::string country, city, part, dl, sz, alt ;
 	std::string path = "/usr/local/Data/Observatories/" ;
 	QString qs = ui -> Box_country -> currentText() ;
 
@@ -836,12 +836,24 @@ void MainWindow::on_Box_city_currentTextChanged(const QString &arg1)
 				{
 
 				com_1 = line.find(",") ;
-				part = line.substr(com_1 + 1) ;
+				part = line.substr(com_1+1) ;
 				com_2 = part.find(",") ;
 
-				sz = line.substr(com_1+1, com_2) ; // latitude
-				dl = line.substr(com_1+com_2+2) ; // longitude
+				sz = part.substr(0, com_2) ; // latitude
 
+				com_1 = part.find(",") ;
+				part = part.substr(com_1+1) ;
+				com_2 = part.find(",") ;
+
+				dl = part.substr(0, com_2) ; // longitude
+
+				com_1 = part.find(",") ;
+				part = part.substr(com_1+1) ;
+
+
+				alt = part.substr(0, com_2) ; // altitude
+
+				ui -> alt -> setText( QString::fromStdString(alt) ) ;
 				ui -> lat -> setText( QString::fromStdString(sz) ) ;
 				ui -> lon -> setText( QString::fromStdString(dl) ) ;
 
@@ -980,6 +992,12 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 
 
 
+void MainWindow::on_actionAdd_observatory_triggered()
+{
+		opt_new_obs = new Opt_new_obs(this) ;
+		opt_new_obs -> show() ;
+}
+
 
 
 ////    THAT'S ALL FOR NOW      ////
@@ -1007,6 +1025,8 @@ _)      \.___.,|     .'
 
 
 */
+
+
 
 
 

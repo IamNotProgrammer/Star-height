@@ -29,18 +29,21 @@ SOURCES += \
     elevation.cpp \
         main.cpp \
 mainwindow.cpp \
-astm.cpp
+astm.cpp \
+    opt_new_obs.cpp
 
 HEADERS += \
     azimuth.h \
     elevation.h \
 mainwindow.h \
-astm.h
+astm.h \
+    opt_new_obs.h
 
 FORMS += \
         azimuth.ui \
         elevation.ui \
-        mainwindow.ui
+        mainwindow.ui \
+        opt_new_obs.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
