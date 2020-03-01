@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>Star Height</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../../../../usr/local/Data/Images/logo.png</normaloff>../../../../usr/local/Data/Images/logo.png</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
