@@ -9,7 +9,7 @@
 
 #include <elevation.h>
 #include <azimuth.h>
-#include <opt_new_obs.h>
+#include <options_new_obs.h>
 
 namespace Ui {
 class MainWindow;
@@ -123,7 +123,7 @@ private:
 
 	Elevation *el ;
 	Azimuth *azimuth ;
-	Opt_new_obs *opt_new_obs ;
+	Options_new_obs *opt_new_obs ;
 
 
 

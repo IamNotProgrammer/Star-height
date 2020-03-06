@@ -994,7 +994,7 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 
 void MainWindow::on_actionAdd_observatory_triggered()
 {
-		opt_new_obs = new Opt_new_obs(this) ;
+		opt_new_obs = new Options_new_obs(this) ;
 		opt_new_obs -> show() ;
 }
 
