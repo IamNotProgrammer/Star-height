@@ -11,7 +11,32 @@
 #include <fstream>
 #include <QMessageBox>
 #include <QDir>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QDebug>
 
+
+//// 1. CHANGE DECLINATION
+//// 2. CHANGE RECTASTENCE
+//// 3. CHANGE LONGITUDE
+//// 4. CHANGE LATITUDE
+//// 5. LOCAL AND UNIVERSAL TIME
+//// 6. CHANGE DATE TO LST
+//// 7. CALCULATE OBJECT HEIGHT
+//// 8. CALCULATE AZIMUTH
+//// 9. GALACTIC COORDINATES
+//// 10. SET CURRENT TIME
+//// 11. REFRACTION
+//// 12. GRAPH
+//// 13. CLICK MAIN BUTTON
+//// 14. LOAD CITIES
+//// 15. COUNTRIES AND CITIES
+//// 16. FIND OBJECT
+//// 17. OPTIONS
+
+const double G = 0.0048481368110953596e-6 ; // constant to change parallax to distance in au.
+const double f = 0.0033528106710763545 ; // Earth's flatness ~ 1/300
+const double a = 4.26352124542639e-05 ; // Earth's bigger radius in au.
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -64,8 +89,6 @@ MainWindow::~MainWindow()
 }
 
 
-////    CHANGE DECLINATION  ////
-
 std::string cmd_out(std::string cmd) // https://www.jeremymorgan.com/tutorials/c-programming/how-to-capture-the-output-of-a-linux-command-in-c/
 	{
 
@@ -90,6 +113,8 @@ std::string cmd_out(std::string cmd) // https://www.jeremymorgan.com/tutorials/c
 	return data ;	// I have no idea what the fuck any of it means
 
 	}
+
+////   1. CHANGE DECLINATION    ////
 
 void MainWindow::on_dec_deg_textChanged(const QString &arg1)	// declination hours
 {
@@ -125,7 +150,7 @@ void MainWindow::on_dec_sec_textChanged(const QString &arg1)	// seconds
 }
 
 
-////    CHANGE RECTASTENCE  ////
+////   2. CHANGE RECTASTENCE  ////
 
 void MainWindow::on_ra_h_textChanged(const QString &arg1)	// right ascention hours
 {
@@ -145,7 +170,7 @@ void MainWindow::on_ra_s_textChanged(const QString &arg1)	// seconds
     a = re_h + re_m + re_s ;
 }
 
-////    CHANGE LONGITUDE    ////
+////   3. CHANGE LONGITUDE    ////
 
 void MainWindow::on_lon_textChanged(const QString &arg1)	// longitude from gui
 {
@@ -164,14 +189,14 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)	// east/west
         l = abs(l) ;
 }
 
-////    CHANGE LATITUDE     ////
+////   4. CHANGE LATITUDE     ////
 
 void MainWindow::on_lat_textChanged(const QString &arg1)
 {
     phi = arg1.toDouble() ;
 }
 
-////    LOCAL AND UNIVERSAL TIME    ////
+////   5. LOCAL AND UNIVERSAL TIME    ////
 
 void MainWindow::on_LT_timeChanged(const QTime &time)	// when time is changed
 {
@@ -244,7 +269,7 @@ void MainWindow::on_time_zone_valueChanged(int arg1)	// when you change time zon
 void MainWindow::on_Date_dateChanged(const QDate &date)	// change date
 {
     year = date.year() ;
-    mon2 = date.month() ;
+	mon2 = date.month() ;
     day2 = date.day() ;
 
 	date_year = date.year() ;
@@ -271,7 +296,7 @@ void MainWindow::on_Date_dateChanged(const QDate &date)	// change date
 
 }
 
-////    CHANGE DATE TO LST      ////
+////   6. CHANGE DATE TO LST      ////
 
 double date2LST(double l, int year, int mon2, int day2, double hour)	// local sidereal time
 	{																	// but the truth is this is local mean sidereal time
@@ -298,7 +323,7 @@ double date2LST(double l, int year, int mon2, int day2, double hour)	// local si
 
     }
 
-////    CALCULATE OBJECT HEIGHT     ////
+////   7. CALCULATE OBJECT HEIGHT     ////
 
 double dec2height (double dec, double t, double phi)
         {
@@ -317,7 +342,7 @@ double dec2height (double dec, double t, double phi)
 
         }
 
-////    CALCULATE AZIMUTH   ////
+////   8. CALCULATE AZIMUTH   ////
 
 double hour2azm (double dec, double h, double phi, double t)
         {
@@ -345,7 +370,7 @@ double hour2azm (double dec, double h, double phi, double t)
         }
 
 
-////	GALACTIC COORDINATES	////
+////    9. GALACTIC COORDINATES    ////
 
 double p2B (double d, double a, double dG, double aG)	// calculates latitude in galactic coordinates
 	{
@@ -404,7 +429,7 @@ double p2L (double d, double a, double dG, double aG, double theta, double B)	//
 	}
 
 
-//// SET CURRENT TIME ////
+////    10. SET CURRENT TIME    ////
 
 void MainWindow::on_pushButton_2_clicked()
 {
@@ -433,7 +458,7 @@ void MainWindow::on_pushButton_2_clicked()
 }
 
 
-////    REFRACTION    ////
+////   11. REFRACTION    ////
 
 void MainWindow::on_lineEdit_4_textChanged(const QString &arg1) // wave length
 	{
@@ -500,7 +525,7 @@ double MainWindow::ref(double height) // calculating refraction
 	}
 
 
-////    GRAPH    ////
+////   12. GRAPH    ////
 
 void MainWindow::on_pushButton_4_clicked()
 {
@@ -622,12 +647,12 @@ void MainWindow::on_pushButton_4_clicked()
 }
 
 
-////    CLICK BUTTON    ////
+////   13. CLICK MAIN BUTTON    ////
 
 void MainWindow::on_pushButton_clicked()
 {
 
-	//// maximum elevation ////
+	// maximum elevation //
 
     if (d <= phi )
 		max_height = 90 - phi + d ; // degrees
@@ -648,9 +673,7 @@ void MainWindow::on_pushButton_clicked()
 	ui -> max_h_m -> setText(QString::number( mhm ) ) ;
 	ui -> max_h_s -> setText(QString::number( mhs, 'f', 1 ) ) ;
 
-
-
-	//// LST ////
+	// LST //
 
     LST = date2LST(l, year, mon2, day2, UT) ;
 
@@ -662,11 +685,55 @@ void MainWindow::on_pushButton_clicked()
     ui -> label_9 -> setText( QString::number(L_M) ) ;
 	ui -> label_35 -> setText( QString::number(L_S) ) ;
 
+	// time to/from max elevation //
 
-	//// azimuth and elevation ////
+	t = LST - a ;
 
-    t = LST - a ;
-    h = dec2height(d, t, phi) ;
+	if (t < 0 or t > 12 )
+		{
+
+		ui -> in_was -> setText("In") ;
+		ui -> ago -> setText("") ;
+
+		if (t < 0)
+			{
+
+			t_r = abs(t) ;
+			ui -> t_h -> setText( QString::number(int(t_r)) ) ;
+			ui -> t_m -> setText( QString::number( int( ( t_r - int(t_r) ) * 60 ) ) ) ;
+			ui -> t_s -> setText( QString::number( int( ( ( t_r - int(t_r) ) * 60 - int( ( t_r - int(t_r) ) * 60 ) ) * 60 ) ) ) ;
+
+			}
+
+		else
+			{
+
+			t_r = 24 - t ;
+			ui -> t_h -> setText( QString::number(int(t_r)) ) ;
+			ui -> t_m -> setText( QString::number( int( ( t_r - int(t_r) ) * 60 ) ) ) ;
+			ui -> t_s -> setText( QString::number( int( ( ( t_r - int(t_r) ) * 60 - int( ( t_r - int(t_r) ) * 60 ) ) * 60 ) ) ) ;
+
+			}
+
+		}
+
+	else
+		{
+
+		ui -> in_was -> setText("Was") ;
+		ui -> ago -> setText("ago") ;
+		ui -> t_h -> setText( QString::number(int(t)) ) ;
+		ui -> t_m -> setText( QString::number( int( ( t - int(t) ) * 60 ) ) ) ;
+		ui -> t_s -> setText( QString::number( int( ( ( t_r - int(t_r) ) * 60 - int( ( t_r - int(t_r) ) * 60 ) ) * 60 ) ) ) ;
+
+		}
+
+	// azimuth and elevation //
+
+	if (t < 0)
+		t += 24 ;
+
+	h = dec2height(d, t, phi) ;
 	A = hour2azm (d, h, phi, t) ;
 	elevation = h * 180 / PI ;
 
@@ -683,11 +750,10 @@ void MainWindow::on_pushButton_clicked()
 	ui -> label_22 -> setText( QString::number( c_h_m ) ) ;
 	ui -> label_46 -> setText( QString::number( c_h_s, 'f', 1 ) ) ;
 
-    ui -> label_25 -> setText( QString::number( int(A) ) ) ;
-    ui -> label_27 -> setText( QString::number( int( ( A - int(A) ) * 60 ) ) ) ;
+	ui -> label_25 -> setText( QString::number( int(A) ) ) ;
+	ui -> label_27 -> setText( QString::number( int( ( A - int(A) ) * 60 ) ) ) ;
 
-
-	////    REFRACTION    ////
+	// refraction //
 
 	double R = 90 - ref(h) * 180 / PI ;
 
@@ -719,49 +785,7 @@ void MainWindow::on_pushButton_clicked()
 	ui -> max_ref_m -> setText(QString::number( mhm ) ) ;
 	ui -> max_ref_s -> setText(QString::number( mhs, 'f', 1 ) ) ;
 
-
-	////    TIME TO/FROM MAX ELEVATION     ////
-
-    if (t < 0 or t > 12 )
-        {
-
-        ui -> in_was -> setText("In") ;
-        ui -> ago -> setText("") ;
-
-        if (t < 0)
-            {
-
-            t_r = abs(t) ;
-			ui -> t_h -> setText( QString::number(int(t_r)) ) ;
-			ui -> t_m -> setText( QString::number( int( ( t_r - int(t_r) ) * 60 ) ) ) ;
-			ui -> t_s -> setText( QString::number( int( ( ( t_r - int(t_r) ) * 60 - int( ( t_r - int(t_r) ) * 60 ) ) * 60 ) ) ) ;
-
-            }
-
-        else
-            {
-
-            t_r = 24 - t ;
-			ui -> t_h -> setText( QString::number(int(t_r)) ) ;
-			ui -> t_m -> setText( QString::number( int( ( t_r - int(t_r) ) * 60 ) ) ) ;
-			ui -> t_s -> setText( QString::number( int( ( ( t_r - int(t_r) ) * 60 - int( ( t_r - int(t_r) ) * 60 ) ) * 60 ) ) ) ;
-
-            }
-
-        }
-
-    else
-        {
-
-        ui -> in_was -> setText("Was") ;
-        ui -> ago -> setText("ago") ;
-		ui -> t_h -> setText( QString::number(int(t)) ) ;
-		ui -> t_m -> setText( QString::number( int( ( t - int(t) ) * 60 ) ) ) ;
-		ui -> t_s -> setText( QString::number( int( ( ( t_r - int(t_r) ) * 60 - int( ( t_r - int(t_r) ) * 60 ) ) * 60 ) ) ) ;
-
-        }
-
-	//// GALACTIC COORDINATES ////
+	// galactic coordinates //
 
 	B = p2B(d, a, dG, aG) ;
 	L = p2L(d, a, dG, aG, theta, B) ;
@@ -772,7 +796,7 @@ void MainWindow::on_pushButton_clicked()
 }
 
 
-////    LOAD CITIES    ////
+////   14. LOAD CITIES    ////
 
 void MainWindow::on_Box_country_currentTextChanged(const QString &arg1)
 {
@@ -806,7 +830,7 @@ void MainWindow::on_Box_country_currentTextChanged(const QString &arg1)
 
 }
 
-//// COUNTRIES AND CITIES ////
+////    15. COUNTRIES AND CITIES    ////
 
 void MainWindow::on_Box_city_currentTextChanged(const QString &arg1)
 {
@@ -868,116 +892,65 @@ void MainWindow::on_Box_city_currentTextChanged(const QString &arg1)
 }
 
 
-////    FIND OBJECT    ////
+////   16. FIND OBJECT    ////
 
 void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check coordinates and steal them
 {
 
-	int space = 0 ;
-	int n ;
-
 	object = ui -> Object_name -> text() ;	// object name from gui
-	url = object.toStdString() ;
-	std::replace( url.begin(), url.end(), ' ', '+') ;
 
-	command.append("wget -O /usr/local/Data/object.txt "
-	"\"http://simbad.u-strasbg.fr/simbad/sim-script?script=format%20object%20%22%25IDLIST(1)%20%7C%20%25COO(A%20D)%22%0A") ;	// make command
-	command.append(url) ;
-	command.append("\"") ;
+	object.replace("+", "%2B") ; // %2B is + in name of object in simbad url
+	object.replace(' ', '+') ;
 
-	system(command.c_str()) ;
+	// Download query //
 
-	command = "" ;	// clear command because it was just adding more and more url's
+	QString urly ;
 
-	star = cmd_out("tail -n 2 /usr/local/Data/object.txt | head -n 1 ") ;
+	urly = "http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=format+object+form1+%22%25COO(A+D)+|%22%0D%0Aquery+id+" ;
+	urly += object ;
+
+	QNetworkAccessManager manager;
+	QNetworkReply *response = manager.get(QNetworkRequest(QUrl(urly)));
+	QEventLoop event;
+	connect(response,SIGNAL(finished()),&event,SLOT(quit()));
+	event.exec();
+	QString html = response->readAll(); // Source should be stored here
+
+	html.remove(0, 393 + object.size()) ;
+
+	star = html.toStdString() ;
 
 	std::size_t found = star.find("|") ;
 
 	if (found != std::string::npos)
 		{
 
+		std::size_t pos = star.find(" ") ;
+		ui -> ra_h -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
+		star.erase(0, pos + 1) ;
+
+		pos = star.find(" ") ;
+		ui -> ra_m -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
+		star.erase(0, pos + 1) ;
+
+		pos = star.find(" ") ;
+		ui -> ra_s -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
+		star.erase(0, pos + 1) ;
+
+		pos = star.find(" ") ;
+		ui -> dec_deg -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
+		star.erase(0, pos + 1) ;
+
+		pos = star.find(" ") ;
+		ui -> dec_min -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
+		star.erase(0, pos + 1) ;
+
+		pos = star.find(" ") ;
+		ui -> dec_sec -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
+
+		found = star.find("|") ;
 		star.erase(0, found + 2) ;
-
-		std::size_t pos = star.find("+") ;
-		std::size_t apos = star.find("-") ;
-
-		n = star.length() ;
-
-		if (apos != std::string::npos) // if dec is positive it's negative
-			pos = apos ;
-
-		for (int i = 0; i < pos ; i++) // hoe many spaces in string "star"
-			{
-
-			if (star.at(i) == ' ')
-				space++ ;
-
-			}
-
-		if (space == 3) //////////////// change values of right assecion /////////////////
-			{
-
-			ui -> ra_h -> setText( QString::fromStdString( star.substr(0, 2) ) ) ;
-			ui -> ra_m -> setText( QString::fromStdString( star.substr(3, 2) ) ) ;
-			ui -> ra_s -> setText( QString::fromStdString( star.substr(6, pos-7) ) ) ;
-
-			}
-
-
-		else if (space == 2)
-			{
-
-			ui -> ra_h -> setText( QString::fromStdString( star.substr(0, 2) ) ) ;
-			ui -> ra_m -> setText( QString::fromStdString( star.substr(3, pos-4) ) ) ;
-			ui -> ra_s -> setText( QString::number(0) ) ;
-
-			}
-
-		else
-			{
-
-			ui -> ra_h -> setText( QString::fromStdString( star.substr(0, pos-1) ) ) ;
-			ui -> ra_m -> setText( QString::number(0) ) ;
-			ui -> ra_s -> setText( QString::number(0) ) ;
-
-			} /////////////////////////////////////////////////////////////////////////////////
-
-		space = 0 ;
-
-		for (int i = pos; i < n ; i++) /////////////// change values of declination ////////////
-			{
-
-			if (star.at(i) == ' ')
-				space++ ;
-
-			}
-
-		if (space == 2)
-			{
-
-			ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos, 3) ) ) ;
-			ui -> dec_min -> setText( QString::fromStdString( star.substr(pos+4, 3) ) ) ;
-			ui -> dec_sec -> setText( QString::fromStdString( star.substr(pos+7, n-pos-7) ) ) ;
-
-			}
-
-		else if (space == 1)
-			{
-
-			ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos, 3) ) ) ;
-			ui -> dec_min -> setText( QString::fromStdString( star.substr(pos+4, n-pos-4) ) ) ;
-			ui -> dec_sec -> setText( QString::number(0) ) ;
-
-			}
-
-		else
-			{
-
-			ui -> dec_deg -> setText( QString::fromStdString( star.substr(pos, n-pos) ) ) ;
-			ui -> dec_min -> setText( QString::number(0) ) ;
-			ui -> dec_sec -> setText( QString::number(0) ) ;
-
-			} /////////////////////////////////////////////////////////////////////////////////
+		pos = star.find(" ") ;
 
 		}
 
@@ -990,7 +963,7 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 		}
 }
 
-
+////   17. OPTIONS    ////
 
 void MainWindow::on_actionAdd_observatory_triggered()
 {

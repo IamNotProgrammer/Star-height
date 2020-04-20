@@ -126,7 +126,6 @@ private:
 	Options_new_obs *opt_new_obs ;
 
 
-
 };
 
 #endif // MAINWINDOW_H
