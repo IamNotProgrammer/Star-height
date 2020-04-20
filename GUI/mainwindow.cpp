@@ -906,7 +906,7 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 
 	QString urly ;
 
-	urly = "http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=format+object+form1+%22%25COO(A+D)+|%22%0D%0Aquery+id+" ;
+	urly = "http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=output+script%3Doff%0D%0Aoutput+console%3Doff%0D%0Aformat+object+form1+%22%25COO(A+D)+|%22%0D%0Aquery+id+" ;
 	urly += object ;
 
 	QNetworkAccessManager manager;
@@ -915,8 +915,6 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 	connect(response,SIGNAL(finished()),&event,SLOT(quit()));
 	event.exec();
 	QString html = response->readAll(); // Source should be stored here
-
-	html.remove(0, 393 + object.size()) ;
 
 	star = html.toStdString() ;
 
