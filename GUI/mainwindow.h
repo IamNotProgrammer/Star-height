@@ -97,7 +97,7 @@ private:
                                         // dec - declination, re - rectastence
     double d_d = 0, d_m = 0, d_s = 0 ; // dec degree, dec minute, dec second
     double re_h = 0, re_m = 0, re_s = 0 ; // ra hour, ra minute, ra second
-    double d = 0, a = 0, l = 0, phi = 0 ; // coordinates: dec, rectastence, longitude, latitude
+	double d = 0, a = 0, l = 0, phi = 0 ; // coordinates: dec, right acession, longitude, latitude
 
 	// Galactic coordinates //
 

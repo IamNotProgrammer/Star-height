@@ -530,9 +530,25 @@ double MainWindow::ref(double height) // calculating refraction
 void MainWindow::on_pushButton_4_clicked()
 {
 
+	double ad_1, ad_2, aa_1, aa_2 ; // declination and right acsession for area graph
 	double elev, azim ;
 	std::string grph ;
 	char com[256] ;
+
+	//																																												ra for deg, rah for hours	 rah >			 rah <			dec >		     dec <			 flux
+	//																																																		v	   v               v              v                v			   v
+	//http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=output+script%3Doff%0D%0Aoutput+console%3Doff%0D%0Aformat+object+form1+%22%25IDLIST(1)+|+%25COO(D+A)+|%22%0D%0Aquery+sample+rah+%3E+13+%26+rah+%3C+14+%26+dec+%3E+23.5+%26+dec+%3C+24+%26+Vmag+%3C+10%0D%0A
+	//																																																			 aa_2		    aa_1			 ad_2			  ad_1 gotta love queries
+
+	// range of area //
+
+	aa_1 = a - 0.03333333333333333 ;
+	aa_2 = a + 0.03333333333333333 ;
+
+	ad_1 = d - 0.5 ;
+	ad_2 = d + 0.5 ;
+
+	// plot elevation //
 
 	system("> /usr/local/Data/Height.txt") ;
 
@@ -927,28 +943,48 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 		ui -> ra_h -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
 		star.erase(0, pos + 1) ;
 
-		pos = star.find(" ") ;
-		ui -> ra_m -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
-		star.erase(0, pos + 1) ;
+		if ( (star[0] != '+') && (star[0] != '-'))
+			{
+			pos = star.find(" ") ;
+			ui -> ra_m -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
+			star.erase(0, pos + 1) ;
+			}
 
-		pos = star.find(" ") ;
-		ui -> ra_s -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
-		star.erase(0, pos + 1) ;
+		else
+			ui -> ra_m -> setText("0") ;
+
+		if ( (star[0] != '+') && (star[0] != '-'))
+			{
+			pos = star.find(" ") ;
+			ui -> ra_s -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
+			star.erase(0, pos + 1) ;
+			}
+
+		else
+			ui -> ra_s -> setText("0") ;
 
 		pos = star.find(" ") ;
 		ui -> dec_deg -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
 		star.erase(0, pos + 1) ;
 
-		pos = star.find(" ") ;
-		ui -> dec_min -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
-		star.erase(0, pos + 1) ;
+		if (star[0] != '|')
+			{
+			pos = star.find(" ") ;
+			ui -> dec_min -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
+			star.erase(0, pos + 1) ;
+			}
 
-		pos = star.find(" ") ;
-		ui -> dec_sec -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
+		else
+			ui -> dec_min -> setText("0") ;
 
-		found = star.find("|") ;
-		star.erase(0, found + 2) ;
-		pos = star.find(" ") ;
+		if (star[0] != '|')
+			{
+			pos = star.find(" ") ;
+			ui -> dec_sec -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
+			}
+
+		else
+			ui -> dec_sec -> setText("0") ;
 
 		}
 
