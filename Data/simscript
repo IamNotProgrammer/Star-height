@@ -1,0 +1,4 @@
+output script=off
+output console=off
+format object form1 "%IDLIST(1) || %COO(D || A; d) || %FLUXLIST(V; F)"
+query sample rah > 15 & rah < 15.0666 & dec > 24 & dec < 25 & Vmag < 10
