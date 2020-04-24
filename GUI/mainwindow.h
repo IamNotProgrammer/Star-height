@@ -125,6 +125,8 @@ private:
 	Azimuth *azimuth ;
 	Options_new_obs *opt_new_obs ;
 
+	float flux = 10 ;
+
 
 };
 

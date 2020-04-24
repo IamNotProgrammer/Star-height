@@ -14,6 +14,8 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QDebug>
+#include <QFile>
+#include <QTextStream>
 
 
 //// 1. CHANGE DECLINATION
@@ -535,10 +537,10 @@ void MainWindow::on_pushButton_4_clicked()
 	std::string grph ;
 	char com[256] ;
 
-	//																																												ra for deg, rah for hours	 rah >			 rah <			dec >		     dec <			 flux
-	//																																																		v	   v               v              v                v			   v
-	//http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=output+script%3Doff%0D%0Aoutput+console%3Doff%0D%0Aformat+object+form1+%22%25IDLIST(1)+|+%25COO(D+A)+|%22%0D%0Aquery+sample+rah+%3E+13+%26+rah+%3C+14+%26+dec+%3E+23.5+%26+dec+%3C+24+%26+Vmag+%3C+10%0D%0A
-	//																																																			 aa_2		    aa_1			 ad_2			  ad_1 gotta love queries
+	//																																																										ra for deg, rah for hours	 rah >			 rah <			   dec >		   dec <		   flux
+	//																																																																	  v				   v                 v              v               v
+	//http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=output+script%3Doff%0D%0Aoutput+console%3Doff%0D%0Aformat+object+form1+%22%25IDLIST%281%29+%7C%7C+%25COO%28D+%7C%7C+A%3B+d%29+%7C%7C+%25FLUXLIST%28V%3B+F%29%22%0D%0Aquery+sample+rah+%3E+15+%26+rah+%3C+15.0666+%26+dec+%3E+24+%26+dec+%3C+25+%26+Vmag+%3C+10
+	//																																																																	aa_1		    aa_2				ad_1		  ad_2
 
 	// range of area //
 
@@ -547,6 +549,32 @@ void MainWindow::on_pushButton_4_clicked()
 
 	ad_1 = d - 0.5 ;
 	ad_2 = d + 0.5 ;
+
+	QString url = "http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=output+script%3Doff%0D%0Aoutput+console%3Doff%0D%0Aformat+object+form1+%22%25IDLIST%281%29+%7C%7C+%25COO%28D+%7C%7C+A%3B+d%29+%7C%7C+%25FLUXLIST%28V%3B+F%29%22%0D%0Aquery+sample+rah+%3E+" ;
+	url += QString::number(aa_1) ;
+	url += "+%26+rah+%3C+" ;
+	url += QString::number(aa_2) ;
+	url += "+%26+dec+%3E+" ;
+	url += QString::number(ad_1) ;
+	url += "+%26+dec+%3C+" ;
+	url += QString::number(ad_2) ;
+	url += "+%26+Vmag+%3C+" ;
+	url += QString::number(flux) ;
+	url += "%0D%0A" ;
+
+	QNetworkAccessManager manager;
+	QNetworkReply *response = manager.get( QNetworkRequest( QUrl(url) ) ) ;
+	QEventLoop event;
+	connect(response, SIGNAL(finished()), &event, SLOT(quit())) ;
+	event.exec() ;
+	QString html = response->readAll() ; // Source should be stored here
+
+	QFile file("/usr/local/Data/area.txt") ;
+	file.open(QIODevice::WriteOnly | QIODevice::Text) ;
+	QTextStream out(&file) ;
+	out << html ;
+
+	file.close() ;
 
 	// plot elevation //
 

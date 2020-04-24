@@ -61,7 +61,7 @@ void Options_new_obs::on_buttonBox_accepted()
 		{
 
 		QMessageBox::StandardButton reply;
-		reply = QMessageBox::question(this, "Test", "Quit?", QMessageBox::Yes|QMessageBox::No);
+		reply = QMessageBox::question(this, "Add observatory", "Are you sure you want to add this location?", QMessageBox::Yes|QMessageBox::No);
 
 		if (reply == QMessageBox::Yes)
 			{
