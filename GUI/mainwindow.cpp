@@ -544,13 +544,13 @@ void MainWindow::on_pushButton_4_clicked()
 
 	// range of area //
 
-	aa_1 = a - 0.03333333333333333 ;
-	aa_2 = a + 0.03333333333333333 ;
+	aa_1 = a - 0.02666666666666666 ;
+	aa_2 = a + 0.02666666666666666 ;
 
-	ad_1 = d - 0.5 ;
-	ad_2 = d + 0.5 ;
+	ad_1 = d - 0.4 ;
+	ad_2 = d + 0.4 ;
 
-	QString url = "http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=output+script%3Doff%0D%0Aoutput+console%3Doff%0D%0Aformat+object+form1+%22%25IDLIST%281%29+%7C%7C+%25COO%28D+%7C%7C+A%3B+d%29+%7C%7C+%25FLUXLIST%28V%3B+F%29%22%0D%0Aquery+sample+rah+%3E+" ;
+	QString url = "http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=output+script%3Doff%0D%0Aoutput+console%3Doff%0D%0Aformat+object+form1+%22%25IDLIST%281%29+%7C+%25COO%28D+%7C+A%3B+d%29+%7C+%25FLUXLIST%28V%3B+F%29%22%0D%0Aquery+sample+rah+%3E+" ;
 	url += QString::number(aa_1) ;
 	url += "+%26+rah+%3C+" ;
 	url += QString::number(aa_2) ;
@@ -572,6 +572,7 @@ void MainWindow::on_pushButton_4_clicked()
 	QFile file("/usr/local/Data/area.txt") ;
 	file.open(QIODevice::WriteOnly | QIODevice::Text) ;
 	QTextStream out(&file) ;
+	out << d << " | " << a << "\n";
 	out << html ;
 
 	file.close() ;
@@ -579,6 +580,10 @@ void MainWindow::on_pushButton_4_clicked()
 	// plot elevation //
 
 	system("> /usr/local/Data/Height.txt") ;
+
+	QFile elevation("/usr/local/Data/Height.txt") ;
+	elevation.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text) ;
+	QTextStream output(&elevation) ;
 
 	for (double i = -5; i <= 5; i += 0.166666666666666)
 		{
@@ -593,8 +598,6 @@ void MainWindow::on_pushButton_4_clicked()
 		elev = dec2height(d, t, phi) ;
 
 		grph = "" ;
-
-		grph.append("echo \"") ;
 
 		if (LMST + i < 0)
 			{
@@ -639,9 +642,9 @@ void MainWindow::on_pushButton_4_clicked()
 		std::replace( e.begin(), e.end(), ',', '.') ;
 
 		grph.append(e) ;
-		grph.append("\" >> /usr/local/Data/Height.txt") ;
+		grph.append("\n") ;
 
-		system(grph.c_str()) ;
+		output << QString::fromStdString(grph) ;
 
 		}
 
@@ -650,21 +653,14 @@ void MainWindow::on_pushButton_4_clicked()
 	elev = dec2height(d, t, phi) ;
 	azim = hour2azm (d, elev, phi, t) ;
 
-	sprintf(com, "echo \"%f 1\" >> /usr/local/Data/Height.txt", azim) ;
+	QString azimuth_plot ;
+	azimuth_plot = QString::number(azim) + " 1" ;
 
-	for (int i = 0; i <= 256; i++)
-		{
+	output << azimuth_plot ;
+	elevation.close() ;
 
-		if (com[i] == ',')
-			{
-			com[i] = '.' ;
-			break ;
-			}
-
-		}
-
-	system(com) ;
 	system("/usr/local/Data/Plot.gnu") ;
+	system("/usr/local/Data/Area.gnu") ;
 
 	el = new Elevation(this) ;
 	azimuth = new Azimuth(this) ;
