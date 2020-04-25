@@ -7,7 +7,7 @@ unset key
 set datafile separator ","
 
 fmt = "%d/%m %H:%M"
-stats '/usr/local/Data/Height.txt' u (strptime(fmt,strcol(1))):2
+stats '/usr/local/Data/Height.txt' u (strptime(fmt,strcol(1))):2 nooutput
 
 set timefmt "%d/%m %H:%M"
 set xdata time
@@ -46,7 +46,7 @@ set bmargin 4
 set rmargin 4
 set lmargin 4
 
-stats "/usr/local/Data/Height.txt" every ::61::61 using 1:2
+stats "/usr/local/Data/Height.txt" every ::61::61 using 1:2 nooutput
 
 set polar
 set size square
