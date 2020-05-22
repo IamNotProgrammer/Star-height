@@ -39,6 +39,7 @@
 const double G = 0.0048481368110953596e-6 ; // constant to change parallax to distance in au.
 const double f = 0.0033528106710763545 ; // Earth's flatness ~ 1/300
 const double a = 4.26352124542639e-05 ; // Earth's bigger radius in au.
+// all this for later
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -82,6 +83,19 @@ MainWindow::MainWindow(QWidget *parent) :
 	palette.setColor(QPalette::Highlight, QColor(142,45,197).lighter());
 	palette.setColor(QPalette::HighlightedText, Qt::black);
 	qApp->setPalette(palette);
+
+	// set current time
+
+	on_pushButton_2_clicked() ;
+
+	int to ; // time offset
+
+	std::time_t t = std::time(0);   // get time now
+	std::tm* local = std::localtime(&t);
+
+	to = (local -> tm_gmtoff) / 3600 ;
+
+	ui -> time_zone -> setValue(to) ;
 
 }
 
@@ -946,7 +960,9 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 
 	QString urly ;
 
-	urly = "http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=output+script%3Doff%0D%0Aoutput+console%3Doff%0D%0Aformat+object+form1+%22%25COO(A+D)+|%22%0D%0Aquery+id+" ;
+	//http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=output+script%3Doff%0D%0Aoutput+console%3Doff%0D%0A%0D%0Aformat+object+\"%25COO(A+D)+|%25OTYPE(S)|%25PM(A+D)|\"%2B%0D%0A\"%25RV(V)|%25PLX(V)|%25SP(S)|%25FLUXLIST(U%2CB%2CV%2CR%2CI%2CJ%2CH%2CK%3B+g_N+F%2C)\"%0D%0A%0D%0Aid+
+	//http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=output+script%3Doff%0D%0Aoutput+console%3Doff%0D%0Aformat+object+form1+%22%25COO(A+D)+|%22%0D%0Aquery+id+
+	urly = "http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=output+script%3Doff%0D%0Aoutput+console%3Doff%0D%0A%0D%0Aformat+object+\"%25COO(A+D)+|%25OTYPE(S)|%25PM(A+D)|\"%2B%0D%0A\"%25RV(V)|%25PLX(V)|%25SP(S)|%25FLUXLIST(U%2CB%2CV%2CR%2CI%2CJ%2CH%2CK%3B+g_N+F%2C)\"%0D%0A%0D%0Aid+" ;
 	urly += object ;
 
 	QNetworkAccessManager manager;
@@ -1010,6 +1026,12 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 		else
 			ui -> dec_sec -> setText("0") ;
 
+		pos = star.find("|") ;
+		star.erase(0, pos + 1) ;
+
+		pos = star.find("|") ;
+		ui -> type -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
+
 		}
 
 	else
@@ -1019,6 +1041,8 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 		"No such object was found. Please check again.") ;
 
 		}
+
+	std::cout << "\nstar: " << star << "\n" ;
 }
 
 ////   17. OPTIONS    ////
