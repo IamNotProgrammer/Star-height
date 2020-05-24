@@ -1630,16 +1630,6 @@
        </item>
       </layout>
      </widget>
-     <widget class="QTableWidget" name="tableWidget">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>390</y>
-        <width>281</width>
-        <height>141</height>
-       </rect>
-      </property>
-     </widget>
      <widget class="QFrame" name="frame">
       <property name="geometry">
        <rect>
@@ -1678,7 +1668,7 @@
        <item row="6" column="4">
         <widget class="QLabel" name="f_I">
          <property name="text">
-          <string>0</string>
+          <string>~</string>
          </property>
         </widget>
        </item>
@@ -1692,7 +1682,7 @@
        <item row="2" column="4">
         <widget class="QLabel" name="f_B">
          <property name="text">
-          <string>0</string>
+          <string>~</string>
          </property>
         </widget>
        </item>
@@ -1706,14 +1696,14 @@
        <item row="3" column="4">
         <widget class="QLabel" name="f_V">
          <property name="text">
-          <string>0</string>
+          <string>~</string>
          </property>
         </widget>
        </item>
        <item row="9" column="4">
         <widget class="QLabel" name="f_H">
          <property name="text">
-          <string>0</string>
+          <string>~</string>
          </property>
         </widget>
        </item>
@@ -1755,7 +1745,7 @@
        <item row="5" column="4">
         <widget class="QLabel" name="f_R">
          <property name="text">
-          <string>0</string>
+          <string>~</string>
          </property>
         </widget>
        </item>
@@ -1773,52 +1763,38 @@
          </property>
         </widget>
        </item>
-       <item row="9" column="0">
-        <widget class="QLabel" name="label_73">
-         <property name="text">
-          <string>Prop motion:</string>
-         </property>
-        </widget>
-       </item>
        <item row="1" column="4">
         <widget class="QLabel" name="f_U">
          <property name="text">
-          <string>0</string>
+          <string>~</string>
          </property>
         </widget>
        </item>
        <item row="7" column="4">
         <widget class="QLabel" name="f_J">
          <property name="text">
-          <string>0</string>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="1" colspan="2">
-        <widget class="QLabel" name="prop_mot">
-         <property name="text">
-          <string>12</string>
+          <string>~</string>
          </property>
         </widget>
        </item>
        <item row="3" column="1" colspan="2">
         <widget class="QLabel" name="parallax">
          <property name="text">
-          <string>120</string>
+          <string>~</string>
          </property>
         </widget>
        </item>
        <item row="1" column="1" colspan="2">
         <widget class="QLabel" name="spec_type">
          <property name="text">
-          <string>C</string>
+          <string>~</string>
          </property>
         </widget>
        </item>
        <item row="0" column="1" colspan="2">
         <widget class="QLabel" name="type">
          <property name="text">
-          <string>*</string>
+          <string>~</string>
          </property>
         </widget>
        </item>
@@ -1829,31 +1805,45 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="0">
+       <item row="9" column="0">
+        <widget class="QLabel" name="label_74">
+         <property name="text">
+          <string>Prop motion α:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1">
+        <widget class="QLabel" name="prop_mot_a">
+         <property name="text">
+          <string>~</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
         <widget class="QLabel" name="label_65">
          <property name="text">
-          <string>Rad velocity d:</string>
+          <string>Prop motion δ:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1">
+        <widget class="QLabel" name="prop_mot_d">
+         <property name="text">
+          <string>~</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_73">
+         <property name="text">
+          <string>Rad velocity:</string>
          </property>
         </widget>
        </item>
        <item row="5" column="1">
-        <widget class="QLabel" name="rad_vel_d">
+        <widget class="QLabel" name="rad_vel">
          <property name="text">
-          <string>200.94</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <widget class="QLabel" name="rad_vel_a">
-         <property name="text">
-          <string>200.94</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="label_74">
-         <property name="text">
-          <string>Rad velocity a:</string>
+          <string>~</string>
          </property>
         </widget>
        </item>
@@ -2041,7 +2031,7 @@
        <string/>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_7">
+     <widget class="QPushButton" name="delete_object">
       <property name="geometry">
        <rect>
         <x>100</x>
@@ -2054,7 +2044,7 @@
        <string>Delete</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_6">
+     <widget class="QPushButton" name="save_object">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -2067,14 +2057,24 @@
        <string>Save</string>
       </property>
      </widget>
+     <widget class="QListWidget" name="listWidget">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>400</y>
+        <width>281</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
      <zorder>pushButton_3</zorder>
      <zorder>Object_name</zorder>
      <zorder>Star_Position</zorder>
-     <zorder>tableWidget</zorder>
      <zorder>frame</zorder>
-     <zorder>pushButton_7</zorder>
-     <zorder>pushButton_6</zorder>
+     <zorder>delete_object</zorder>
+     <zorder>save_object</zorder>
      <zorder>pushButton_5</zorder>
+     <zorder>listWidget</zorder>
     </widget>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">

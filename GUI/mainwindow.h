@@ -74,6 +74,8 @@ private slots:
 
 	void on_actionAdd_observatory_triggered();
 
+	void on_save_object_clicked();
+
 private:
 	Ui::MainWindow *ui;
 

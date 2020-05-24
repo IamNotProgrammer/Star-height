@@ -962,7 +962,7 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 
 	//http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=output+script%3Doff%0D%0Aoutput+console%3Doff%0D%0A%0D%0Aformat+object+\"%25COO(A+D)+|%25OTYPE(S)|%25PM(A+D)|\"%2B%0D%0A\"%25RV(V)|%25PLX(V)|%25SP(S)|%25FLUXLIST(U%2CB%2CV%2CR%2CI%2CJ%2CH%2CK%3B+g_N+F%2C)\"%0D%0A%0D%0Aid+
 	//http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=output+script%3Doff%0D%0Aoutput+console%3Doff%0D%0Aformat+object+form1+%22%25COO(A+D)+|%22%0D%0Aquery+id+
-	urly = "http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=output+script%3Doff%0D%0Aoutput+console%3Doff%0D%0A%0D%0Aformat+object+\"%25COO(A+D)+|%25OTYPE(S)|%25PM(A+D)|\"%2B%0D%0A\"%25RV(V)|%25PLX(V)|%25SP(S)|%25FLUXLIST(U%2CB%2CV%2CR%2CI%2CJ%2CH%2CK%3B+g_N+F%2C)\"%0D%0A%0D%0Aid+" ;
+	urly = "http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=output+script%3Doff%0D%0Aoutput+console%3Doff%0D%0A%0D%0Aformat+object+\"%25COO(D+A)+|%25OTYPE(S)|%25PM(A+D)|\"%2B%0D%0A\"%25RV(V)|%25PLX(V)|%25SP(S)|%25FLUXLIST(U%2CB%2CV%2CR%2CI%2CJ%2CH%2CK%3B+N+F%2C)\"%0D%0A%0D%0Aid+" ;
 	urly += object ;
 
 	QNetworkAccessManager manager;
@@ -1032,6 +1032,104 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 		pos = star.find("|") ;
 		ui -> type -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
 
+		pos = star.find("|") ;
+		star.erase(0, pos + 1) ;
+
+		pos = star.find(" ") ;
+		ui -> prop_mot_a -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
+		star.erase(0, pos + 1) ;
+
+		pos = star.find("|") ;
+		ui -> prop_mot_d -> setText( QString::fromStdString( star.substr(1, pos - 1) ) ) ;
+		star.erase(0, pos + 1) ;
+
+		pos = star.find("|") ;
+		ui -> rad_vel -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
+		star.erase(0, pos + 1) ;
+
+		pos = star.find("|") ;
+		ui -> parallax -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
+		star.erase(0, pos + 1) ;
+
+		pos = star.find("|") ;
+		ui -> spec_type -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
+		star.erase(0, pos + 1) ;
+
+		std::cout << "\nstar: " << star << "\n" ;
+
+		if(star[0] == 'U')
+			{
+			pos = star.find(",") ;
+			ui -> f_U -> setText( QString::fromStdString( star.substr(2, pos - 2) ) ) ;
+			star.erase(0, pos + 1) ;
+			}
+
+		else
+			ui -> f_U -> setText( "~" ) ;
+
+		if(star[0] == 'B')
+			{
+			pos = star.find(",") ;
+			ui -> f_B -> setText( QString::fromStdString( star.substr(2, pos - 2) ) ) ;
+			star.erase(0, pos + 1) ;
+			}
+
+		else
+			ui -> f_B -> setText( "~" ) ;
+
+		if(star[0] == 'V')
+			{
+			pos = star.find(",") ;
+			ui -> f_V -> setText( QString::fromStdString( star.substr(2, pos - 2) ) ) ;
+			star.erase(0, pos + 1) ;
+			}
+
+		else
+			ui -> f_V -> setText( "~" ) ;
+
+
+		if(star[0] == 'R')
+			{
+			pos = star.find(",") ;
+			ui -> f_R -> setText( QString::fromStdString( star.substr(2, pos - 2) ) ) ;
+			star.erase(0, pos + 1) ;
+			}
+
+		else
+			ui -> f_R -> setText( "~" ) ;
+
+
+		if(star[0] == 'I')
+			{
+			pos = star.find(",") ;
+			ui -> f_I -> setText( QString::fromStdString( star.substr(2, pos - 2) ) ) ;
+			star.erase(0, pos + 1) ;
+			}
+
+		else
+			ui -> f_I -> setText( "~" ) ;
+
+		if(star[0] == 'J')
+			{
+			pos = star.find(",") ;
+			ui -> f_J -> setText( QString::fromStdString( star.substr(2, pos - 2) ) ) ;
+			star.erase(0, pos + 1) ;
+			}
+
+		else
+			ui -> f_J -> setText( "~" ) ;
+
+		if(star[0] == 'H')
+			{
+			pos = star.find(",") ;
+			ui -> f_H -> setText( QString::fromStdString( star.substr(2, pos - 2) ) ) ;
+			star.erase(0, pos + 1) ;
+			}
+
+		else
+			ui -> f_H -> setText( "~" ) ;
+
+
 		}
 
 	else
@@ -1042,7 +1140,6 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 
 		}
 
-	std::cout << "\nstar: " << star << "\n" ;
 }
 
 ////   17. OPTIONS    ////
@@ -1052,6 +1149,23 @@ void MainWindow::on_actionAdd_observatory_triggered()
 		opt_new_obs = new Options_new_obs(this) ;
 		opt_new_obs -> show() ;
 }
+
+
+
+void MainWindow::on_save_object_clicked()
+{
+
+	QString object ;
+
+	object = ui -> Object_name -> text() ;
+
+	ui -> listWidget -> addItem(object) ;
+
+
+
+}
+
+
 
 
 
@@ -1080,6 +1194,9 @@ _)      \.___.,|     .'
 
 
 */
+
+
+
 
 
 
