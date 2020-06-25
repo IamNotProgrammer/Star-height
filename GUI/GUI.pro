@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui webkitwidgets
 QT		+= network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -31,20 +31,23 @@ SOURCES += \
         main.cpp \
 mainwindow.cpp \
 astm.cpp \
-    options_new_obs.cpp
+    options_new_obs.cpp \
+    view.cpp
 
 HEADERS += \
     azimuth.h \
     elevation.h \
 mainwindow.h \
 astm.h \
-    options_new_obs.h
+    options_new_obs.h \
+    view.h
 
 FORMS += \
         azimuth.ui \
         elevation.ui \
         mainwindow.ui \
-        options_new_obs.ui
+        options_new_obs.ui \
+        view.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -53,3 +56,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 VERSION = 1.6.3
 DEFINES += VERSION_STRING=\\\"$${VERSION}\\\"
+
+RESOURCES +=

@@ -16,6 +16,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QTextStream>
+#include <QDataStream>
 
 
 //// 1. CHANGE DECLINATION
@@ -546,50 +547,8 @@ double MainWindow::ref(double height) // calculating refraction
 void MainWindow::on_pushButton_4_clicked()
 {
 
-	double ad_1, ad_2, aa_1, aa_2 ; // declination and right acsession for area graph
 	double elev, azim ;
 	std::string grph ;
-	char com[256] ;
-
-	//																																																										ra for deg, rah for hours	 rah >			 rah <			   dec >		   dec <		   flux
-	//																																																																	  v				   v                 v              v               v
-	//http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=output+script%3Doff%0D%0Aoutput+console%3Doff%0D%0Aformat+object+form1+%22%25IDLIST%281%29+%7C%7C+%25COO%28D+%7C%7C+A%3B+d%29+%7C%7C+%25FLUXLIST%28V%3B+F%29%22%0D%0Aquery+sample+rah+%3E+15+%26+rah+%3C+15.0666+%26+dec+%3E+24+%26+dec+%3C+25+%26+Vmag+%3C+10
-	//																																																																	aa_1		    aa_2				ad_1		  ad_2
-
-	// range of area //
-
-	aa_1 = a - 0.02666666666666666 ;
-	aa_2 = a + 0.02666666666666666 ;
-
-	ad_1 = d - 0.4 ;
-	ad_2 = d + 0.4 ;
-
-	QString url = "http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=output+script%3Doff%0D%0Aoutput+console%3Doff%0D%0Aformat+object+form1+%22%25IDLIST%281%29+%7C+%25COO%28D+%7C+A%3B+d%29+%7C+%25FLUXLIST%28V%3B+F%29%22%0D%0Aquery+sample+rah+%3E+" ;
-	url += QString::number(aa_1) ;
-	url += "+%26+rah+%3C+" ;
-	url += QString::number(aa_2) ;
-	url += "+%26+dec+%3E+" ;
-	url += QString::number(ad_1) ;
-	url += "+%26+dec+%3C+" ;
-	url += QString::number(ad_2) ;
-	url += "+%26+Vmag+%3C+" ;
-	url += QString::number(flux) ;
-	url += "%0D%0A" ;
-
-	QNetworkAccessManager manager;
-	QNetworkReply *response = manager.get( QNetworkRequest( QUrl(url) ) ) ;
-	QEventLoop event;
-	connect(response, SIGNAL(finished()), &event, SLOT(quit())) ;
-	event.exec() ;
-	QString html = response->readAll() ; // Source should be stored here
-
-	QFile file("/usr/local/Data/area.txt") ;
-	file.open(QIODevice::WriteOnly | QIODevice::Text) ;
-	QTextStream out(&file) ;
-	out << d << " | " << a << "\n";
-	out << html ;
-
-	file.close() ;
 
 	// plot elevation //
 
@@ -668,9 +627,10 @@ void MainWindow::on_pushButton_4_clicked()
 	azim = hour2azm (d, elev, phi, t) ;
 
 	QString azimuth_plot ;
-	azimuth_plot = QString::number(azim) + " 1" ;
+	azimuth_plot = QString::number(azim) + " 1\n" ;
 
 	output << azimuth_plot ;
+	output << a * 15 << " " << d ;
 	elevation.close() ;
 
 	system("/usr/local/Data/Plot.gnu") ;
@@ -697,6 +657,9 @@ void MainWindow::on_pushButton_4_clicked()
 
 	el -> show() ;
 	azimuth -> show() ;
+
+	aladin = new View(this) ;
+	aladin -> show() ;
 
 }
 
@@ -960,9 +923,7 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 
 	QString urly ;
 
-	//http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=output+script%3Doff%0D%0Aoutput+console%3Doff%0D%0A%0D%0Aformat+object+\"%25COO(A+D)+|%25OTYPE(S)|%25PM(A+D)|\"%2B%0D%0A\"%25RV(V)|%25PLX(V)|%25SP(S)|%25FLUXLIST(U%2CB%2CV%2CR%2CI%2CJ%2CH%2CK%3B+g_N+F%2C)\"%0D%0A%0D%0Aid+
-	//http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=output+script%3Doff%0D%0Aoutput+console%3Doff%0D%0Aformat+object+form1+%22%25COO(A+D)+|%22%0D%0Aquery+id+
-	urly = "http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=output+script%3Doff%0D%0Aoutput+console%3Doff%0D%0A%0D%0Aformat+object+\"%25COO(D+A)+|%25OTYPE(S)|%25PM(A+D)|\"%2B%0D%0A\"%25RV(V)|%25PLX(V)|%25SP(S)|%25FLUXLIST(U%2CB%2CV%2CR%2CI%2CJ%2CH%2CK%3B+N+F%2C)\"%0D%0A%0D%0Aid+" ;
+	urly = "http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=output+script%3Doff%0D%0Aoutput+console%3Doff%0D%0A%0D%0Aformat+object+\"%25COO(A+D)+|%25OTYPE(S)|%25PM(A+D)|\"%2B%0D%0A\"%25RV(V)|%25PLX(V)|%25SP(S)|%25FLUXLIST(U%2CB%2CV%2CR%2CI%2CJ%2CH%2CK%3B+N+F%2C)\"%0D%0A%0D%0Aid+" ;
 	urly += object ;
 
 	QNetworkAccessManager manager;
@@ -1054,8 +1015,6 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 		pos = star.find("|") ;
 		ui -> spec_type -> setText( QString::fromStdString( star.substr(0, pos) ) ) ;
 		star.erase(0, pos + 1) ;
-
-		std::cout << "\nstar: " << star << "\n" ;
 
 		if(star[0] == 'U')
 			{
@@ -1157,16 +1116,52 @@ void MainWindow::on_save_object_clicked()
 
 	QString object ;
 
+
 	object = ui -> Object_name -> text() ;
 
+	if(object == 0)
+		object = "Position" ;
+
+	object += "   " ;
+	object += ui -> dec_deg -> text() ;
+	object += " " ;
+	object += ui -> dec_min -> text() ;
+	object += " " ;
+	object += ui -> dec_sec -> text() ;
+	object += " " ;
+
+	object += "   " ;
+	object += ui -> ra_h -> text() ;
+	object += " " ;
+	object += ui -> ra_m -> text() ;
+	object += " " ;
+	object += ui -> ra_s -> text() ;
+	object += " " ;
+
+	QFile file("/usr/local/Data/saved.txt") ;
+
+	file.open(QFile::WriteOnly | QFile::Text) ;
+
+	QTextStream out(&file) ;
+	out << object ;
+
+	file.flush() ;
+	file.close() ;
+
 	ui -> listWidget -> addItem(object) ;
-
-
 
 }
 
 
 
+void MainWindow::on_delete_object_clicked()
+{
+
+	int n ;
+	n = ui -> listWidget -> currentRow() ;
+
+	ui -> listWidget -> takeItem(n) ;
+}
 
 
 ////    THAT'S ALL FOR NOW      ////
@@ -1194,6 +1189,8 @@ _)      \.___.,|     .'
 
 
 */
+
+
 
 
 

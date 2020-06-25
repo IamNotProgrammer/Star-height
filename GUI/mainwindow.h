@@ -9,6 +9,7 @@
 
 #include <elevation.h>
 #include <azimuth.h>
+#include <view.h>
 #include <options_new_obs.h>
 
 namespace Ui {
@@ -76,6 +77,8 @@ private slots:
 
 	void on_save_object_clicked();
 
+	void on_delete_object_clicked();
+
 private:
 	Ui::MainWindow *ui;
 
@@ -120,14 +123,20 @@ private:
 	double wl = 0.551 ; // wave length
 	double T = 0 ;
 
+	// finding object //
+
 	std::string height, url, command, line, star ;
 	QString object ;
 
+	// new windows //
+
+
 	Elevation *el ;
 	Azimuth *azimuth ;
+	View *aladin ;
 	Options_new_obs *opt_new_obs ;
 
-	float flux = 10 ;
+	friend class View ;
 
 
 };
