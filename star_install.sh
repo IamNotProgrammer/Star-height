@@ -5,7 +5,12 @@ qmake -o ./build/ ./GUI/GUI.pro
 make -C ./build/
 
 sudo chmod +x ./build/star-height
-sudo chmod 666 ./Data/object.txt
+sudo chmod -R 666 ./Data/
+sudo chmod 755 ./Data/
+sudo chmod +x ./Data/Observatories/
+sudo chmod +x ./Data/Images/
+sudo chmod 755 ./Data/Plot.gnu
+
 
 sudo mv ./build/star-height /usr/local/bin/
 sudo cp -r ./Data/ /usr/local/
