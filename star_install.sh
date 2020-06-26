@@ -7,8 +7,8 @@ make -C ./build/
 sudo chmod +x ./build/star-height
 sudo chmod -R 666 ./Data/
 sudo chmod 755 ./Data/
-sudo chmod +x ./Data/Observatories/
-sudo chmod +x ./Data/Images/
+sudo chmod 775 ./Data/Observatories/
+sudo chmod 755 ./Data/Images/
 sudo chmod 755 ./Data/Plot.gnu
 
 
