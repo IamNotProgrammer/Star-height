@@ -19,6 +19,8 @@
 #include <QDataStream>
 
 
+//  DA LIST  //
+
 //// 1. CHANGE DECLINATION
 //// 2. CHANGE RECTASTENCE
 //// 3. CHANGE LONGITUDE
@@ -36,11 +38,14 @@
 //// 15. COUNTRIES AND CITIES
 //// 16. FIND OBJECT
 //// 17. OPTIONS
+//// 18. SAVED OBJECTS
 
+/*
 const double G = 0.0048481368110953596e-6 ; // constant to change parallax to distance in au.
 const double f = 0.0033528106710763545 ; // Earth's flatness ~ 1/300
 const double a = 4.26352124542639e-05 ; // Earth's bigger radius in au.
 // all this for later
+*/
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -97,6 +102,33 @@ MainWindow::MainWindow(QWidget *parent) :
 	to = (local -> tm_gmtoff) / 3600 ;
 
 	ui -> time_zone -> setValue(to) ;
+
+
+	// load saved objects
+
+	QFile file("/usr/local/Data/saved.txt") ;
+	QString loaded, obj ;
+	int num ;
+
+	file.open(QFile::ReadOnly | QFile::Text) ;
+
+	QTextStream in(&file) ;
+
+	while( in.atEnd() != 1)
+		{
+
+		loaded = in.readLine() ;
+		num = loaded.indexOf('|') ;
+
+		obj = loaded.left(num) ;
+		obj.replace("_", " ") ;
+
+		ui -> listWidget -> addItem( obj ) ;
+
+		}
+
+	file.flush() ;
+	file.close() ;
 
 }
 
@@ -638,12 +670,14 @@ void MainWindow::on_pushButton_4_clicked()
 
 	el = new Elevation(this) ;
 	azimuth = new Azimuth(this) ;
+	aladin = new View(this) ;
 
-	if (ui -> Object_name -> text() != "")
+	if (ui -> Object_name -> text() == "")
 		{
 
-		el -> setWindowTitle("Elevation of " + ui -> Object_name -> text()) ;
-		azimuth -> setWindowTitle("Azimuth of " + ui -> Object_name -> text()) ;
+		el -> setWindowTitle("Elevation of " + QString::number(a) + "  " + QString::number(d) ) ;
+		azimuth -> setWindowTitle("Azimuth of " + QString::number(a) + "  " + QString::number(d) ) ;
+		aladin -> setWindowTitle( QString::number(a) + "  " + QString::number(d) ) ;
 
 		}
 
@@ -652,13 +686,12 @@ void MainWindow::on_pushButton_4_clicked()
 
 		el -> setWindowTitle("Elevation of " + ui -> Object_name -> text()) ;
 		azimuth -> setWindowTitle("Azimuth of " + ui -> Object_name -> text()) ;
+		aladin -> setWindowTitle( ui -> Object_name -> text() ) ;
 
 		}
 
 	el -> show() ;
-	azimuth -> show() ;
-
-	aladin = new View(this) ;
+	azimuth -> show() ;	
 	aladin -> show() ;
 
 }
@@ -933,7 +966,15 @@ void MainWindow::on_pushButton_3_clicked() // Look up object in simbad, check co
 	event.exec();
 	QString html = response->readAll(); // Source should be stored here
 
-	star = html.toStdString() ;
+	FillData( html.toStdString() ) ;
+
+}
+
+
+// Fill data like parallax, cords, type etc
+
+void MainWindow::FillData(std::string star)
+{
 
 	std::size_t found = star.find("|") ;
 
@@ -1111,6 +1152,10 @@ void MainWindow::on_actionAdd_observatory_triggered()
 
 
 
+////   18. SAVED OBJECTS   ////
+
+// save object //
+
 void MainWindow::on_save_object_clicked()
 {
 
@@ -1119,40 +1164,72 @@ void MainWindow::on_save_object_clicked()
 
 	object = ui -> Object_name -> text() ;
 
+	object.replace(" ", "_") ;
+
 	if(object == 0)
 		object = "Position" ;
 
-	object += "   " ;
-	object += ui -> dec_deg -> text() ;
-	object += " " ;
-	object += ui -> dec_min -> text() ;
-	object += " " ;
-	object += ui -> dec_sec -> text() ;
-	object += " " ;
-
-	object += "   " ;
+	object += "    " ;
 	object += ui -> ra_h -> text() ;
 	object += " " ;
 	object += ui -> ra_m -> text() ;
 	object += " " ;
 	object += ui -> ra_s -> text() ;
+
+	object += "    " ;
+	object += ui -> dec_deg -> text() ;
 	object += " " ;
+	object += ui -> dec_min -> text() ;
+	object += " " ;
+	object += ui -> dec_sec -> text() ;
+
+	ui -> listWidget -> addItem(object) ;
+
+	object += " |" + ui -> type -> text() + "|" ;
+	object += ui -> prop_mot_a -> text() + "  " ;
+	object += ui -> prop_mot_d -> text() + "|" ;
+	object += ui -> rad_vel -> text() + "|" ;
+	object += ui -> parallax -> text() + "|" ;
+	object += ui -> spec_type -> text() + "|" ;
+
+	if (ui -> f_U -> text() != "~")
+		object += "U " + ui -> f_U -> text() + "," ;
+
+	if (ui -> f_B -> text() != "~")
+		object += "B " + ui -> f_B -> text() + "," ;
+
+	if (ui -> f_V -> text() != "~")
+		object += "V " + ui -> f_V -> text() + "," ;
+
+	if (ui -> f_R -> text() != "~")
+		object += "R " + ui -> f_R -> text() + "," ;
+
+	if (ui -> f_I -> text() != "~")
+		object += "I " + ui -> f_I -> text() + "," ;
+
+	if (ui -> f_J -> text() != "~")
+		object += "J " + ui -> f_J -> text() + "," ;
+
+	if (ui -> f_H -> text() != "~")
+		object += "H " + ui -> f_H -> text() + "," ;
+
 
 	QFile file("/usr/local/Data/saved.txt") ;
 
-	file.open(QFile::WriteOnly | QFile::Text) ;
+	file.open(QFile::WriteOnly | QFile::Text | QFile::Append) ;
 
 	QTextStream out(&file) ;
 	out << object ;
+	out << "\n" ;
 
 	file.flush() ;
 	file.close() ;
 
-	ui -> listWidget -> addItem(object) ;
 
 }
 
 
+// remove object //
 
 void MainWindow::on_delete_object_clicked()
 {
@@ -1161,6 +1238,72 @@ void MainWindow::on_delete_object_clicked()
 	n = ui -> listWidget -> currentRow() ;
 
 	ui -> listWidget -> takeItem(n) ;
+}
+
+
+// load object //
+
+void MainWindow::on_pushButton_6_clicked()
+{
+
+	int numsel ;
+
+	numsel = ui -> listWidget->currentRow() ;
+
+	QFile file("/usr/local/Data/saved.txt") ;
+
+	QString loaded, obj ;
+
+	file.open(QFile::ReadOnly | QFile::Text) ;
+
+	QTextStream in(&file) ;
+
+	for (int i = 0; i < numsel; i++)
+		in.readLine() ;
+
+	loaded = in.readLine() ;
+
+	file.flush() ;
+	file.close() ;
+
+	numsel = loaded.indexOf(" ") ;
+
+	obj = loaded.left(numsel) ;
+
+	if (obj != "Position")
+		{
+
+		obj.replace("_", " ") ;
+		ui -> Object_name -> setText(obj) ;
+
+		}
+
+	loaded.remove(0, numsel + 4) ;
+	loaded.replace("    ", " ") ;
+
+	FillData( loaded.toStdString() ) ;
+
+}
+
+
+void MainWindow::on_clear_clicked()
+{
+
+	ui -> type -> setText("~") ;
+	ui -> spec_type -> setText("~") ;
+	ui -> parallax -> setText("~") ;
+	ui -> rad_vel -> setText("~") ;
+	ui -> prop_mot_a -> setText("~") ;
+	ui -> prop_mot_d -> setText("~") ;
+	ui -> f_U -> setText("~") ;
+	ui -> f_B -> setText("~") ;
+	ui -> f_V -> setText("~") ;
+	ui -> f_R -> setText("~") ;
+	ui -> f_I -> setText("~") ;
+	ui -> f_J -> setText("~") ;
+	ui -> f_H -> setText("~") ;
+	ui -> Object_name -> setText("") ;
+
 }
 
 
@@ -1189,18 +1332,6 @@ _)      \.___.,|     .'
 
 
 */
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

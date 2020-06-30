@@ -1658,56 +1658,35 @@
        <property name="horizontalSpacing">
         <number>6</number>
        </property>
-       <item row="0" column="3" colspan="2">
-        <widget class="QLabel" name="label_62">
+       <item row="8" column="3">
+        <widget class="QLabel" name="label_72">
          <property name="text">
-          <string>Flux:</string>
+          <string>H</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="label_74">
+         <property name="text">
+          <string>Prop motion α:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="3">
+        <widget class="QLabel" name="label_68">
+         <property name="text">
+          <string>V</string>
          </property>
         </widget>
        </item>
        <item row="6" column="4">
-        <widget class="QLabel" name="f_I">
-         <property name="text">
-          <string>~</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_4">
-         <property name="text">
-          <string>Type:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="4">
-        <widget class="QLabel" name="f_B">
+        <widget class="QLabel" name="f_J">
          <property name="text">
           <string>~</string>
          </property>
         </widget>
        </item>
        <item row="5" column="3">
-        <widget class="QLabel" name="label_69">
-         <property name="text">
-          <string>R</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="4">
-        <widget class="QLabel" name="f_V">
-         <property name="text">
-          <string>~</string>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="4">
-        <widget class="QLabel" name="f_H">
-         <property name="text">
-          <string>~</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="3">
         <widget class="QLabel" name="label_70">
          <property name="text">
           <string>I</string>
@@ -1721,6 +1700,20 @@
          </property>
         </widget>
        </item>
+       <item row="8" column="1">
+        <widget class="QLabel" name="prop_mot_a">
+         <property name="text">
+          <string>~</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="4">
+        <widget class="QLabel" name="f_B">
+         <property name="text">
+          <string>~</string>
+         </property>
+        </widget>
+       </item>
        <item row="1" column="3">
         <widget class="QLabel" name="label_66">
          <property name="text">
@@ -1728,71 +1721,22 @@
          </property>
         </widget>
        </item>
-       <item row="7" column="3">
+       <item row="6" column="3">
         <widget class="QLabel" name="label_71">
          <property name="text">
           <string>J</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="3">
-        <widget class="QLabel" name="label_68">
-         <property name="text">
-          <string>V</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="4">
-        <widget class="QLabel" name="f_R">
+       <item row="8" column="4">
+        <widget class="QLabel" name="f_H">
          <property name="text">
           <string>~</string>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="3">
-        <widget class="QLabel" name="label_72">
-         <property name="text">
-          <string>H</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="3">
-        <widget class="QLabel" name="label_67">
-         <property name="text">
-          <string>B</string>
          </property>
         </widget>
        </item>
        <item row="1" column="4">
         <widget class="QLabel" name="f_U">
-         <property name="text">
-          <string>~</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="4">
-        <widget class="QLabel" name="f_J">
-         <property name="text">
-          <string>~</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1" colspan="2">
-        <widget class="QLabel" name="parallax">
-         <property name="text">
-          <string>~</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1" colspan="2">
-        <widget class="QLabel" name="spec_type">
-         <property name="text">
-          <string>~</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1" colspan="2">
-        <widget class="QLabel" name="type">
          <property name="text">
           <string>~</string>
          </property>
@@ -1805,43 +1749,99 @@
          </property>
         </widget>
        </item>
-       <item row="9" column="0">
-        <widget class="QLabel" name="label_74">
+       <item row="2" column="3">
+        <widget class="QLabel" name="label_67">
          <property name="text">
-          <string>Prop motion α:</string>
+          <string>B</string>
          </property>
         </widget>
        </item>
-       <item row="9" column="1">
-        <widget class="QLabel" name="prop_mot_a">
-         <property name="text">
-          <string>~</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="0">
-        <widget class="QLabel" name="label_65">
-         <property name="text">
-          <string>Prop motion δ:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1">
-        <widget class="QLabel" name="prop_mot_d">
+       <item row="3" column="4">
+        <widget class="QLabel" name="f_V">
          <property name="text">
           <string>~</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="0">
+       <item row="5" column="4">
+        <widget class="QLabel" name="f_I">
+         <property name="text">
+          <string>~</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
         <widget class="QLabel" name="label_73">
          <property name="text">
           <string>Rad velocity:</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
+       <item row="4" column="4">
+        <widget class="QLabel" name="f_R">
+         <property name="text">
+          <string>~</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1" colspan="2">
+        <widget class="QLabel" name="parallax">
+         <property name="text">
+          <string>~</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
         <widget class="QLabel" name="rad_vel">
+         <property name="text">
+          <string>~</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1" colspan="2">
+        <widget class="QLabel" name="spec_type">
+         <property name="text">
+          <string>~</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Type:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_65">
+         <property name="text">
+          <string>Prop motion δ:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1" colspan="2">
+        <widget class="QLabel" name="type">
+         <property name="text">
+          <string>~</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="3">
+        <widget class="QLabel" name="label_69">
+         <property name="text">
+          <string>R</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3" colspan="2">
+        <widget class="QLabel" name="label_62">
+         <property name="text">
+          <string>Flux:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QLabel" name="prop_mot_d">
          <property name="text">
           <string>~</string>
          </property>
@@ -1849,194 +1849,12 @@
        </item>
       </layout>
      </widget>
-     <widget class="QPushButton" name="pushButton_5">
-      <property name="geometry">
-       <rect>
-        <x>270</x>
-        <y>170</y>
-        <width>21</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>115</width>
-        <height>243</height>
-       </size>
-      </property>
-      <property name="palette">
-       <palette>
-        <active>
-         <colorrole role="WindowText">
-          <brush brushstyle="SolidPattern">
-           <color alpha="255">
-            <red>243</red>
-            <green>243</green>
-            <blue>243</blue>
-           </color>
-          </brush>
-         </colorrole>
-         <colorrole role="Button">
-          <brush brushstyle="SolidPattern">
-           <color alpha="255">
-            <red>32</red>
-            <green>74</green>
-            <blue>135</blue>
-           </color>
-          </brush>
-         </colorrole>
-         <colorrole role="Text">
-          <brush brushstyle="SolidPattern">
-           <color alpha="255">
-            <red>238</red>
-            <green>238</green>
-            <blue>236</blue>
-           </color>
-          </brush>
-         </colorrole>
-         <colorrole role="ButtonText">
-          <brush brushstyle="SolidPattern">
-           <color alpha="255">
-            <red>243</red>
-            <green>243</green>
-            <blue>243</blue>
-           </color>
-          </brush>
-         </colorrole>
-         <colorrole role="PlaceholderText">
-          <brush brushstyle="SolidPattern">
-           <color alpha="128">
-            <red>238</red>
-            <green>238</green>
-            <blue>236</blue>
-           </color>
-          </brush>
-         </colorrole>
-        </active>
-        <inactive>
-         <colorrole role="WindowText">
-          <brush brushstyle="SolidPattern">
-           <color alpha="255">
-            <red>243</red>
-            <green>243</green>
-            <blue>243</blue>
-           </color>
-          </brush>
-         </colorrole>
-         <colorrole role="Button">
-          <brush brushstyle="SolidPattern">
-           <color alpha="255">
-            <red>32</red>
-            <green>74</green>
-            <blue>135</blue>
-           </color>
-          </brush>
-         </colorrole>
-         <colorrole role="Text">
-          <brush brushstyle="SolidPattern">
-           <color alpha="255">
-            <red>238</red>
-            <green>238</green>
-            <blue>236</blue>
-           </color>
-          </brush>
-         </colorrole>
-         <colorrole role="ButtonText">
-          <brush brushstyle="SolidPattern">
-           <color alpha="255">
-            <red>243</red>
-            <green>243</green>
-            <blue>243</blue>
-           </color>
-          </brush>
-         </colorrole>
-         <colorrole role="PlaceholderText">
-          <brush brushstyle="SolidPattern">
-           <color alpha="128">
-            <red>238</red>
-            <green>238</green>
-            <blue>236</blue>
-           </color>
-          </brush>
-         </colorrole>
-        </inactive>
-        <disabled>
-         <colorrole role="WindowText">
-          <brush brushstyle="SolidPattern">
-           <color alpha="255">
-            <red>190</red>
-            <green>190</green>
-            <blue>190</blue>
-           </color>
-          </brush>
-         </colorrole>
-         <colorrole role="Button">
-          <brush brushstyle="SolidPattern">
-           <color alpha="255">
-            <red>32</red>
-            <green>74</green>
-            <blue>135</blue>
-           </color>
-          </brush>
-         </colorrole>
-         <colorrole role="Text">
-          <brush brushstyle="SolidPattern">
-           <color alpha="255">
-            <red>190</red>
-            <green>190</green>
-            <blue>190</blue>
-           </color>
-          </brush>
-         </colorrole>
-         <colorrole role="ButtonText">
-          <brush brushstyle="SolidPattern">
-           <color alpha="255">
-            <red>190</red>
-            <green>190</green>
-            <blue>190</blue>
-           </color>
-          </brush>
-         </colorrole>
-         <colorrole role="PlaceholderText">
-          <brush brushstyle="SolidPattern">
-           <color alpha="128">
-            <red>0</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
-          </brush>
-         </colorrole>
-        </disabled>
-       </palette>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="text">
-       <string>?</string>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>20</width>
-        <height>20</height>
-       </size>
-      </property>
-      <property name="shortcut">
-       <string/>
-      </property>
-     </widget>
      <widget class="QPushButton" name="delete_object">
       <property name="geometry">
        <rect>
-        <x>100</x>
+        <x>83</x>
         <y>360</y>
-        <width>83</width>
+        <width>64</width>
         <height>25</height>
        </rect>
       </property>
@@ -2049,7 +1867,7 @@
        <rect>
         <x>10</x>
         <y>360</y>
-        <width>83</width>
+        <width>63</width>
         <height>25</height>
        </rect>
       </property>
@@ -2067,14 +1885,44 @@
        </rect>
       </property>
      </widget>
-     <zorder>pushButton_3</zorder>
-     <zorder>Object_name</zorder>
-     <zorder>Star_Position</zorder>
-     <zorder>frame</zorder>
-     <zorder>delete_object</zorder>
-     <zorder>save_object</zorder>
-     <zorder>pushButton_5</zorder>
-     <zorder>listWidget</zorder>
+     <widget class="QPushButton" name="pushButton_6">
+      <property name="geometry">
+       <rect>
+        <x>230</x>
+        <y>360</y>
+        <width>63</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Load</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="clear">
+      <property name="geometry">
+       <rect>
+        <x>157</x>
+        <y>360</y>
+        <width>64</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>622</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Clear</string>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>16</width>
+        <height>16</height>
+       </size>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">

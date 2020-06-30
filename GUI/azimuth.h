@@ -1,13 +1,13 @@
 #ifndef AZIMUTH_H
 #define AZIMUTH_H
 
-#include <QDialog>
+#include <QMainWindow>
 
 namespace Ui {
 class Azimuth;
 }
 
-class Azimuth : public QDialog
+class Azimuth : public QMainWindow
 {
 	Q_OBJECT
 

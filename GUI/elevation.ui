@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>Elevation</class>
- <widget class="QDialog" name="Elevation">
+ <widget class="QMainWindow" name="Elevation">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>700</width>
-    <height>525</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">border-image: url(/usr/local/Data/Images/elevation.png) 0 0 0 0 stretch stretch; border:10px solid white;</string>
+   <string notr="true">border-image: url(/usr/local/Data/Images/elevation.png) 0 0 0 0 stretch stretch; border:10px solid black;</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout"/>
+  <widget class="QWidget" name="centralwidget"/>
  </widget>
  <resources/>
  <connections/>

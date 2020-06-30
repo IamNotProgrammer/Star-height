@@ -79,6 +79,12 @@ private slots:
 
 	void on_delete_object_clicked();
 
+	void on_pushButton_6_clicked();
+
+	void FillData(std::string) ;
+
+	void on_clear_clicked();
+
 private:
 	Ui::MainWindow *ui;
 
@@ -125,7 +131,7 @@ private:
 
 	// finding object //
 
-	std::string height, url, command, line, star ;
+	std::string height, url, command, line ;
 	QString object ;
 
 	// new windows //

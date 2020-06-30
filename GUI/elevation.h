@@ -1,13 +1,13 @@
 #ifndef ELEVATION_H
 #define ELEVATION_H
 
-#include <QDialog>
+#include <QMainWindow>
 
 namespace Ui {
 class Elevation;
 }
 
-class Elevation : public QDialog
+class Elevation : public QMainWindow
 {
 	Q_OBJECT
 
