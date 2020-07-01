@@ -121,7 +121,7 @@ MainWindow::MainWindow(QWidget *parent) :
 		num = loaded.indexOf('|') ;
 
 		obj = loaded.left(num) ;
-		obj.replace("_", " ") ;
+		obj.replace('_', ' ') ;
 
 		ui -> listWidget -> addItem( obj ) ;
 
@@ -1234,10 +1234,36 @@ void MainWindow::on_save_object_clicked()
 void MainWindow::on_delete_object_clicked()
 {
 
-	int n ;
+	int n, len ;
 	n = ui -> listWidget -> currentRow() ;
+	len = ui -> listWidget -> count() ;
 
 	ui -> listWidget -> takeItem(n) ;
+
+	QFile file("/usr/local/Data/saved.txt") ;
+
+	QString loaded, st ;
+
+	file.open(QFile::ReadWrite | QFile::Text) ;
+
+	QTextStream in(&file) ;
+
+	for (int i = 0; i < len; i++)
+		{
+
+		loaded = in.readLine() ;
+
+		if (i != n)
+			st.append(loaded + "\n") ;
+
+		}
+
+	file.resize(0) ;
+
+	in << st ;
+
+	file.flush() ;
+	file.close() ;
 }
 
 
