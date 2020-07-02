@@ -582,20 +582,23 @@ void MainWindow::on_pushButton_4_clicked()
 	double elev, azim ;
 	std::string grph ;
 
-	// plot elevation //
+	int h, m ; // hour, minute, day, month
+	double j ;
+	std::string e ; // elevation
 
-	system("> /usr/local/Data/Height.txt") ;
+	QDate cday ;
+
+	// plot elevation //
 
 	QFile elevation("/usr/local/Data/Height.txt") ;
 	elevation.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text) ;
+
+	elevation.resize(0) ;
+
 	QTextStream output(&elevation) ;
 
 	for (double i = -5; i <= 5; i += 0.166666666666666)
 		{
-
-		int h, m, rd ;
-		double j ;
-		std::string e ; // elevation
 
 		LST = date2LST(l, year, mon2, day2, UT + i) ;
 		t = LST - a ;
@@ -608,12 +611,16 @@ void MainWindow::on_pushButton_4_clicked()
 			{
 
 			j = LMST + i + 24 ;
-			rd = day2 - 1 ;
+
+			cday = ui -> Date -> date() ;
+
+			cday = cday.addDays(-1) ;
 
 			h = int(j) ;
 			m = int( (j - h) * 60 ) ;
 
-			grph.append( std::to_string(rd) + "/" + std::to_string(mon2) + " " ) ;
+			grph.append( std::to_string(cday.day()) + "-" + std::to_string(cday.month()) + "-" ) ;
+			grph.append( std::to_string(cday.year()) + " " ) ;
 			grph.append( std::to_string(h) + ":" + std::to_string(m) + ", " ) ;
 
 			}
@@ -622,12 +629,16 @@ void MainWindow::on_pushButton_4_clicked()
 			{
 
 			j = LMST + i - 24 ;
-			rd = day2 + 1 ;
+
+			cday = ui -> Date -> date() ;
+
+			cday = cday.addDays(+1) ;
 
 			h = int(j) ;
 			m = int( (j - h) * 60 ) ;
 
-			grph.append( std::to_string(rd) + "/" + std::to_string(mon2) + " " ) ;
+			grph.append( std::to_string(cday.day()) + "-" + std::to_string(cday.month()) + "-" ) ;
+			grph.append( std::to_string(cday.year()) + " " ) ;
 			grph.append( std::to_string(h) + ":" + std::to_string(m) + ", " ) ;
 
 			}
@@ -638,7 +649,10 @@ void MainWindow::on_pushButton_4_clicked()
 			h = int(LMST + i) ;
 			m = int( (LMST + i - h) * 60 ) ;
 
-			grph.append( std::to_string(day2) + "/" + std::to_string(mon2) + " " ) ;
+			cday = ui -> Date -> date() ;
+
+			grph.append( std::to_string(cday.day()) + "-" + std::to_string(cday.month()) + "-" ) ;
+			grph.append( std::to_string(cday.year()) + " " ) ;
 			grph.append( std::to_string(h) + ":" + std::to_string(m) + ", " ) ;
 
 			}
@@ -666,7 +680,6 @@ void MainWindow::on_pushButton_4_clicked()
 	elevation.close() ;
 
 	system("/usr/local/Data/Plot.gnu") ;
-	system("/usr/local/Data/Area.gnu") ;
 
 	el = new Elevation(this) ;
 	azimuth = new Azimuth(this) ;
