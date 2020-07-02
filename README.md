@@ -71,7 +71,7 @@ That's great question. Stellarium doesn't show local sidereal time which is the 
  ![alt text](https://raw.githubusercontent.com/IamNotProgrammer/Star-height/master/screenshots/Screenshot_20200702_225316.png)
  
  
- ![alt text](https://raw.githubusercontent.com/IamNotProgrammer/Star-height/master/screenshots/Screenshot_20200702_225409.png)
+ ![alt text](https://raw.githubusercontent.com/IamNotProgrammer/Star-height/master/screenshots/Screenshot_20200702_230304.png)
  
  
  ![alt text](https://raw.githubusercontent.com/IamNotProgrammer/Star-height/master/screenshots/Screenshot_20200702_225617.png)
