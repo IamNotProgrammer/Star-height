@@ -3,80 +3,43 @@
 
 ## Installation
 
-#### Downloading program
+To install program download from the [latest release](https://github.com/IamNotProgrammer/Star-height/releases) `star-height` and `Data.tar.gz` files. `star-height` is already compiled program for processor x86_64 (so idk if it will work for you) so all you need to do with it is to move it. Go to the directory where files where downloaded and then run these commands
 
----
+    $ sudo mv ./star-height /usr/local/bin/
+    $ tar -xvzf ./Data.tar.gz
 
-To download program star-hegiht you can simply download latest version of star-height from this site
-with Data.tar.gz (it's important if you want to find object)
-https://github.com/IamNotProgrammer/Star-height/releases
+Moving binary file to `/usr/local/bin/` will assure that you can run program form any other place in file system. After extracting Data directory it's time to move it to it's position
 
-It's working really good and doesn't need to be compiled. After downloading file find directory where it was downloaded
-and go there
-```sh
-$ cd /path/to/directory
-```
-Then untar Data.tar.gz
-```sh
-$ tar -xvf Data.tar.gz
-```
+    $ sudo mv ./Data/ /usr/local/
 
-Move binary file and Data directory
-```sh
-$ sudo mv ./star-height /usr/local/bin/
-$ sudo mv ./Data/ /usr/local/
-```
+It's very important to move it to this position otherwise program won't work. Now you can just remove compressed file
 
-Give permissions
-```
-$ sudo chmod +x /usr/local/bin/star-height
-$ sudo chmod 666 /usr/local/Data/object.txt
-```
-And it's done. You can enjoy program by simply opening it with terminal
-```sh
-$ star-heit
-```
-This version of program is stable but it may not contain most recent features
+    $ rm ./Data.tar.gz
 
+You can enjoy program by running
 
+    $ star-height
 
-#### Compiling program
+***
+There's other method by compiling it yourself. First make sure you have installed qmake and git. On Ubuntu or Linux Mint run
 
----
+    $ sudo apt-get install qt5-default
+    $ sudo apt-get install git
 
-qmake is required to compile files. If you don't have it installed install it
+On Manjaro or Arch use pacman
 
----
+   $ sudo pacman -S qt5-base
+   $ sudo pacman -S git
 
-1. On Ubuntu or Linux Mint
-```sh
-$ sudo apt-get build-dep qt5-default
-$ sudo apt-get install libxcb-xinerama0-dev 
-```
+On Gentoo you don't need instructions
 
-2. On Arch, the superior distro
-```sh
-$ sudo pacman -S qt
-```
----
+Then download code files and run installing script
 
-Then clone repository
-```sh
-$ git clone https://github.com/IamNotProgrammer/Star-height.git
-```
-Go to `./Star-height/` directory, give permission to execute install file
-```sh
-$ cd ./Star-hegiht/
-$ sudo chmod +x ./star_install.sh
-$ ./star_install.sh
-```
+   $ git clone https://github.com/IamNotProgrammer/Star-height.git
+   $ cd ./Star-height/
+   $ ./star_install.sh 
 
-Bash script will automatically install program and move all files to the right place.
-Run program to check if everything is working.
-
-```sh
-$ star-height
-```
+Installation script should automatically build and install program. After script is done that's everything you needed to do, you can check out program now.
 
 ## What even is Star-height?
 
