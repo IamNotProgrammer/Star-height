@@ -68,15 +68,10 @@ That's great question. Stellarium doesn't show local sidereal time which is the 
 
 ## Screenshots
 
-
-Calculate everything you need
-
- ![alt text](https://raw.githubusercontent.com/IamNotProgrammer/Star-height/master/screenshots/Screenshot_20200219_190134.png)
+ ![alt text](https://raw.githubusercontent.com/IamNotProgrammer/Star-height/master/screenshots/Screenshot_20200702_225316.png)
  
- Include refraction
  
- ![alt text](https://raw.githubusercontent.com/IamNotProgrammer/Star-height/master/screenshots/Screenshot_20200219_190246.png)
+ ![alt text](https://raw.githubusercontent.com/IamNotProgrammer/Star-height/master/screenshots/Screenshot_20200702_225409.png)
  
- Find your object
  
- ![alt text](https://raw.githubusercontent.com/IamNotProgrammer/Star-height/master/screenshots/Screenshot_20200219_190337.png)
+ ![alt text](https://raw.githubusercontent.com/IamNotProgrammer/Star-height/master/screenshots/Screenshot_20200702_225617.png)
