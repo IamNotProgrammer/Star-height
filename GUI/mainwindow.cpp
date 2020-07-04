@@ -17,6 +17,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QDataStream>
+#include <QSettings>
 
 
 //  DA LIST  //
@@ -103,7 +104,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	ui -> time_zone -> setValue(to) ;
 
-
 	// load saved objects
 
 	QFile file("/usr/local/Data/saved.txt") ;
@@ -130,10 +130,36 @@ MainWindow::MainWindow(QWidget *parent) :
 	file.flush() ;
 	file.close() ;
 
+	// settings
+
+		// load location used last time
+
+	int cou, cit ; // country, city
+
+	QSettings settings("Star-height", "Star-height") ;
+
+	cou = settings.value("Country").toInt() ;
+	cit = settings.value("City").toInt() ;
+
+	ui -> Box_country -> setCurrentIndex(cou) ;
+	ui -> Box_city -> setCurrentIndex(cit) ;
+
 }
 
 MainWindow::~MainWindow()
 {
+	int cou, cit ; // country, city
+
+	cou = ui -> Box_country -> currentIndex() ;
+	cit = ui -> Box_city -> currentIndex() ;
+
+	QSettings settings("Star-height", "Star-height") ;
+
+	settings.setValue("Country", cou) ;
+	settings.setValue("City", cit) ;
+
+	qDebug() << "\nThank you for using Star-height\n\nSee you next time!\n" ;
+
     delete ui;
 }
 

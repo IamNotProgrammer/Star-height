@@ -54,7 +54,7 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-VERSION = 1.6.3
+VERSION = 1.7.1
 DEFINES += VERSION_STRING=\\\"$${VERSION}\\\"
 
 RESOURCES +=
