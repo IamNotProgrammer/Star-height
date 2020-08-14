@@ -28,16 +28,16 @@ There's other method by compiling it yourself. First make sure you have installe
 
 On Manjaro or Arch use pacman
 
-   $ sudo pacman -S qt5-base
-   $ sudo pacman -S git
+    $ sudo pacman -S qt5-base
+    $ sudo pacman -S git
 
 On Gentoo you don't need instructions
 
 Then download code files and run installing script
 
-   $ git clone https://github.com/IamNotProgrammer/Star-height.git
-   $ cd ./Star-height/
-   $ ./star_install.sh 
+    $ git clone https://github.com/IamNotProgrammer/Star-height.git
+    $ cd ./Star-height/
+    $ ./star_install.sh 
 
 Installation script should automatically build and install program. After script is done that's everything you needed to do, you can check out program now.
 
