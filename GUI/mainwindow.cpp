@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <iostream> // debugging tool
 #include <cmath>
@@ -59,6 +59,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	version = new QLabel(this);
 	statusBar() -> addPermanentWidget(version);
 	version -> setText(VERSION_STRING) ;
+
 
 	// Load countries to box //
 
@@ -776,33 +777,17 @@ void MainWindow::on_pushButton_clicked()
 
 	// time to/from max elevation //
 
-	t = LST - a ;
+	double angle = a - LST ;
+	double ang_h, ang_m, ang_s ;
 
-	if (t < 0 or t > 12 )
+	if ( ( angle <= 12 && angle >= 0 ) || angle < -12 )
 		{
 
 		ui -> in_was -> setText("In") ;
 		ui -> ago -> setText("") ;
-
-		if (t < 0)
-			{
-
-			t_r = abs(t) ;
-			ui -> t_h -> setText( QString::number(int(t_r)) ) ;
-			ui -> t_m -> setText( QString::number( int( ( t_r - int(t_r) ) * 60 ) ) ) ;
-			ui -> t_s -> setText( QString::number( int( ( ( t_r - int(t_r) ) * 60 - int( ( t_r - int(t_r) ) * 60 ) ) * 60 ) ) ) ;
-
-			}
-
-		else
-			{
-
-			t_r = 24 - t ;
-			ui -> t_h -> setText( QString::number(int(t_r)) ) ;
-			ui -> t_m -> setText( QString::number( int( ( t_r - int(t_r) ) * 60 ) ) ) ;
-			ui -> t_s -> setText( QString::number( int( ( ( t_r - int(t_r) ) * 60 - int( ( t_r - int(t_r) ) * 60 ) ) * 60 ) ) ) ;
-
-			}
+		
+		if(angle < 0)
+			angle += 24 ;
 
 		}
 
@@ -811,13 +796,27 @@ void MainWindow::on_pushButton_clicked()
 
 		ui -> in_was -> setText("Was") ;
 		ui -> ago -> setText("ago") ;
-		ui -> t_h -> setText( QString::number(int(t)) ) ;
-		ui -> t_m -> setText( QString::number( int( ( t - int(t) ) * 60 ) ) ) ;
-		ui -> t_s -> setText( QString::number( int( ( ( t_r - int(t_r) ) * 60 - int( ( t_r - int(t_r) ) * 60 ) ) * 60 ) ) ) ;
-
+		
+		if(angle > 0)
+			angle -= 24 ;
+			
+		angle = abs(angle) ;
+	
 		}
+		
+	angle /= 1.0027379093382884 ; // angle was in sidereal time and we want solar time
+				
+	ang_h = int(angle) ;
+	ang_m = int( (angle - ang_h) * 60) ;
+	ang_s = int( (angle - ang_h) * 3600 - ang_m * 60 ) ;
+
+	ui -> t_h -> setText( QString::number( ang_h ) ) ;
+	ui -> t_m -> setText( QString::number( ang_m ) ) ;
+	ui -> t_s -> setText( QString::number( ang_s ) ) ;
 
 	// azimuth and elevation //
+	
+	t = LST - a ;
 
 	if (t < 0)
 		t += 24 ;
