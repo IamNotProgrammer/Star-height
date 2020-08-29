@@ -6,10 +6,10 @@ set output "/usr/local/Data/Images/elevation.png"
 unset key
 set datafile separator ","
 
-fmt = "%d/%m %H:%M"
+fmt = "%d-%m-%Y %H:%M"
 stats '/usr/local/Data/Height.txt' u (strptime(fmt,strcol(1))):2 nooutput
 
-set timefmt "%d/%m %H:%M"
+set timefmt "%d-%m-%Y %H:%M"
 set xdata time
 
 a = STATS_min_y - 10
@@ -30,7 +30,7 @@ set grid ls 12
 set ylabel "Elevation [°]" tc rgb "red"
 set xlabel "Date and time" tc rgb "red"
 
-plot "/usr/local/Data/Height.txt" every ::0::60 using 1:2 with lines lc rgb "red", \
+plot "/usr/local/Data/Height.txt" every ::0::61 using 1:2 with lines lc rgb "red", \
 "/usr/local/Data/Height.txt" every ::30::30 using 1:2 with points pt 3 ps 2.5 lc rgb "yellow"
 
 reset
@@ -74,3 +74,10 @@ set label "W" at screen 0.04, 0.5 center tc rgb "red" font ", 20"
 
 plot 0.6666666 ls 12, 1.33333333 ls 12, \
 "/usr/local/Data/Height.txt" every ::61::61 using 1:2 with points pt 3 ps 2.5 lc rgb "yellow"
+
+
+
+
+
+
+
