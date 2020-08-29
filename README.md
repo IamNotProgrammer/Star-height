@@ -24,12 +24,12 @@ You can enjoy program by running
 There's other method by compiling it yourself. First make sure you have installed qmake and git. On Ubuntu or Linux Mint run
 
     $ sudo apt-get install qt5-default
+    $ sudo apt-get install libqt5webkit5-dev
     $ sudo apt-get install git
 
 On Manjaro or Arch use pacman
 
-    $ sudo pacman -S qt5-base
-    $ sudo pacman -S git
+    $ sudo pacman -S qt5-base qt5-webkit git
 
 On Gentoo you don't need instructions
 
@@ -39,7 +39,8 @@ Then download code files and run installing script
     $ cd ./Star-height/
     $ ./star_install.sh 
 
-Installation script should automatically build and install program. After script is done that's everything you needed to do, you can check out program now.
+Installation script should automatically build and install program. After script is done that's everything you needed to do, you can check out program now. 
+If for some reason you want to develop this program I recommend qtcreator.
 
 ## What even is Star-height?
 
