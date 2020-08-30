@@ -54,6 +54,12 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+	// Fuck this piece if shit. This retarded qt can't change something basic like colur properly. Using sheetstyle this piece of fucking shit
+	// can't change other things. Fuck this it will be fucking boring white you can blame this piece of shit qt for not being competent
+	// language for fucking window programms. Changing palette with UI doesn't work, changing palette with QPalette doesn't work
+	// and changing palette with stylesheet is fucking retarded. I fucking hate this I wasted 3 or more hours trying to fix this shit
+	// because somehow it was working but now for some fucking reason it decided to fucking die. FUCK YOU QT AND FUCK YOU USER YOU CAN FORGET ABOUT DARK THEME
+
 	// Version //
 
 	version = new QLabel(this);
@@ -74,23 +80,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 		}
 
-	// Palette I found on the internet // https://gist.github.com/Skyrpex/5547015
-
-	QPalette palette;
-	palette.setColor(QPalette::Window, QColor(53,53,53));
-	palette.setColor(QPalette::WindowText, Qt::white);
-	palette.setColor(QPalette::Base, QColor(15,15,15));
-	palette.setColor(QPalette::AlternateBase, QColor(53,53,53));
-	palette.setColor(QPalette::ToolTipBase, Qt::white);
-	palette.setColor(QPalette::ToolTipText, Qt::white);
-	palette.setColor(QPalette::Text, Qt::white);
-	palette.setColor(QPalette::Button, QColor(53,53,53));
-	palette.setColor(QPalette::ButtonText, Qt::white);
-	palette.setColor(QPalette::BrightText, Qt::red);
-
-	palette.setColor(QPalette::Highlight, QColor(142,45,197).lighter());
-	palette.setColor(QPalette::HighlightedText, Qt::black);
-	qApp->setPalette(palette);
 
 	// set current time
 
@@ -1377,14 +1366,14 @@ void MainWindow::on_clear_clicked()
 
 /*
 
-		 _nnnn_
-		dGGGGMMb
-	   @p~qp~~qMb
-	   M|@||@) M|
-	   @,----.JM|
-	  JS^\__/  qKL
-	 dZP        qKRb
-	dZP          qKKb
+         _nnnn_
+        dGGGGMMb
+       @p~qp~~qMb
+       M|@||@) M|
+       @,----.JM|
+      JS^\__/  qKL
+     dZP        qKRb
+    dZP          qKKb
    fZP            SMMb
    HZM            MMMM
    FqM            MMMM
@@ -1392,7 +1381,7 @@ void MainWindow::on_clear_clicked()
  |    `.       | `' \Zq
 _)      \.___.,|     .'
 \____   )MMMMMP|   .'
-	 `-'       `--'
+     `-'       `--'
 
 
 */

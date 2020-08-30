@@ -4,8 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui webkitwidgets
-QT		+= network
+QT       += core gui webkitwidgets network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -57,4 +56,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 VERSION = 1.7.1
 DEFINES += VERSION_STRING=\\\"$${VERSION}\\\"
 
-RESOURCES +=
+RESOURCES += 
+
