@@ -8,19 +8,19 @@ make -C ./build/
 
 # Touching file ( ͡° ͜ʖ ͡°)
 
-touch ./Data/saved.txt
+sudo touch ./Data/saved.txt
 
 # Giving permissions so program can open files
 
 sudo chmod 755 ./build/star-height
 sudo chmod -R 755 ./Data/
-sudo chown -R $USER ./Data/
+sudo chmod -R 766 ./Data/Images
 
-sudo chown root:root ./build/star-height
+#sudo chown root:root ./build/star-height
 
 # Moving files to the right place
 # ./Data/ must be in fixed place
 
 sudo mv ./build/star-height /usr/local/bin/
-sudo cp -r ./Data/ /usr/local/
+sudo mv ./Data/ /usr/local/
 
