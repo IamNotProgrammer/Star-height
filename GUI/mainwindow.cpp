@@ -54,12 +54,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-	// Fuck this piece if shit. This retarded qt can't change something basic like colur properly. Using sheetstyle this piece of fucking shit
-	// can't change other things. Fuck this it will be fucking boring white you can blame this piece of shit qt for not being competent
-	// language for fucking window programms. Changing palette with UI doesn't work, changing palette with QPalette doesn't work
-	// and changing palette with stylesheet is fucking retarded. I fucking hate this I wasted 3 or more hours trying to fix this shit
-	// because somehow it was working but now for some fucking reason it decided to fucking die. FUCK YOU QT AND FUCK YOU USER YOU CAN FORGET ABOUT DARK THEME
-
 	// Version //
 
 	version = new QLabel(this);
